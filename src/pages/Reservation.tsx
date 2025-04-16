@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { format } from "date-fns";
@@ -16,6 +17,14 @@ import { toast } from "@/components/ui/use-toast";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 
+// Time slots
+const timeSlots = [
+  "11:00 AM", "11:30 AM", "12:00 PM", "12:30 PM", "1:00 PM", "1:30 PM", 
+  "2:00 PM", "2:30 PM", "5:00 PM", "5:30 PM", "6:00 PM", "6:30 PM", 
+  "7:00 PM", "7:30 PM", "8:00 PM", "8:30 PM", "9:00 PM"
+];
+
+// Define interface for reservation data
 interface ReservationData {
   name: string;
   email: string;
@@ -40,14 +49,10 @@ const Reservation = () => {
   const [preorderItems, setPreorderItems] = useState<string[]>([]);
   const [availableItems, setAvailableItems] = useState(getAllMenuItems());
 
-  const timeSlots = [
-    "11:00 AM", "12:00 PM", "1:00 PM", "2:00 PM", 
-    "5:30 PM", "6:30 PM", "7:30 PM", "8:30 PM", "9:30 PM"
-  ];
-
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
+    // Validate form
     if (!name || !email || !phone || !date || !time || guests < 1) {
       toast({
         title: "Missing Information",
@@ -57,6 +62,7 @@ const Reservation = () => {
       return;
     }
     
+    // Create reservation data
     const reservationData: ReservationData = {
       name,
       email,
@@ -68,14 +74,17 @@ const Reservation = () => {
       preorderItems: preorderTab === "yes" ? preorderItems : undefined
     };
     
+    // Save to localStorage
     const existingReservations = JSON.parse(localStorage.getItem("reservations") || "[]");
     localStorage.setItem("reservations", JSON.stringify([...existingReservations, reservationData]));
     
+    // Show success message
     toast({
       title: "Reservation Confirmed!",
       description: `Your table has been reserved for ${format(date, "MMMM do, yyyy")} at ${time}.`,
     });
     
+    // Reset form
     setName("");
     setEmail("");
     setPhone("");
@@ -86,6 +95,7 @@ const Reservation = () => {
     setPreorderTab("no");
     setPreorderItems([]);
     
+    // Redirect to confirmation
     setTimeout(() => {
       navigate("/");
     }, 2000);
@@ -103,13 +113,14 @@ const Reservation = () => {
     <>
       <Navbar />
       <main className="pt-16 min-h-screen">
-        <div className="relative py-16 md:py-24 bg-gray-900 text-white top-0 absolute w-full">
+        {/* Hero Section */}
+        <div className="relative py-16 md:py-24 bg-gray-900 text-white">
           <div 
             className="absolute inset-0 bg-fixed opacity-20" 
             style={{
               backgroundImage: "url(https://images.unsplash.com/photo-1414235077428-338989a2e8c0?q=80&w=1500)",
               backgroundSize: "cover",
-              backgroundPosition: "top",
+              backgroundPosition: "center",
             }}
           ></div>
           <div className="container mx-auto px-4 relative z-10 text-center">
@@ -121,7 +132,8 @@ const Reservation = () => {
           </div>
         </div>
 
-        <div className="py-12 md:py-16 bg-white mt-[300px] md:mt-[400px]">
+        {/* Reservation Form */}
+        <div className="py-12 md:py-16 bg-white">
           <div className="container mx-auto px-4">
             <form onSubmit={handleSubmit} className="max-w-3xl mx-auto">
               <div className="grid md:grid-cols-2 gap-6">

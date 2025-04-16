@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Utensils, Wine, CakeSlice } from "lucide-react";
@@ -13,13 +14,13 @@ const Menu = () => {
       <Navbar />
       <main className="pt-16 min-h-screen">
         {/* Header */}
-        <div className="relative py-16 md:py-24 bg-gray-900 text-white top-0 absolute w-full">
+        <div className="relative py-16 md:py-24 bg-gray-900 text-white">
           <div 
             className="absolute inset-0 bg-fixed opacity-20" 
             style={{
               backgroundImage: "url(https://images.unsplash.com/photo-1414235077428-338989a2e8c0?q=80&w=1500)",
               backgroundSize: "cover",
-              backgroundPosition: "top",
+              backgroundPosition: "center",
             }}
           ></div>
           <div className="container mx-auto px-4 relative z-10 text-center">
@@ -31,8 +32,8 @@ const Menu = () => {
           </div>
         </div>
 
-        {/* Menu Content - Adjusted top margin to account for absolute header */}
-        <div className="py-12 md:py-16 bg-white mt-[300px] md:mt-[400px]">
+        {/* Menu Content */}
+        <div className="py-12 md:py-16 bg-white">
           <div className="container mx-auto px-4">
             <Tabs defaultValue="food" value={activeTab} onValueChange={setActiveTab} className="w-full">
               <TabsList className="grid w-full max-w-md mx-auto grid-cols-3 mb-8">
