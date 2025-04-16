@@ -9,15 +9,16 @@ import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { AspectRatio } from "@/components/ui/aspect-ratio";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { Card, CardContent } from "@/components/ui/card";
 import { Minus, Plus, ShoppingBag } from "lucide-react";
 
 // Define the schema for delivery information
@@ -33,6 +34,7 @@ type OrderItem = {
   name: string;
   price: number;
   quantity: number;
+  image?: string;
 };
 
 const Order = () => {
@@ -55,7 +57,7 @@ const Order = () => {
   });
 
   // Add item to cart or increase quantity
-  const addToCart = (item: { id: string; name: string; price: number }) => {
+  const addToCart = (item: { id: string; name: string; price: number; image?: string }) => {
     setCart(prevCart => {
       const existingItem = prevCart.find(cartItem => cartItem.id === item.id);
       
@@ -119,7 +121,7 @@ const Order = () => {
       <Navbar />
       <main className="pt-16 min-h-screen">
         {/* Hero Section */}
-        <div className="relative py-16 md:py-24 bg-gray-900 text-white top-0 absolute w-full">
+        <div className="relative py-16 md:py-20 bg-gray-900 text-white top-0 absolute w-full">
           <div 
             className="absolute inset-0 bg-fixed opacity-20" 
             style={{
@@ -156,25 +158,47 @@ const Order = () => {
                 {/* Menu Items Column */}
                 <div className="md:col-span-2">
                   <h2 className="text-2xl font-bold mb-6">Menu</h2>
-                  <div className="grid sm:grid-cols-2 gap-4">
+                  <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                     {menuItems.map((item) => (
-                      <div 
+                      <Card 
                         key={item.id} 
-                        className="border rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow"
+                        className="overflow-hidden hover:shadow-md transition-shadow"
                       >
-                        <div className="flex justify-between items-start">
-                          <h3 className="font-semibold">{item.name}</h3>
-                          <span className="font-bold">${item.price}</span>
+                        <div className="w-full h-32 relative">
+                          <AspectRatio ratio={4/3} className="bg-muted">
+                            {item.image ? (
+                              <img 
+                                src={item.image} 
+                                alt={item.name}
+                                className="object-cover w-full h-full"
+                              />
+                            ) : (
+                              <div className="flex items-center justify-center h-full bg-muted text-muted-foreground">
+                                No image
+                              </div>
+                            )}
+                          </AspectRatio>
                         </div>
-                        <p className="text-gray-600 text-sm my-2 line-clamp-2">{item.description}</p>
-                        <Button 
-                          size="sm" 
-                          className="w-full mt-2"
-                          onClick={() => addToCart({ id: item.id, name: item.name, price: item.price })}
-                        >
-                          Add to Order
-                        </Button>
-                      </div>
+                        <CardContent className="p-3">
+                          <div className="flex justify-between items-start mb-1">
+                            <h3 className="font-medium text-sm truncate">{item.name}</h3>
+                            <span className="font-bold text-sm">${item.price}</span>
+                          </div>
+                          <p className="text-gray-600 text-xs mb-2 line-clamp-1">{item.description}</p>
+                          <Button 
+                            size="sm" 
+                            className="w-full mt-1 text-xs h-7 px-2"
+                            onClick={() => addToCart({ 
+                              id: item.id, 
+                              name: item.name, 
+                              price: item.price,
+                              image: item.image
+                            })}
+                          >
+                            Add to Order
+                          </Button>
+                        </CardContent>
+                      </Card>
                     ))}
                   </div>
                 </div>
@@ -192,26 +216,40 @@ const Order = () => {
                     <>
                       <div className="divide-y mb-4">
                         {cart.map((item) => (
-                          <div key={item.id} className="py-3 flex justify-between items-center">
-                            <div>
-                              <p className="font-medium">{item.name}</p>
-                              <p className="text-sm text-gray-600">${item.price} each</p>
+                          <div key={item.id} className="py-3 flex items-center">
+                            {item.image && (
+                              <div className="w-12 h-12 mr-3 rounded overflow-hidden flex-shrink-0">
+                                <img 
+                                  src={item.image} 
+                                  alt={item.name} 
+                                  className="w-full h-full object-cover"
+                                />
+                              </div>
+                            )}
+                            <div className="flex-grow min-w-0">
+                              <p className="font-medium text-sm truncate">{item.name}</p>
+                              <p className="text-xs text-gray-600">${item.price} each</p>
                             </div>
-                            <div className="flex items-center gap-2">
+                            <div className="flex items-center gap-1 ml-2">
                               <Button 
                                 variant="outline" 
                                 size="icon" 
-                                className="h-7 w-7"
+                                className="h-6 w-6"
                                 onClick={() => removeFromCart(item.id)}
                               >
                                 <Minus className="h-3 w-3" />
                               </Button>
-                              <span className="w-8 text-center">{item.quantity}</span>
+                              <span className="w-6 text-center text-sm">{item.quantity}</span>
                               <Button 
                                 variant="outline" 
                                 size="icon" 
-                                className="h-7 w-7"
-                                onClick={() => addToCart({ id: item.id, name: item.name, price: item.price })}
+                                className="h-6 w-6"
+                                onClick={() => addToCart({ 
+                                  id: item.id, 
+                                  name: item.name, 
+                                  price: item.price,
+                                  image: item.image
+                                })}
                               >
                                 <Plus className="h-3 w-3" />
                               </Button>
