@@ -61,7 +61,7 @@ const Menu = () => {
                           <div key={item.id} className="border rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow">
                             <div className="h-48 overflow-hidden">
                               <img 
-                                src={item.image} 
+                                src={item.image || "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?q=80&w=800"} 
                                 alt={item.name}
                                 className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
                               />
@@ -100,7 +100,7 @@ const Menu = () => {
                           <div key={item.id} className="border rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow">
                             <div className="h-48 overflow-hidden">
                               <img 
-                                src={item.image} 
+                                src={item.image || "https://images.unsplash.com/photo-1551024709-8f23befc6f87?q=80&w=800"} 
                                 alt={item.name}
                                 className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
                               />
@@ -130,7 +130,7 @@ const Menu = () => {
                           <div key={item.id} className="border rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow">
                             <div className="h-48 overflow-hidden">
                               <img 
-                                src={item.image} 
+                                src={item.image || "https://images.unsplash.com/photo-1563805042-7684c019e1cb?q=80&w=800"} 
                                 alt={item.name}
                                 className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
                               />

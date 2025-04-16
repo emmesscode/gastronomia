@@ -51,18 +51,27 @@ const MenuSection = () => {
                   <div className="grid gap-4">
                     {category.items.slice(0, 3).map((item) => (
                       <div key={item.id} className="flex justify-between items-start p-4 rounded-lg hover:bg-gray-50 transition-colors">
-                        <div>
-                          <h4 className="font-medium">{item.name}</h4>
-                          <p className="text-gray-600 text-sm mt-1">{item.description}</p>
-                          {item.allergenes && item.allergenes.length > 0 && (
-                            <div className="flex gap-1 mt-2">
-                              {item.allergenes.map((allergen) => (
-                                <span key={allergen} className="px-1.5 py-0.5 text-xs rounded bg-red-100 text-red-800">
-                                  {allergen}
-                                </span>
-                              ))}
-                            </div>
-                          )}
+                        <div className="flex">
+                          <div className="w-16 h-16 rounded-lg overflow-hidden mr-4 flex-shrink-0">
+                            <img 
+                              src={item.image || "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?q=80&w=200"} 
+                              alt={item.name}
+                              className="w-full h-full object-cover"
+                            />
+                          </div>
+                          <div>
+                            <h4 className="font-medium">{item.name}</h4>
+                            <p className="text-gray-600 text-sm mt-1">{item.description}</p>
+                            {item.allergenes && item.allergenes.length > 0 && (
+                              <div className="flex gap-1 mt-2">
+                                {item.allergenes.map((allergen) => (
+                                  <span key={allergen} className="px-1.5 py-0.5 text-xs rounded bg-red-100 text-red-800">
+                                    {allergen}
+                                  </span>
+                                ))}
+                              </div>
+                            )}
+                          </div>
                         </div>
                         <span className="font-bold">${item.price}</span>
                       </div>
@@ -81,9 +90,18 @@ const MenuSection = () => {
                   <div className="grid gap-4">
                     {category.items.slice(0, 3).map((item) => (
                       <div key={item.id} className="flex justify-between items-start p-4 rounded-lg hover:bg-gray-50 transition-colors">
-                        <div>
-                          <h4 className="font-medium">{item.name}</h4>
-                          <p className="text-gray-600 text-sm mt-1">{item.description}</p>
+                        <div className="flex">
+                          <div className="w-16 h-16 rounded-lg overflow-hidden mr-4 flex-shrink-0">
+                            <img 
+                              src={item.image || "https://images.unsplash.com/photo-1551024709-8f23befc6f87?q=80&w=200"} 
+                              alt={item.name}
+                              className="w-full h-full object-cover"
+                            />
+                          </div>
+                          <div>
+                            <h4 className="font-medium">{item.name}</h4>
+                            <p className="text-gray-600 text-sm mt-1">{item.description}</p>
+                          </div>
                         </div>
                         <span className="font-bold">${item.price}</span>
                       </div>
@@ -102,18 +120,27 @@ const MenuSection = () => {
                   <div className="grid gap-4">
                     {category.items.map((item) => (
                       <div key={item.id} className="flex justify-between items-start p-4 rounded-lg hover:bg-gray-50 transition-colors">
-                        <div>
-                          <h4 className="font-medium">{item.name}</h4>
-                          <p className="text-gray-600 text-sm mt-1">{item.description}</p>
-                          {item.allergenes && item.allergenes.length > 0 && (
-                            <div className="flex gap-1 mt-2">
-                              {item.allergenes.map((allergen) => (
-                                <span key={allergen} className="px-1.5 py-0.5 text-xs rounded bg-red-100 text-red-800">
-                                  {allergen}
-                                </span>
-                              ))}
-                            </div>
-                          )}
+                        <div className="flex">
+                          <div className="w-16 h-16 rounded-lg overflow-hidden mr-4 flex-shrink-0">
+                            <img 
+                              src={item.image || "https://images.unsplash.com/photo-1563805042-7684c019e1cb?q=80&w=200"} 
+                              alt={item.name}
+                              className="w-full h-full object-cover"
+                            />
+                          </div>
+                          <div>
+                            <h4 className="font-medium">{item.name}</h4>
+                            <p className="text-gray-600 text-sm mt-1">{item.description}</p>
+                            {item.allergenes && item.allergenes.length > 0 && (
+                              <div className="flex gap-1 mt-2">
+                                {item.allergenes.map((allergen) => (
+                                  <span key={allergen} className="px-1.5 py-0.5 text-xs rounded bg-red-100 text-red-800">
+                                    {allergen}
+                                  </span>
+                                ))}
+                              </div>
+                            )}
+                          </div>
                         </div>
                         <span className="font-bold">${item.price}</span>
                       </div>
@@ -126,7 +153,7 @@ const MenuSection = () => {
         </Tabs>
         
         <div className="mt-10 text-center">
-          <Button asChild size="lg">
+          <Button asChild size="lg" className="bg-primary text-white hover:bg-primary/90">
             <Link to="/menu">
               View Full Menu <ChevronRight className="ml-1 h-4 w-4" />
             </Link>

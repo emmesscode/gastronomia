@@ -60,8 +60,8 @@ const GallerySection = () => {
     };
 
     window.addEventListener('scroll', handleScroll);
-    // Initial check
-    handleScroll();
+    // Initial check - trigger immediately to show images that are in view
+    setTimeout(handleScroll, 100);
 
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
@@ -85,12 +85,12 @@ const GallerySection = () => {
           </p>
         </div>
         
-        {/* Masonry Gallery */}
+        {/* Masonry Gallery with improved CSS */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
           {images.map((image, index) => (
             <div 
               key={index} 
-              className={`gallery-item opacity-0 transform translate-y-10 transition-all duration-700 ease-out ${getSizeClass(image.size)}`}
+              className={`gallery-item opacity-0 transform translate-y-10 transition-all duration-700 ease-out is-visible ${getSizeClass(image.size)}`}
               style={{ transitionDelay: `${index * 100}ms` }}
             >
               <div className="h-full overflow-hidden rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300">
@@ -111,6 +111,13 @@ const GallerySection = () => {
           ))}
         </div>
       </div>
+
+      <style jsx>{`
+        .gallery-item.is-visible {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      `}</style>
     </section>
   );
 };
