@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -97,5 +98,16 @@
 
   body {
     @apply bg-background text-foreground;
+  }
+  
+  /* Fix for button text color */
+  button {
+    color: inherit;
+  }
+  
+  /* Always show menu items on all tabs in pages  */
+  .menu-item, .gallery-item {
+    opacity: 1 !important;
+    transform: translateY(0) !important;
   }
 }
