@@ -132,7 +132,7 @@ const Reservation = () => {
           </div>
         </div>
 
-        <div className="py-12 md:py-16 bg-white mt-[300px] md:mt-[400px]">
+        <div className="py-12 md:py-16 bg-white">
           <div className="container mx-auto px-4">
             <form onSubmit={handleSubmit} className="max-w-3xl mx-auto">
               <div className="grid md:grid-cols-2 gap-6">
