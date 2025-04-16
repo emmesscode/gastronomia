@@ -16,6 +16,22 @@ import { toast } from "@/components/ui/use-toast";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 
+interface ReservationData {
+  name: string;
+  email: string;
+  phone: string;
+  date: Date;
+  time: string;
+  guests: number;
+  specialRequests?: string;
+  preorderItems?: string[];
+}
+
+const timeSlots = [
+  "11:00 AM", "12:00 PM", "1:00 PM", "2:00 PM", 
+  "5:30 PM", "6:30 PM", "7:30 PM", "8:30 PM", "9:30 PM"
+];
+
 const Reservation = () => {
   const navigate = useNavigate();
   const [date, setDate] = useState<Date | undefined>(undefined);
