@@ -32,7 +32,7 @@ const Menu = () => {
         </div>
 
         {/* Menu Content - Adjusted top margin to account for absolute header */}
-        <div className="py-12 md:py-16 bg-white mt-[300px] md:mt-[400px]">
+        <div className="py-12 md:py-16 bg-white">
           <div className="container mx-auto px-4">
             <Tabs defaultValue="food" value={activeTab} onValueChange={setActiveTab} className="w-full">
               <TabsList className="grid w-full max-w-md mx-auto grid-cols-3 mb-8">
