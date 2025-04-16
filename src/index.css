@@ -100,14 +100,23 @@
     @apply bg-background text-foreground;
   }
   
-  /* Fix for button text color */
-  button {
-    color: inherit;
+  /* Fix for white button text color - make them black */
+  button.bg-white, button[class*="bg-white"] {
+    color: #000 !important;
   }
   
-  /* Always show menu items on all tabs in pages  */
+  /* Always show menu items on all tabs in pages with visible text */
   .menu-item, .gallery-item {
     opacity: 1 !important;
     transform: translateY(0) !important;
+    color: #333 !important; /* Ensure dark text color */
+  }
+  
+  /* Ensure all menu item text is dark */
+  [role="tabpanel"] h3, 
+  [role="tabpanel"] h4, 
+  [role="tabpanel"] p, 
+  [role="tabpanel"] span:not([class*="bg-red"]) {
+    color: #333 !important;
   }
 }
