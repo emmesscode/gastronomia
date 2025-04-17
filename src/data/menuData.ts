@@ -58,7 +58,7 @@ export const foodItems: MenuCategory[] = [
         description: "Cauliflower purée, crispy pancetta, brown butter sauce",
         price: 34,
         allergenes: ["shellfish", "dairy"],
-        image: "https://images.unsplash.com/photo-1624376414452-79856e7a7a81?q=80&w=800",
+        image: "https://images.unsplash.com/photo-1572441536343-446b9b99adde?q=80&w=2145&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
         featured: true,
         ingredients: ["Jumbo sea scallops", "Cauliflower", "Pancetta", "Butter", "Lemon", "Chives", "Microgreens"],
         preparation: "Our chef sources the freshest jumbo sea scallops daily. They are seasoned and seared to perfection in a cast iron pan. The scallops are served on a bed of silky cauliflower purée, topped with crispy pancetta bits, and finished with a brown butter sauce infused with lemon. The dish is garnished with fresh chives and delicate microgreens."
@@ -69,7 +69,7 @@ export const foodItems: MenuCategory[] = [
         description: "Arborio rice, porcini mushrooms, black truffle, parmesan",
         price: 28,
         allergenes: ["dairy"],
-        image: "https://images.unsplash.com/photo-1633436374961-09a1a8a25a76?q=80&w=800",
+        image: "https://images.unsplash.com/photo-1633964913295-ceb43826e7c9?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
       },
       {
         id: "f6",
@@ -98,7 +98,7 @@ export const foodItems: MenuCategory[] = [
         description: "Herb-crusted lamb, mint pea purée, roasted root vegetables",
         price: 36,
         allergenes: ["dairy"],
-        image: "https://images.unsplash.com/photo-1519708495087-ca1b71df408b?q=80&w=800",
+        image: "https://images.unsplash.com/photo-1619711700868-0fff3de51caf?q=80&w=2069&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
         featured: true,
         ingredients: ["New Zealand lamb rack", "Fresh herbs (rosemary, thyme, mint)", "Dijon mustard", "Breadcrumbs", "Green peas", "Root vegetables", "Lamb jus"],
         preparation: "Our chef prepares a premium New Zealand lamb rack, coated with Dijon mustard and a crust of fresh herbs and breadcrumbs. The lamb is roasted to a perfect medium-rare. It's served with a smooth mint pea purée and a medley of roasted root vegetables. The dish is finished with a rich lamb jus reduction that's been simmering for 12 hours."
@@ -125,7 +125,7 @@ export const dessertItems: MenuCategory[] = [
         description: "Classic vanilla custard with caramelized sugar top",
         price: 10,
         allergenes: ["dairy", "eggs"],
-        image: "https://images.unsplash.com/photo-1615394567618-ec2f2e24e39e?q=80&w=800",
+        image: "https://images.unsplash.com/photo-1676300184943-09b2a08319a3?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
       },
       {
         id: "d3",
@@ -148,7 +148,7 @@ export const drinkItems: MenuCategory[] = [
         name: "Château Margaux 2015",
         description: "Premier Grand Cru Classé, Margaux, Bordeaux, France",
         price: 220,
-        image: "https://images.unsplash.com/photo-1586370434639-0fe98d209f32?q=80&w=800",
+        image: "https://images.unsplash.com/photo-1646216204447-74c4fee47c08?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
       },
       {
         id: "w2",
@@ -162,7 +162,7 @@ export const drinkItems: MenuCategory[] = [
         name: "Dom Pérignon 2012",
         description: "Champagne, France",
         price: 195,
-        image: "https://images.unsplash.com/photo-1592507783432-808c12c17c03?q=80&w=800",
+        image: "https://images.unsplash.com/photo-1581775120934-9851ea6cf3e4?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
       }
     ]
   },
@@ -188,7 +188,7 @@ export const drinkItems: MenuCategory[] = [
         name: "Elderflower Spritz",
         description: "St-Germain, prosecco, soda, fresh mint",
         price: 14,
-        image: "https://images.unsplash.com/photo-1578664182354-018196e68bc2?q=80&w=800",
+        image: "https://images.unsplash.com/photo-1570598912132-0ba1dc952b7d?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
       }
     ]
   },
@@ -200,7 +200,7 @@ export const drinkItems: MenuCategory[] = [
         name: "Cucumber Mint Refresher",
         description: "Fresh cucumber, mint, lime, sparkling water",
         price: 8,
-        image: "https://images.unsplash.com/photo-1556679343-c1bf22d40b9c?q=80&w=800",
+        image: "https://images.unsplash.com/photo-1733267445111-6b74319ef50a?q=80&w=2064&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
       },
       {
         id: "n2",
