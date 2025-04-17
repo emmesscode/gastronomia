@@ -332,7 +332,7 @@ const Order = () => {
                           name="message"
                           render={({ field }) => (
                             <FormItem>
-                              <FormLabel>Further info</FormLabel>
+                              <FormLabel>Special Requests (Optional)</FormLabel>
                               <FormControl>
                                 <Input placeholder="Leave at the door, don't deliver before 16pm, etc." {...field} />
                               </FormControl>
