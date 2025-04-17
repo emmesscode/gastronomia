@@ -38,7 +38,7 @@ const FeaturedFoodSection = () => {
           {featuredItems.map((item) => (
             <Card 
               key={item.id} 
-              className="overflow-hidden hover:shadow-lg transition-shadow duration-300 cursor-pointer group relative"
+              className="overflow-hidden hover:shadow-lg transition-shadow duration-300 cursor-pointer group"
               onClick={() => navigate(`/food/${item.id}`)}
             >
               <CardImage 
@@ -96,11 +96,11 @@ const FeaturedFoodSection = () => {
                   )}
                 </div>
               </CardContent>
-              <CardFooter className="flex justify-between pt-2 fixed bottom-0 left-0 right-0">
+              <CardFooter className="flex justify-between pt-2 h-full relative">
                 <Button
                   variant="outline"
                   size="sm"
-                  className="w-full"
+                  className="w-full absolute bottom-0 left-0 right-0"
                   onClick={(e) => handleAddToCart(item.id, item.name, item.price, item.image, e)}
                 >
                   <ShoppingBag className="h-4 w-4 mr-2" /> Add to Order
