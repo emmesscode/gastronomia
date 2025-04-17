@@ -108,7 +108,7 @@ const MenuSection = () => {
                             </span>
                             <div className="flex space-x-1">
                               <Button 
-                                variant="solid" 
+                                variant="primary" 
                                 size="icon" 
                                 className="h-7 w-7 bg-primary text-white"
                                 onClick={(e) => handleAddToCart(item.id, item.name, item.price, item.image, e)}
