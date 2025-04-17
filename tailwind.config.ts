@@ -11,12 +11,7 @@ export default {
 	prefix: "",
 	theme: {
         fontFamily: {
-          sans: ['"Pavanam"', 'sans-serif']
-        },
-        fontWeight: {
-          'light': '600',
-          'normal': '600',
-          'black': '600'
+          sans: ['"Rubik"', 'sans-serif']
         },
 		container: {
 			center: true,
