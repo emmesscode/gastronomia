@@ -48,7 +48,7 @@ const MenuSection = () => {
                 <p className="text-xs text-gray-500 line-clamp-1 mb-2">{item.description}</p>
                 <div className="w-full">
                   <Button 
-                    variant="outline" 
+                    variant="default" 
                     size="sm" 
                     className="text-xs h-7"
                     onClick={(e) => {
@@ -65,7 +65,7 @@ const MenuSection = () => {
                     Add to Order
                   </Button>
                    <Button 
-                      variant="secondary" 
+                      variant="outline" 
                       size="sm" 
                       className="text-xs h7"
                       onClick={(e) => {
