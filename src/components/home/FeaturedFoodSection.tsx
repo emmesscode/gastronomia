@@ -100,7 +100,7 @@ const FeaturedFoodSection = () => {
                 <Button
                   variant="default"
                   size="sm"
-                  className="w-full"
+                  className="w-full bg-primary"
                   onClick={(e) => handleAddToCart(item.id, item.name, item.price, item.image, e)}
                 >
                   <ShoppingBag className="h-4 w-4 mr-2" /> Add to Order
