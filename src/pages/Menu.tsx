@@ -36,15 +36,15 @@ const Menu = () => {
           <div className="container mx-auto px-4">
             <Tabs defaultValue="food" value={activeTab} onValueChange={setActiveTab} className="w-full">
               <TabsList className="grid w-full max-w-md mx-auto grid-cols-3 mb-8">
-                <TabsTrigger value="food" className="flex items-center justify-center gap-2 py-3">
+                <TabsTrigger value="food" className="flex items-center justify-center gap-2">
                   <Utensils className="h-4 w-4" />
                   <span>Food</span>
                 </TabsTrigger>
-                <TabsTrigger value="drinks" className="flex items-center justify-center gap-2 py-3">
+                <TabsTrigger value="drinks" className="flex items-center justify-center gap-2">
                   <Wine className="h-4 w-4" />
                   <span>Drinks</span>
                 </TabsTrigger>
-                <TabsTrigger value="desserts" className="flex items-center justify-center gap-2 py-3">
+                <TabsTrigger value="desserts" className="flex items-center justify-center gap-2">
                   <CakeSlice className="h-4 w-4" />
                   <span>Desserts</span>
                 </TabsTrigger>
