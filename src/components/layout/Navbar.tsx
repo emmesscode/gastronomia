@@ -39,7 +39,7 @@ const Navbar = () => {
             <NavigationMenuItem>
               <Link to="/" className={cn(
                 "px-4 py-2 text-sm font-medium transition-colors",
-                isScrolled ? "text-gray-800 dark:text-gray-200" : "text-primary"
+                isScrolled ? "text-gray-800 dark:text-gray-200" : "text-primary bg-white"
               )}>
                 Home
               </Link>
