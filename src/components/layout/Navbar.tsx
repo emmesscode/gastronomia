@@ -85,7 +85,7 @@ const Navbar = () => {
             <NavigationMenuItem>
               <Link to="/my-history" className={cn(
                 "px-4 py-2 text-sm font-medium transition-colors flex items-center",
-                isScrolled ? "text-gray-800 dark:text-gray-200" : "text-white"
+                isScrolled ? "text-gray-800 dark:text-gray-200" : "accent-text"
               )}>
                 <History className="h-4 w-4 mr-1" />
                 My History
@@ -96,7 +96,7 @@ const Navbar = () => {
                 to="/order" 
                 className={cn(
                   "px-4 py-2 text-sm font-medium transition-colors flex items-center",
-                  isScrolled ? "text-gray-800 dark:text-gray-200" : "text-white"
+                  isScrolled ? "text-gray-800 dark:text-gray-200" : "accent-text"
                 )}
               >
                 <ShoppingCart className="h-4 w-4 mr-1" />
