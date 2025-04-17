@@ -1,11 +1,11 @@
-import { getAllFeaturedItems } from "@/data/menuData";
+import { getFeaturedItems } from "@/data/menuData";
 import { Button } from "@/components/ui/button";
 import { useCart } from "@/contexts/CartContext";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 
 const FeaturedFoodSection = () => {
-  const featuredItems = getAllFeaturedItems();
+  const featuredItems = getFeaturedItems();
   const { addToCart } = useCart();
   const navigate = useNavigate();
 
