@@ -63,7 +63,7 @@ const FeaturedFoodSection = () => {
                 </div>
                 <CardDescription>{item.description}</CardDescription>
               </CardHeader>
-              <CardContent className="flex-1 grow">
+              <CardContent className="mb-auto">
                 <div className="space-y-4">
                   {item.ingredients && (
                     <div>
