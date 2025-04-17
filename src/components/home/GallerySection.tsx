@@ -1,4 +1,3 @@
-
 import { useEffect, useRef } from "react";
 
 const images = [
@@ -60,7 +59,6 @@ const GallerySection = () => {
     };
 
     window.addEventListener('scroll', handleScroll);
-    // Initial check - trigger immediately to show images that are in view
     setTimeout(handleScroll, 100);
 
     return () => window.removeEventListener('scroll', handleScroll);
@@ -76,24 +74,23 @@ const GallerySection = () => {
   };
 
   return (
-    <section id="gallery" className="py-16 md:py-24 bg-gray-100 w-full mx-auto" ref={galleryRef}>
-      <div className="container px-0 mx-0">
-        <div className="text-center mb-12">
+    <section id="gallery" className="py-16 md:py-24 bg-gray-100 w-full" ref={galleryRef}>
+      <div className="px-0 w-full">
+        <div className="text-center mb-12 px-4">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">Culinary Gallery</h2>
           <p className="text-gray-600 max-w-2xl mx-auto">
             Feast your eyes on our artfully crafted dishes, where every plate tells a story of passion, creativity, and culinary excellence.
           </p>
         </div>
         
-        {/* Masonry Gallery with improved CSS */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 w-full mx-auto">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 w-full">
           {images.map((image, index) => (
             <div 
               key={index} 
               className={`gallery-item opacity-0 transform translate-y-10 transition-all duration-700 ease-out ${getSizeClass(image.size)}`}
               style={{ transitionDelay: `${index * 100}ms` }}
             >
-              <div className="h-full w overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300">
+              <div className="h-full overflow-hidden hover:shadow-xl transition-shadow duration-300">
                 <div className="relative h-full group">
                   <img
                     src={image.src}
