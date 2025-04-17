@@ -63,6 +63,17 @@ const MenuSection = () => {
                 >
                   Add to Order
                 </Button>
+                 <Button 
+                        variant="secondary" 
+                        size="sm" 
+                        className="text-xs"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          navigate(`/food/${item.id}`);
+                        }}
+                      >
+                         <Info className="h-3 w-3" /> Details
+                      </Button>
               </div>
             </div>
           ))}
