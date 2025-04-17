@@ -15,6 +15,7 @@ export default {
         },
         fontWeight: {
           'light': '600',
+          'normal': '600',
           'black': '600'
         },
 		container: {
