@@ -35,14 +35,14 @@ const App = () => (
         <BrowserRouter>
           <Wrapper>
             <Routes>
-              <Route path="/" element={<Index />} />
-              <Route path="/menu" element={<Menu />} />
-              <Route path="/reservation" element={<Reservation />} />
-              <Route path="/order" element={<Order />} />
-              <Route path="/food/:id" element={<FoodDetails />} />
-              <Route path="/my-history" element={<MyHistory />} />
+              <Route path="/" element={<Index />} viewTransition />
+              <Route path="/menu" element={<Menu />} viewTransition />
+              <Route path="/reservation" element={<Reservation />} viewTransition />
+              <Route path="/order" element={<Order />} viewTransition />
+              <Route path="/food/:id" element={<FoodDetails />} viewTransition />
+              <Route path="/my-history" element={<MyHistory />} viewTransition />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-              <Route path="*" element={<NotFound />} />
+              <Route path="*" element={<NotFound />} viewTransition />
             </Routes>
           </Wrapper>
         </BrowserRouter>
