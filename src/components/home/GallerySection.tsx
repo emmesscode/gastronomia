@@ -23,7 +23,7 @@ const images = [
   },{
     src: "https://images.unsplash.com/photo-1473093295043-cdd812d0e601?q=80&w=800",
     alt: "Fine dining presentation",
-    size: "tall"
+    size: "medium"
   },
   {
     src: "https://images.unsplash.com/photo-1544025162-d76694265947?q=80&w=800",
