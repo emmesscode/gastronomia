@@ -11,7 +11,7 @@ export default {
 	prefix: "",
 	theme: {
         fontFamily: {
-          sans: ['"Dosis"', 'sans-serif']
+          sans: ['"Pavanam"', 'sans-serif']
         },
         fontWeight: {
           'light': '600',
