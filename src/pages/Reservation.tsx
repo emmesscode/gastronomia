@@ -113,7 +113,7 @@ const Reservation = () => {
   return (
     <>
       <Navbar />
-      <main className="pt-16 min-h-screen">
+      <main className="min-h-screen">
         <div className="relative py-16 md:py-24 bg-gray-900 text-white top-0 absolute w-full">
           <div 
             className="absolute inset-0 bg-fixed opacity-20" 
