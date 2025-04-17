@@ -57,6 +57,17 @@ const Order = () => {
     // In a real app, we would send this to a backend
     console.log("Order submitted:", { customer: values, items: cart, total: getTotalPrice() });
     
+    // Save the order to localStorage
+    const orderData = {
+      ...values,
+      items: cart,
+      totalPrice: getTotalPrice(),
+      date: new Date().toISOString()
+    };
+    
+    const existingOrders = JSON.parse(localStorage.getItem("orders") || "[]");
+    localStorage.setItem("orders", JSON.stringify([...existingOrders, orderData]));
+    
     // Show success message and reset cart
     toast.success("Your order has been placed! We'll contact you shortly.", {
       duration: 5000,

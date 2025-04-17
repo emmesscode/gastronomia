@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { format } from "date-fns";
@@ -79,6 +80,7 @@ const Reservation = () => {
       preorderItems: preorderTab === "yes" ? preorderItems : undefined
     };
     
+    // Save to localStorage (this code was already in place)
     const existingReservations = JSON.parse(localStorage.getItem("reservations") || "[]");
     localStorage.setItem("reservations", JSON.stringify([...existingReservations, reservationData]));
     

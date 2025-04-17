@@ -1,7 +1,7 @@
 
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { Menu, X, ShoppingCart } from "lucide-react";
+import { Menu, X, ShoppingCart, History } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { 
   NavigationMenu, 
@@ -78,6 +78,15 @@ const Navbar = () => {
               </Link>
             </NavigationMenuItem>
             <NavigationMenuItem>
+              <Link to="/my-history" className={cn(
+                "px-4 py-2 text-sm font-medium transition-colors flex items-center",
+                isScrolled ? "text-gray-800 dark:text-gray-200" : "text-white"
+              )}>
+                <History className="h-4 w-4 mr-1" />
+                My History
+              </Link>
+            </NavigationMenuItem>
+            <NavigationMenuItem>
               <Link 
                 to="/order" 
                 className={cn(
@@ -151,6 +160,9 @@ const Navbar = () => {
               </Link>
               <Link to="/reservation" className="px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-800" onClick={toggleMenu}>
                 Reservations
+              </Link>
+              <Link to="/my-history" className="px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-800" onClick={toggleMenu}>
+                My History
               </Link>
             </nav>
           </div>
