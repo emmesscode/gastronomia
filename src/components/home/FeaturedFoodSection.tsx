@@ -106,9 +106,9 @@ const FeaturedFoodSection = () => {
                   <ShoppingBag className="h-4 w-4 mr-2" /> Add to Order
                 </Button>
                 <Button
-                  variant="gradient"
+                  variant="solid"
                   size="sm"
-                  className="ml-2"
+                  className="ml-2 bg-primary"
                   onClick={(e) => {
                     e.stopPropagation();
                     navigate(`/food/${item.id}`);
