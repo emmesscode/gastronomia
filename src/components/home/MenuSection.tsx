@@ -91,14 +91,16 @@ const MenuSection = () => {
           
           </div>
       </div>
-           <Button
-             onClick={(e) => {
-             e.stopPropagation();
-             navigate('/menu');
-             }}
-             className="mx-auto my-4 px-4 py-2 text-sm font-medium transition-colors text-white">
-               See More
-            </Button>
+      <div className="w-full flex content-center py-4">
+        <Button
+          onClick={(e) => {
+          e.stopPropagation();
+          navigate('/menu');
+          }}
+          className="mx-auto my-4 px-4 py-2 text-sm font-medium transition-colors text-white">
+            See More
+        </Button>
+      </div>
     </section>
   );
 };
