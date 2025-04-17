@@ -88,10 +88,15 @@ const MenuSection = () => {
               </div>
             </div>
           ))}
-        </div>
-         <Button to="/menu" className="px-4 py-2 text-sm font-medium transition-colors text-white">
-               See More
+         <Button
+           onClick={(e) => {
+           e.stopPropagation();
+           navigate('/menu');
+           }}
+           className="px-4 py-2 text-sm font-medium transition-colors text-white">
+             See More
           </Button>
+        </div>
       </div>
     </section>
   );
