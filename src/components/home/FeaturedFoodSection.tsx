@@ -63,7 +63,7 @@ const FeaturedFoodSection = () => {
                 </div>
                 <CardDescription>{item.description}</CardDescription>
               </CardHeader>
-              <CardContent>
+              <CardContent className="flex-1 grow">
                 <div className="space-y-4">
                   {item.ingredients && (
                     <div>
@@ -96,7 +96,7 @@ const FeaturedFoodSection = () => {
                   )}
                 </div>
               </CardContent>
-              <CardFooter className="flex justify-between pt-2 mt-auto">
+              <CardFooter className="flex justify-between pt-2">
                 <Button
                   variant="outline"
                   size="sm"
