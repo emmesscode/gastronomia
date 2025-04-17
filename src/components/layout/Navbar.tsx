@@ -39,7 +39,7 @@ const Navbar = () => {
             <NavigationMenuItem>
               <Link to="/" className={cn(
                 "px-4 py-2 text-sm font-medium transition-colors",
-                isScrolled ? "text-gray-800 dark:text-gray-200" : "text-primary bg-white"
+                isScrolled ? "text-gray-800 dark:text-gray-200" : "text-white"
               )}>
                 Home
               </Link>
@@ -47,7 +47,7 @@ const Navbar = () => {
             <NavigationMenuItem>
               <Link to="/menu" className={cn(
                 "px-4 py-2 text-sm font-medium transition-colors",
-                isScrolled ? "text-gray-800 dark:text-gray-200" : "text-primary"
+                isScrolled ? "text-gray-800 dark:text-gray-200" : "text-white"
               )}>
                 Menu
               </Link>
@@ -55,7 +55,7 @@ const Navbar = () => {
             <NavigationMenuItem>
               <Link to="/order" className={cn(
                 "px-4 py-2 text-sm font-medium transition-colors",
-                isScrolled ? "text-gray-800 dark:text-gray-200" : "text-primary"
+                isScrolled ? "text-gray-800 dark:text-gray-200" : "text-white"
               )}>
                 Order Online
               </Link>
@@ -63,7 +63,7 @@ const Navbar = () => {
             <NavigationMenuItem>
               <Link to="/reservation" className={cn(
                 "px-4 py-2 text-sm font-medium transition-colors",
-                isScrolled ? "text-gray-800 dark:text-gray-200" : "text-primary"
+                isScrolled ? "text-gray-800 dark:text-gray-200" : "text-white"
               )}>
                 Reservations
               </Link>
