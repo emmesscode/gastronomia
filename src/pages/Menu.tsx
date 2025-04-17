@@ -1,12 +1,32 @@
+
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import { Utensils, Wine, CakeSlice } from "lucide-react";
+import { Utensils, Wine, CakeSlice, ArrowRight, ShoppingBag } from "lucide-react";
 import { foodItems, dessertItems, drinkItems } from "@/data/menuData";
+import { Button } from "@/components/ui/button"; 
+import { Card, CardContent, CardImage } from "@/components/ui/card";
+import { toast } from "sonner";
+import { useCart } from "@/contexts/CartContext";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 
 const Menu = () => {
   const [activeTab, setActiveTab] = useState("food");
+  const navigate = useNavigate();
+  const { addToCart } = useCart();
+
+  const handleAddToCart = (item: { id: string; name: string; price: number; image?: string }, e: React.MouseEvent) => {
+    e.stopPropagation();
+    addToCart(item);
+    toast.success(`Added ${item.name} to cart`, {
+      description: "Go to order page to complete your purchase",
+      action: {
+        label: "View Order",
+        onClick: () => navigate("/order")
+      }
+    });
+  };
 
   return (
     <>
@@ -57,18 +77,33 @@ const Menu = () => {
                       <h2 className="text-3xl font-bold text-center">{category.name}</h2>
                       <div className="grid md:grid-cols-2 gap-6">
                         {category.items.map((item) => (
-                          <div key={item.id} className="border rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+                          <div 
+                            key={item.id} 
+                            className="border rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow cursor-pointer"
+                            onClick={() => navigate(`/food/${item.id}`)}
+                          >
                             <div className="h-48 overflow-hidden">
                               <img 
                                 src={item.image || "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?q=80&w=800"} 
                                 alt={item.name}
                                 className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
+                                style={{viewTransitionName: `food-image-${item.id}`}}
                               />
                             </div>
                             <div className="p-4">
                               <div className="flex justify-between items-start">
-                                <h3 className="font-bold text-xl">{item.name}</h3>
-                                <span className="font-bold text-lg">${item.price}</span>
+                                <h3 
+                                  className="font-bold text-xl"
+                                  style={{viewTransitionName: `food-title-${item.id}`}}
+                                >
+                                  {item.name}
+                                </h3>
+                                <span 
+                                  className="font-bold text-lg"
+                                  style={{viewTransitionName: `food-price-${item.id}`}}
+                                >
+                                  ${item.price}
+                                </span>
                               </div>
                               <p className="text-gray-600 mt-2">{item.description}</p>
                               {item.allergenes && item.allergenes.length > 0 && (
@@ -80,6 +115,28 @@ const Menu = () => {
                                   ))}
                                 </div>
                               )}
+                              <div className="flex justify-end gap-2 mt-3">
+                                <Button 
+                                  size="sm" 
+                                  variant="outline"
+                                  onClick={(e) => handleAddToCart(item, e)}
+                                  className="flex items-center gap-1"
+                                >
+                                  <ShoppingBag className="h-3 w-3" />
+                                  <span>Add to cart</span>
+                                </Button>
+                                <Button 
+                                  size="sm" 
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    navigate(`/food/${item.id}`);
+                                  }}
+                                  className="flex items-center gap-1"
+                                >
+                                  <span>Details</span>
+                                  <ArrowRight className="h-3 w-3" />
+                                </Button>
+                              </div>
                             </div>
                           </div>
                         ))}
@@ -96,20 +153,57 @@ const Menu = () => {
                       <h2 className="text-3xl font-bold text-center">{category.name}</h2>
                       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                         {category.items.map((item) => (
-                          <div key={item.id} className="border rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+                          <div 
+                            key={item.id} 
+                            className="border rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow cursor-pointer"
+                            onClick={() => navigate(`/food/${item.id}`)}
+                          >
                             <div className="h-48 overflow-hidden">
                               <img 
                                 src={item.image || "https://images.unsplash.com/photo-1551024709-8f23befc6f87?q=80&w=800"} 
                                 alt={item.name}
                                 className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
+                                style={{viewTransitionName: `food-image-${item.id}`}}
                               />
                             </div>
                             <div className="p-4">
                               <div className="flex justify-between items-start">
-                                <h3 className="font-bold text-xl">{item.name}</h3>
-                                <span className="font-bold text-lg">${item.price}</span>
+                                <h3 
+                                  className="font-bold text-xl"
+                                  style={{viewTransitionName: `food-title-${item.id}`}}
+                                >
+                                  {item.name}
+                                </h3>
+                                <span 
+                                  className="font-bold text-lg"
+                                  style={{viewTransitionName: `food-price-${item.id}`}}
+                                >
+                                  ${item.price}
+                                </span>
                               </div>
                               <p className="text-gray-600 mt-2">{item.description}</p>
+                              <div className="flex justify-end gap-2 mt-3">
+                                <Button 
+                                  size="sm" 
+                                  variant="outline"
+                                  onClick={(e) => handleAddToCart(item, e)}
+                                  className="flex items-center gap-1"
+                                >
+                                  <ShoppingBag className="h-3 w-3" />
+                                  <span>Add to cart</span>
+                                </Button>
+                                <Button 
+                                  size="sm" 
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    navigate(`/food/${item.id}`);
+                                  }}
+                                  className="flex items-center gap-1"
+                                >
+                                  <span>Details</span>
+                                  <ArrowRight className="h-3 w-3" />
+                                </Button>
+                              </div>
                             </div>
                           </div>
                         ))}
@@ -126,18 +220,33 @@ const Menu = () => {
                       <h2 className="text-3xl font-bold text-center">{category.name}</h2>
                       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                         {category.items.map((item) => (
-                          <div key={item.id} className="border rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+                          <div 
+                            key={item.id} 
+                            className="border rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow cursor-pointer"
+                            onClick={() => navigate(`/food/${item.id}`)}
+                          >
                             <div className="h-48 overflow-hidden">
                               <img 
                                 src={item.image || "https://images.unsplash.com/photo-1563805042-7684c019e1cb?q=80&w=800"} 
                                 alt={item.name}
                                 className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
+                                style={{viewTransitionName: `food-image-${item.id}`}}
                               />
                             </div>
                             <div className="p-4">
                               <div className="flex justify-between items-start">
-                                <h3 className="font-bold text-xl">{item.name}</h3>
-                                <span className="font-bold text-lg">${item.price}</span>
+                                <h3 
+                                  className="font-bold text-xl"
+                                  style={{viewTransitionName: `food-title-${item.id}`}}
+                                >
+                                  {item.name}
+                                </h3>
+                                <span 
+                                  className="font-bold text-lg"
+                                  style={{viewTransitionName: `food-price-${item.id}`}}
+                                >
+                                  ${item.price}
+                                </span>
                               </div>
                               <p className="text-gray-600 mt-2">{item.description}</p>
                               {item.allergenes && item.allergenes.length > 0 && (
@@ -149,6 +258,28 @@ const Menu = () => {
                                   ))}
                                 </div>
                               )}
+                              <div className="flex justify-end gap-2 mt-3">
+                                <Button 
+                                  size="sm" 
+                                  variant="outline"
+                                  onClick={(e) => handleAddToCart(item, e)}
+                                  className="flex items-center gap-1"
+                                >
+                                  <ShoppingBag className="h-3 w-3" />
+                                  <span>Add to cart</span>
+                                </Button>
+                                <Button 
+                                  size="sm" 
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    navigate(`/food/${item.id}`);
+                                  }}
+                                  className="flex items-center gap-1"
+                                >
+                                  <span>Details</span>
+                                  <ArrowRight className="h-3 w-3" />
+                                </Button>
+                              </div>
                             </div>
                           </div>
                         ))}

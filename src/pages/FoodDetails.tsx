@@ -6,6 +6,7 @@ import { ChevronLeft, Clock, Share2, ShoppingBag, Star, Utensils } from "lucide-
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { toast } from "sonner";
+import { useCart } from "@/contexts/CartContext";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 
@@ -28,6 +29,7 @@ const FoodDetails = () => {
   const [item, setItem] = useState<FoodItem | null>(null);
   const [loading, setLoading] = useState(true);
   const [quantity, setQuantity] = useState(1);
+  const { addToCart } = useCart();
 
   useEffect(() => {
     // Get the food item details based on the ID
@@ -67,6 +69,16 @@ const FoodDetails = () => {
 
   const handleAddToCart = () => {
     if (!item) return;
+    
+    // Add item to cart multiple times based on quantity
+    for (let i = 0; i < quantity; i++) {
+      addToCart({
+        id: item.id,
+        name: item.name,
+        price: item.price,
+        image: item.image
+      });
+    }
     
     toast.success(`Added ${quantity} × ${item.name} to cart`, {
       description: "Go to the Order page to complete your purchase",

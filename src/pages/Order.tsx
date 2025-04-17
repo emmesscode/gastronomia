@@ -1,10 +1,12 @@
 
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { toast } from "sonner";
 import { getAllMenuItems } from "@/data/menuData";
+import { useCart } from "@/contexts/CartContext";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import { Button } from "@/components/ui/button";
@@ -19,7 +21,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Card, CardContent } from "@/components/ui/card";
-import { Minus, Plus, ShoppingBag, ShoppingCart } from "lucide-react";
+import { Minus, Plus, ShoppingBag, ShoppingCart, ArrowRight } from "lucide-react";
 
 // Define the schema for delivery information
 const formSchema = z.object({
@@ -29,20 +31,13 @@ const formSchema = z.object({
   address: z.string().min(5, { message: "Please enter your full address." }),
 });
 
-type OrderItem = {
-  id: string;
-  name: string;
-  price: number;
-  quantity: number;
-  image?: string;
-};
-
 const Order = () => {
   // Get all menu items to display in the order page
   const menuItems = getAllMenuItems();
+  const navigate = useNavigate();
   
-  // State for items in cart
-  const [cart, setCart] = useState<OrderItem[]>([]);
+  // Get cart state and methods from context
+  const { cart, addToCart, removeFromCart, clearCart, getTotalPrice } = useCart();
   const [orderSubmitted, setOrderSubmitted] = useState(false);
   
   // Form for delivery information
@@ -56,55 +51,10 @@ const Order = () => {
     },
   });
 
-  // Add item to cart or increase quantity
-  const addToCart = (item: { id: string; name: string; price: number; image?: string }) => {
-    setCart(prevCart => {
-      const existingItem = prevCart.find(cartItem => cartItem.id === item.id);
-      
-      if (existingItem) {
-        // Increase quantity if already in cart
-        return prevCart.map(cartItem => 
-          cartItem.id === item.id 
-            ? { ...cartItem, quantity: cartItem.quantity + 1 } 
-            : cartItem
-        );
-      } else {
-        // Add new item to cart
-        return [...prevCart, { ...item, quantity: 1 }];
-      }
-    });
-    
-    toast.success(`Added ${item.name} to cart`);
-  };
-
-  // Remove one item from cart or decrease quantity
-  const removeFromCart = (itemId: string) => {
-    setCart(prevCart => {
-      const existingItem = prevCart.find(item => item.id === itemId);
-      
-      if (existingItem && existingItem.quantity > 1) {
-        // Decrease quantity
-        return prevCart.map(item => 
-          item.id === itemId 
-            ? { ...item, quantity: item.quantity - 1 } 
-            : item
-        );
-      } else {
-        // Remove item entirely
-        return prevCart.filter(item => item.id !== itemId);
-      }
-    });
-  };
-
-  // Calculate total price of items in cart
-  const calculateTotal = () => {
-    return cart.reduce((total, item) => total + (item.price * item.quantity), 0).toFixed(2);
-  };
-  
   // Handle form submission
   const onSubmit = (values: z.infer<typeof formSchema>) => {
     // In a real app, we would send this to a backend
-    console.log("Order submitted:", { customer: values, items: cart, total: calculateTotal() });
+    console.log("Order submitted:", { customer: values, items: cart, total: getTotalPrice() });
     
     // Show success message and reset cart
     toast.success("Your order has been placed! We'll contact you shortly.", {
@@ -112,8 +62,14 @@ const Order = () => {
     });
     
     setOrderSubmitted(true);
-    setCart([]);
+    clearCart();
     form.reset();
+  };
+
+  // Handle adding an item to the cart
+  const handleAddToCart = (item: { id: string; name: string; price: number; image?: string }) => {
+    addToCart(item);
+    toast.success(`Added ${item.name} to cart`);
   };
 
   return (
@@ -162,7 +118,8 @@ const Order = () => {
                     {menuItems.map((item) => (
                       <Card 
                         key={item.id} 
-                        className="overflow-hidden hover:shadow-md transition-shadow"
+                        className="overflow-hidden hover:shadow-md transition-shadow cursor-pointer"
+                        onClick={() => navigate(`/food/${item.id}`)}
                       >
                         <div className="w-full h-32 relative">
                           <AspectRatio ratio={4/3} className="bg-muted">
@@ -171,6 +128,7 @@ const Order = () => {
                                 src={item.image} 
                                 alt={item.name}
                                 className="object-cover w-full h-full"
+                                style={{viewTransitionName: `food-image-${item.id}`}}
                               />
                             ) : (
                               <div className="flex items-center justify-center h-full bg-muted text-muted-foreground">
@@ -181,22 +139,50 @@ const Order = () => {
                         </div>
                         <CardContent className="p-3 mt-3">
                           <div className="flex justify-between items-start mb-1">
-                            <h3 className="font-medium text-sm truncate">{item.name}</h3>
-                            <span className="font-bold text-sm">${item.price}</span>
+                            <h3 
+                              className="font-medium text-sm truncate"
+                              style={{viewTransitionName: `food-title-${item.id}`}}
+                            >
+                              {item.name}
+                            </h3>
+                            <span 
+                              className="font-bold text-sm"
+                              style={{viewTransitionName: `food-price-${item.id}`}}
+                            >
+                              ${item.price}
+                            </span>
                           </div>
                           <p className="text-gray-600 text-xs mb-2 line-clamp-1">{item.description}</p>
-                          <Button 
-                            size="sm" 
-                            className="w-full mt-1 text-xs h-7 px-2"
-                            onClick={() => addToCart({ 
-                              id: item.id, 
-                              name: item.name, 
-                              price: item.price,
-                              image: item.image
-                            })}
-                          >
-                            <ShoppingCart />
-                          </Button>
+                          <div className="flex gap-1">
+                            <Button 
+                              size="sm" 
+                              variant="outline"
+                              className="w-full mt-1 text-xs h-7 px-2 flex-1"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleAddToCart({ 
+                                  id: item.id, 
+                                  name: item.name, 
+                                  price: item.price,
+                                  image: item.image
+                                });
+                              }}
+                            >
+                              <ShoppingCart className="h-3 w-3 mr-1" />
+                              <span>Add</span>
+                            </Button>
+                            <Button 
+                              size="sm" 
+                              variant="secondary"
+                              className="mt-1 text-xs h-7 w-7 px-0"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                navigate(`/food/${item.id}`);
+                              }}
+                            >
+                              <ArrowRight className="h-3 w-3" />
+                            </Button>
+                          </div>
                         </CardContent>
                       </Card>
                     ))}
@@ -218,17 +204,34 @@ const Order = () => {
                         {cart.map((item) => (
                           <div key={item.id} className="py-3 flex items-center">
                             {item.image && (
-                              <div className="w-12 h-12 mr-3 rounded overflow-hidden flex-shrink-0">
+                              <div 
+                                className="w-12 h-12 mr-3 rounded overflow-hidden flex-shrink-0 cursor-pointer"
+                                onClick={() => navigate(`/food/${item.id}`)}
+                              >
                                 <img 
                                   src={item.image} 
                                   alt={item.name} 
                                   className="w-full h-full object-cover"
+                                  style={{viewTransitionName: `food-image-${item.id}`}}
                                 />
                               </div>
                             )}
-                            <div className="flex-grow min-w-0">
-                              <p className="font-medium text-sm truncate">{item.name}</p>
-                              <p className="text-xs text-gray-600">${item.price} each</p>
+                            <div 
+                              className="flex-grow min-w-0 cursor-pointer"
+                              onClick={() => navigate(`/food/${item.id}`)}
+                            >
+                              <p 
+                                className="font-medium text-sm truncate"
+                                style={{viewTransitionName: `food-title-${item.id}`}}
+                              >
+                                {item.name}
+                              </p>
+                              <p 
+                                className="text-xs text-gray-600"
+                                style={{viewTransitionName: `food-price-${item.id}`}}
+                              >
+                                ${item.price} each
+                              </p>
                             </div>
                             <div className="flex items-center gap-1 ml-2">
                               <Button 
@@ -260,7 +263,7 @@ const Order = () => {
                       <div className="border-t pt-4 mb-6">
                         <div className="flex justify-between font-bold text-lg">
                           <span>Total:</span>
-                          <span>${calculateTotal()}</span>
+                          <span>${getTotalPrice().toFixed(2)}</span>
                         </div>
                       </div>
                     </>

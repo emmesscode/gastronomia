@@ -7,13 +7,16 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardImage } from "@/components/ui/card";
 import { foodItems, dessertItems, drinkItems } from "@/data/menuData";
 import { toast } from "sonner";
+import { useCart } from "@/contexts/CartContext";
 
 const MenuSection = () => {
   const [activeTab, setActiveTab] = useState("food");
   const navigate = useNavigate();
+  const { addToCart } = useCart();
   
-  const handleAddToCart = (id: string, name: string, e: React.MouseEvent) => {
+  const handleAddToCart = (id: string, name: string, price: number, image?: string, e: React.MouseEvent) => {
     e.stopPropagation();
+    addToCart({ id, name, price, image });
     toast.success(`Added ${name} to cart`, {
       description: "Go to order page to complete your purchase",
       action: {
@@ -108,7 +111,7 @@ const MenuSection = () => {
                                 variant="ghost" 
                                 size="icon" 
                                 className="h-7 w-7"
-                                onClick={(e) => handleAddToCart(item.id, item.name, e)}
+                                onClick={(e) => handleAddToCart(item.id, item.name, item.price, item.image, e)}
                               >
                                 <ShoppingBag className="h-3 w-3" />
                               </Button>
@@ -176,7 +179,7 @@ const MenuSection = () => {
                                 variant="ghost" 
                                 size="icon" 
                                 className="h-7 w-7"
-                                onClick={(e) => handleAddToCart(item.id, item.name, e)}
+                                onClick={(e) => handleAddToCart(item.id, item.name, item.price, item.image, e)}
                               >
                                 <ShoppingBag className="h-3 w-3" />
                               </Button>
@@ -253,7 +256,7 @@ const MenuSection = () => {
                                 variant="ghost" 
                                 size="icon" 
                                 className="h-7 w-7"
-                                onClick={(e) => handleAddToCart(item.id, item.name, e)}
+                                onClick={(e) => handleAddToCart(item.id, item.name, item.price, item.image, e)}
                               >
                                 <ShoppingBag className="h-3 w-3" />
                               </Button>

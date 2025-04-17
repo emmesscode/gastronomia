@@ -1,14 +1,23 @@
 
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { Menu, X } from "lucide-react";
+import { Menu, X, ShoppingCart } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { NavigationMenu, NavigationMenuList, NavigationMenuItem, NavigationMenuLink } from "@/components/ui/navigation-menu";
+import { 
+  NavigationMenu, 
+  NavigationMenuList, 
+  NavigationMenuItem, 
+  NavigationMenuLink 
+} from "@/components/ui/navigation-menu";
+import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
+import { useCart } from "@/contexts/CartContext";
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { getItemCount } = useCart();
+  const cartItemCount = getItemCount();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -68,23 +77,64 @@ const Navbar = () => {
                 Reservations
               </Link>
             </NavigationMenuItem>
+            <NavigationMenuItem>
+              <Link 
+                to="/order" 
+                className={cn(
+                  "px-4 py-2 text-sm font-medium transition-colors flex items-center",
+                  isScrolled ? "text-gray-800 dark:text-gray-200" : "text-white"
+                )}
+              >
+                <ShoppingCart className="h-4 w-4 mr-1" />
+                Cart
+                {cartItemCount > 0 && (
+                  <Badge 
+                    variant="destructive" 
+                    className="ml-1 px-1.5 min-w-[20px] h-5 flex items-center justify-center rounded-full"
+                  >
+                    {cartItemCount}
+                  </Badge>
+                )}
+              </Link>
+            </NavigationMenuItem>
           </NavigationMenuList>
         </NavigationMenu>
 
         {/* Mobile Navigation Button */}
-        <Button 
-          variant="ghost" 
-          size="icon" 
-          onClick={toggleMenu} 
-          className="md:hidden" 
-          aria-label="Toggle menu"
-        >
-          {isMenuOpen ? (
-            <X className={isScrolled ? "text-gray-800 dark:text-gray-200" : "text-white"} />
-          ) : (
-            <Menu className={isScrolled ? "text-gray-800 dark:text-gray-200" : "text-white"} />
-          )}
-        </Button>
+        <div className="flex items-center md:hidden">
+          <Link 
+            to="/order" 
+            className={cn(
+              "mr-2 text-sm font-medium",
+              isScrolled ? "text-gray-800 dark:text-gray-200" : "text-white"
+            )}
+            aria-label="Shopping Cart"
+          >
+            <div className="relative">
+              <ShoppingCart className="h-5 w-5" />
+              {cartItemCount > 0 && (
+                <Badge 
+                  variant="destructive" 
+                  className="absolute -top-2 -right-2 px-1 min-w-[18px] h-4 flex items-center justify-center text-[10px] rounded-full"
+                >
+                  {cartItemCount}
+                </Badge>
+              )}
+            </div>
+          </Link>
+          <Button 
+            variant="ghost" 
+            size="icon" 
+            onClick={toggleMenu} 
+            aria-label="Toggle menu"
+          >
+            {isMenuOpen ? (
+              <X className={isScrolled ? "text-gray-800 dark:text-gray-200" : "text-white"} />
+            ) : (
+              <Menu className={isScrolled ? "text-gray-800 dark:text-gray-200" : "text-white"} />
+            )}
+          </Button>
+        </div>
 
         {/* Mobile Navigation Menu */}
         {isMenuOpen && (
