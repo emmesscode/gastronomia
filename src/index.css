@@ -181,3 +181,10 @@
 ::view-transition-new(*) {
   mix-blend-mode: normal;
 }
+
+.dosis {
+  font-family: "Dosis", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 200;
+  font-style: normal;
+}
