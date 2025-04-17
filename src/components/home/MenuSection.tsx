@@ -60,7 +60,13 @@ const MenuSection = () => {
                                     price: item.price,
                                     image: item.image
                                   });
-                                  toast.success(`Added ${item.name} to cart`);
+                                  toast.success(`Added ${item.name} to cart`, {
+                                    description: "Go to order page to complete your purchase",
+                                    action: {
+                                      label: "View Order",
+                                      onClick: () => navigate("/order")
+                                    }
+                                  });
                                 }}
                             >
                               <ShoppingCart className="h-3 w-3 mr-1" />
