@@ -121,8 +121,7 @@ const Menu = () => {
                                   onClick={(e) => handleAddToCart(item, e)}
                                   className="flex items-center gap-1"
                                 >
-                                  <ShoppingBag className="h-3 w-3" />
-                                  <span className="dark:text-white">Add to cart</span>
+                                  <ShoppingBag className="h-3 w-3" /> Add to cart
                                 </Button>
                                 <Button 
                                   variant="outline"
@@ -133,8 +132,7 @@ const Menu = () => {
                                   }}
                                   className="flex items-center gap-1"
                                 >
-                                  <Info className="h-3 w-3" />
-                                  <span>Details</span>
+                                  <Info className="h-3 w-3" /> Details
                                 </Button>
                               </div>
                             </div>
