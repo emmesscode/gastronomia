@@ -96,11 +96,11 @@ const FeaturedFoodSection = () => {
                   )}
                 </div>
               </CardContent>
-              <CardFooter className="flex justify-between pt-2 relative">
+              <CardFooter className="flex justify-between pt-2">
                 <Button
                   variant="outline"
                   size="sm"
-                  className="w-full absolute bottom-0 left-0 right-0"
+                  className="w-full bottom-0 left-0 right-0"
                   onClick={(e) => handleAddToCart(item.id, item.name, item.price, item.image, e)}
                 >
                   <ShoppingBag className="h-4 w-4 mr-2" /> Add to Order
