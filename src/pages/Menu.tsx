@@ -183,14 +183,13 @@ const Menu = () => {
                               <div className="flex justify-end gap-2 mt-3">
                                 <Button 
                                   size="sm" 
-                                  variant="outline"
                                   onClick={(e) => handleAddToCart(item, e)}
                                   className="flex items-center gap-1"
                                 >
-                                  <ShoppingBag className="h-3 w-3" />
-                                  <span>Add to cart</span>
+                                  <ShoppingBag className="h-3 w-3" /> Add to cart
                                 </Button>
                                 <Button 
+                                  variant="outline"
                                   size="sm" 
                                   onClick={(e) => {
                                     e.stopPropagation();
@@ -198,8 +197,7 @@ const Menu = () => {
                                   }}
                                   className="flex items-center gap-1"
                                 >
-                                  <span>Details</span>
-                                  <ArrowRight className="h-3 w-3" />
+                                  <Info className="h-3 w-3" /> Details
                                 </Button>
                               </div>
                             </div>
@@ -259,14 +257,13 @@ const Menu = () => {
                               <div className="flex justify-end gap-2 mt-3">
                                 <Button 
                                   size="sm" 
-                                  variant="outline"
                                   onClick={(e) => handleAddToCart(item, e)}
                                   className="flex items-center gap-1"
                                 >
-                                  <ShoppingBag className="h-3 w-3" />
-                                  <span>Add to cart</span>
+                                  <ShoppingBag className="h-3 w-3" /> Add to cart
                                 </Button>
                                 <Button 
+                                  variant="outline"
                                   size="sm" 
                                   onClick={(e) => {
                                     e.stopPropagation();
@@ -274,8 +271,7 @@ const Menu = () => {
                                   }}
                                   className="flex items-center gap-1"
                                 >
-                                  <span>Details</span>
-                                  <ArrowRight className="h-3 w-3" />
+                                  <Info className="h-3 w-3" /> Details
                                 </Button>
                               </div>
                             </div>
