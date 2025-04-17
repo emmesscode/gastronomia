@@ -55,7 +55,7 @@ const HeroSection = () => {
       
       {/* Content */}
       <div className="relative z-30 h-full flex flex-col items-center justify-center text-white px-4 text-center">
-        <div className="bg-black-400 rounded-md bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-5 p-6 shadow-xl">
+        <div className="bg-black-400 rounded-md bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-5 p-6 border border-black">
           <h1 className="text-4xl md:text-6xl font-bold mb-6 animate-fade-in">
             <span className="block">Gastronomia</span>
             <span className="block text-2xl md:text-3xl mt-2 font-light">Fine Dining Experience</span>
