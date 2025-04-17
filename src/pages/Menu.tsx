@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import { Utensils, Wine, CakeSlice, ArrowRight, ShoppingBag, Info } from "lucide-react";
+import { Utensils, Wine, CakeSlice, ArrowRight, ShoppingBag } from "lucide-react";
 import { foodItems, dessertItems, drinkItems } from "@/data/menuData";
 import { Button } from "@/components/ui/button"; 
 import { Card, CardContent, CardImage } from "@/components/ui/card";
@@ -117,7 +117,7 @@ const Menu = () => {
                               )}
                               <div className="flex justify-end gap-2 mt-3">
                                 <Button 
-                                  size="sm text-white" 
+                                  size="sm" 
                                   onClick={(e) => handleAddToCart(item, e)}
                                   className="flex items-center gap-1"
                                 >
@@ -134,7 +134,7 @@ const Menu = () => {
                                   className="flex items-center gap-1"
                                 >
                                   <span>Details</span>
-                                  <Info className="h-3 w-3" />
+                                  <ArrowRight className="h-3 w-3" />
                                 </Button>
                               </div>
                             </div>
@@ -190,7 +190,7 @@ const Menu = () => {
                                   className="flex items-center gap-1"
                                 >
                                   <ShoppingBag className="h-3 w-3" />
-                                  <span className="text-white">Add to cart</span>
+                                  <span>Add to cart</span>
                                 </Button>
                                 <Button 
                                   size="sm" 
