@@ -48,6 +48,7 @@ const Order = () => {
       email: "",
       phone: "",
       address: "",
+      message: ""
     },
   });
 
@@ -279,7 +280,7 @@ const Order = () => {
                           name="name"
                           render={({ field }) => (
                             <FormItem>
-                              <FormLabel>Full Name</FormLabel>
+                              <FormLabel>Full Name*</FormLabel>
                               <FormControl>
                                 <Input placeholder="John Doe" {...field} />
                               </FormControl>
@@ -292,7 +293,7 @@ const Order = () => {
                           name="email"
                           render={({ field }) => (
                             <FormItem>
-                              <FormLabel>Email</FormLabel>
+                              <FormLabel>Email*</FormLabel>
                               <FormControl>
                                 <Input placeholder="you@example.com" {...field} />
                               </FormControl>
@@ -305,7 +306,7 @@ const Order = () => {
                           name="phone"
                           render={({ field }) => (
                             <FormItem>
-                              <FormLabel>Phone</FormLabel>
+                              <FormLabel>Phone*</FormLabel>
                               <FormControl>
                                 <Input placeholder="(123) 456-7890" {...field} />
                               </FormControl>
@@ -318,9 +319,22 @@ const Order = () => {
                           name="address"
                           render={({ field }) => (
                             <FormItem>
-                              <FormLabel>Delivery Address</FormLabel>
+                              <FormLabel>Delivery Address*</FormLabel>
                               <FormControl>
                                 <Input placeholder="123 Main St, City, State" {...field} />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                         <FormField
+                          control={form.control}
+                          name="message"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>Further info</FormLabel>
+                              <FormControl>
+                                <Input placeholder="Leave at the door, don't deliver before 16pm, etc." {...field} />
                               </FormControl>
                               <FormMessage />
                             </FormItem>
