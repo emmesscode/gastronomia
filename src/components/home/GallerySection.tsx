@@ -93,7 +93,7 @@ const GallerySection = () => {
               className={`gallery-item opacity-0 transform translate-y-10 transition-all duration-700 ease-out ${getSizeClass(image.size)}`}
               style={{ transitionDelay: `${index * 100}ms` }}
             >
-              <div className="h-full overflow-hidden rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300">
+              <div className="h-full overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300">
                 <div className="relative h-full group">
                   <img
                     src={image.src}
