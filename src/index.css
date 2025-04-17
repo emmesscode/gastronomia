@@ -121,7 +121,7 @@
 }
 
 .accent-text {
-  color: #fffdd0;
+  color: var(--foreground);
 }
 
 /* View Transitions */
