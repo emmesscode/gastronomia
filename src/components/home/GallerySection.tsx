@@ -76,7 +76,7 @@ const GallerySection = () => {
   };
 
   return (
-    <section id="gallery" className="py-16 md:py-24 bg-gray-100 w-full" ref={galleryRef}>
+    <section id="gallery" className="py-16 md:py-24 bg-gray-100 w-full mx-auto" ref={galleryRef}>
       <div className="container px-0 mx-0">
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">Culinary Gallery</h2>
@@ -86,7 +86,7 @@ const GallerySection = () => {
         </div>
         
         {/* Masonry Gallery with improved CSS */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 w-full">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 mx-auto w-full">
           {images.map((image, index) => (
             <div 
               key={index} 
