@@ -43,7 +43,7 @@ const Navbar = () => {
       )}
     >
       <div className="container mx-auto px-4 py-3 flex items-center justify-between">
-        <Link to="/" className={cn("font-bold text-2xl", isScrolled ? "text-primary" : "accent-text")}>
+        <Link to="/" className={cn("font-bold text-2xl", isScrolled ? "text-primary" : "text-white")}>
           Gastronomia
         </Link>
 
@@ -53,7 +53,7 @@ const Navbar = () => {
             <NavigationMenuItem>
               <Link to="/" className={cn(
                 "px-4 py-2 text-sm font-medium transition-colors",
-                isScrolled ? "text-gray-800 dark:text-gray-200" : "accent-text"
+                isScrolled ? "text-gray-800 dark:text-gray-200" : "text-white"
               )}>
                 Home
               </Link>
@@ -61,7 +61,7 @@ const Navbar = () => {
             <NavigationMenuItem>
               <Link to="/menu" className={cn(
                 "px-4 py-2 text-sm font-medium transition-colors",
-                isScrolled ? "text-gray-800 dark:text-gray-200" : "accent-text"
+                isScrolled ? "text-gray-800 dark:text-gray-200" : "text-white"
               )}>
                 Menu
               </Link>
@@ -69,7 +69,7 @@ const Navbar = () => {
             <NavigationMenuItem>
               <Link to="/order" className={cn(
                 "px-4 py-2 text-sm font-medium transition-colors",
-                isScrolled ? "text-gray-800 dark:text-gray-200" : "accent-text"
+                isScrolled ? "text-gray-800 dark:text-gray-200" : "text-white"
               )}>
                 Order Online
               </Link>
@@ -77,7 +77,7 @@ const Navbar = () => {
             <NavigationMenuItem>
               <Link to="/reservation" className={cn(
                 "px-4 py-2 text-sm font-medium transition-colors",
-                isScrolled ? "text-gray-800 dark:text-gray-200" : "accent-text"
+                isScrolled ? "text-gray-800 dark:text-gray-200" : "text-white"
               )}>
                 Reservations
               </Link>
@@ -85,7 +85,7 @@ const Navbar = () => {
             <NavigationMenuItem>
               <Link to="/my-history" className={cn(
                 "px-4 py-2 text-sm font-medium transition-colors flex items-center",
-                isScrolled ? "text-gray-800 dark:text-gray-200" : "accent-text"
+                isScrolled ? "text-gray-800 dark:text-gray-200" : "text-white"
               )}>
                 <History className="h-4 w-4 mr-1" />
                 My History
@@ -96,7 +96,7 @@ const Navbar = () => {
                 to="/order" 
                 className={cn(
                   "px-4 py-2 text-sm font-medium transition-colors flex items-center",
-                  isScrolled ? "text-gray-800 dark:text-gray-200" : "accent-text"
+                  isScrolled ? "text-gray-800 dark:text-gray-200" : "text-white"
                 )}
               >
                 <ShoppingCart className="h-4 w-4 mr-1" />
