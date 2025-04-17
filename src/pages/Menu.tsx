@@ -35,7 +35,7 @@ const Menu = () => {
         {/* Header */}
         <div className="relative py-16 md:py-24 bg-gray-900 text-white top-0 absolute w-full">
           <div 
-            className="absolute inset-0 bg-fixed opacity-20" 
+            className="absolute inset-0 bg-fixed opacity-20 mb-3" 
             style={{
               backgroundImage: "url(https://images.unsplash.com/photo-1414235077428-338989a2e8c0?q=80&w=1500)",
               backgroundSize: "cover",
