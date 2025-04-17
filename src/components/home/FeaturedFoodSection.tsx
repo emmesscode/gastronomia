@@ -5,13 +5,16 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight, ShoppingBag } from "lucide-react";
 import { getFeaturedItems } from "@/data/menuData";
 import { toast } from "sonner";
+import { useCart } from "@/contexts/CartContext";
 
 const FeaturedFoodSection = () => {
   const featuredItems = getFeaturedItems();
   const navigate = useNavigate();
+  const { addToCart } = useCart();
   
-  const handleAddToCart = (id: string, name: string, e: React.MouseEvent) => {
+  const handleAddToCart = (id: string, name: string, price: number, image: string | undefined, e: React.MouseEvent) => {
     e.stopPropagation(); // Prevent navigation when clicking the cart button
+    addToCart({ id, name, price, image });
     toast.success(`Added ${name} to cart`, {
       description: "Go to order page to complete your purchase",
       action: {
@@ -98,7 +101,7 @@ const FeaturedFoodSection = () => {
                   variant="outline"
                   size="sm"
                   className="w-full"
-                  onClick={(e) => handleAddToCart(item.id, item.name, e)}
+                  onClick={(e) => handleAddToCart(item.id, item.name, item.price, item.image, e)}
                 >
                   <ShoppingBag className="h-4 w-4 mr-2" /> Add to Order
                 </Button>

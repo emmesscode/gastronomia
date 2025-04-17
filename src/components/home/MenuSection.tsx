@@ -14,7 +14,7 @@ const MenuSection = () => {
   const navigate = useNavigate();
   const { addToCart } = useCart();
   
-  const handleAddToCart = (id: string, name: string, price: number, e: React.MouseEvent, image?: string) => {
+  const handleAddToCart = (id: string, name: string, price: number, image: string | undefined, e: React.MouseEvent) => {
     e.stopPropagation();
     addToCart({ id, name, price, image });
     toast.success(`Added ${name} to cart`, {
