@@ -10,9 +10,7 @@ const Menu = () => {
 
   return (
     <>
-      <div className="container bg-primary">
-        <Navbar />
-      </div>
+      <Navbar />
       <main className="pt-16 min-h-screen">
         {/* Header */}
         <div className="relative py-16 md:py-24 bg-gray-900 text-white top-0 absolute w-full">
