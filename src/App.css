@@ -40,3 +40,10 @@
 .read-the-docs {
   color: #888;
 }
+
+.rethink-sans-600 {
+  font-family: "Rethink Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 600;
+  font-style: normal;
+}
