@@ -86,7 +86,7 @@ const GallerySection = () => {
         </div>
         
         {/* Masonry Gallery with improved CSS */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-6 mx-auto w-full">
+        <div className="gridauto-cols-auto mx-auto w-full">
           {images.map((image, index) => (
             <div 
               key={index} 
