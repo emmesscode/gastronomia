@@ -32,16 +32,7 @@ const FeaturedFoodSection = () => {
                   alt={item.name} 
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" 
                 />
-              </div>
-              
-              <div className="p-4">
-                <div className="flex justify-between mb-2">
-                  <h3 className="font-semibold text-gray-800 dark:text-white">{item.name}</h3>
-                  <span className="font-bold text-primary">${item.price}</span>
-                </div>
-                <p className="text-sm text-gray-600 dark:text-gray-300 line-clamp-2 mb-3">{item.description}</p>
-              </div>
-               <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end">
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end">
                   <div className="p-4 w-full">
                     <div className="flex justify-between items-center">
                       <Button 
@@ -75,6 +66,15 @@ const FeaturedFoodSection = () => {
                     </div>
                   </div>
                 </div>
+              </div>
+              
+              <div className="p-4">
+                <div className="flex justify-between mb-2">
+                  <h3 className="font-semibold text-gray-800 dark:text-white">{item.name}</h3>
+                  <span className="font-bold text-primary">${item.price}</span>
+                </div>
+                <p className="text-sm text-gray-600 dark:text-gray-300 line-clamp-2 mb-3">{item.description}</p>
+              </div>
             </div>
           ))}
         </div>
