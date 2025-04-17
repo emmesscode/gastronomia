@@ -1,10 +1,26 @@
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { useNavigate } from "react-router-dom";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardImage, CardFooter } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { ArrowRight, ShoppingBag } from "lucide-react";
 import { getFeaturedItems } from "@/data/menuData";
+import { toast } from "sonner";
 
 const FeaturedFoodSection = () => {
   const featuredItems = getFeaturedItems();
+  const navigate = useNavigate();
   
+  const handleAddToCart = (id: string, name: string, e: React.MouseEvent) => {
+    e.stopPropagation(); // Prevent navigation when clicking the cart button
+    toast.success(`Added ${name} to cart`, {
+      description: "Go to order page to complete your purchase",
+      action: {
+        label: "View Order",
+        onClick: () => navigate("/order")
+      }
+    });
+  };
+
   return (
     <section className="py-16 md:py-24 bg-white">
       <div className="container mx-auto px-4">
@@ -17,18 +33,30 @@ const FeaturedFoodSection = () => {
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {featuredItems.map((item) => (
-            <Card key={item.id} className="overflow-hidden hover:shadow-lg transition-shadow duration-300">
-              <div className="relative h-64 overflow-hidden">
-                <img 
-                  src={item.image} 
-                  alt={item.name}
-                  className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
-                />
-              </div>
+            <Card 
+              key={item.id} 
+              className="overflow-hidden hover:shadow-lg transition-shadow duration-300 cursor-pointer group"
+              onClick={() => navigate(`/food/${item.id}`)}
+            >
+              <CardImage 
+                src={item.image} 
+                alt={item.name}
+                itemId={item.id}
+              />
               <CardHeader>
                 <div className="flex justify-between items-start">
-                  <CardTitle className="text-xl font-semibold">{item.name}</CardTitle>
-                  <span className="text-lg font-bold">${item.price}</span>
+                  <CardTitle 
+                    className="text-xl font-semibold group-hover:text-primary transition-colors"
+                    style={{viewTransitionName: `food-title-${item.id}`}}
+                  >
+                    {item.name}
+                  </CardTitle>
+                  <span 
+                    className="text-lg font-bold"
+                    style={{viewTransitionName: `food-price-${item.id}`}}
+                  >
+                    ${item.price}
+                  </span>
                 </div>
                 <CardDescription>{item.description}</CardDescription>
               </CardHeader>
@@ -65,6 +93,27 @@ const FeaturedFoodSection = () => {
                   )}
                 </div>
               </CardContent>
+              <CardFooter className="flex justify-between pt-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="w-full"
+                  onClick={(e) => handleAddToCart(item.id, item.name, e)}
+                >
+                  <ShoppingBag className="h-4 w-4 mr-2" /> Add to Order
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="ml-2"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    navigate(`/food/${item.id}`);
+                  }}
+                >
+                  <ArrowRight className="h-4 w-4" />
+                </Button>
+              </CardFooter>
             </Card>
           ))}
         </div>

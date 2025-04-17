@@ -1,4 +1,3 @@
-
 export interface MenuItem {
   id: string;
   name: string;
@@ -9,6 +8,7 @@ export interface MenuItem {
   featured?: boolean;
   ingredients?: string[];
   preparation?: string;
+  category?: string;
 }
 
 export interface MenuCategory {

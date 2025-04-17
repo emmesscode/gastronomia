@@ -1,5 +1,5 @@
-import * as React from "react"
 
+import * as React from "react"
 import { cn } from "@/lib/utils"
 
 const Card = React.forwardRef<
@@ -31,17 +31,22 @@ CardHeader.displayName = "CardHeader"
 
 const CardTitle = React.forwardRef<
   HTMLParagraphElement,
-  React.HTMLAttributes<HTMLHeadingElement>
->(({ className, ...props }, ref) => (
-  <h3
-    ref={ref}
-    className={cn(
-      "text-2xl font-semibold leading-none tracking-tight",
-      className
-    )}
-    {...props}
-  />
-))
+  React.HTMLAttributes<HTMLHeadingElement> & { href?: string }
+>(({ className, href, ...props }, ref) => {
+  const Component = href ? 'a' : 'h3';
+  return (
+    <Component
+      ref={ref as any}
+      className={cn(
+        "text-2xl font-semibold leading-none tracking-tight",
+        href && "hover:underline hover:text-primary transition-colors cursor-pointer",
+        className
+      )}
+      {...(href ? { href } : {})}
+      {...props}
+    />
+  );
+})
 CardTitle.displayName = "CardTitle"
 
 const CardDescription = React.forwardRef<
@@ -76,4 +81,37 @@ const CardFooter = React.forwardRef<
 ))
 CardFooter.displayName = "CardFooter"
 
-export { Card, CardHeader, CardFooter, CardTitle, CardDescription, CardContent }
+const CardImage = React.forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement> & { src?: string; alt?: string; itemId?: string }
+>(({ className, src, alt, itemId, ...props }, ref) => (
+  <div
+    ref={ref}
+    className={cn("relative h-64 overflow-hidden", className)}
+    {...props}
+  >
+    {src ? (
+      <img 
+        src={src} 
+        alt={alt || "Card image"} 
+        className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
+        style={itemId ? {viewTransitionName: `food-image-${itemId}`} : undefined}
+      />
+    ) : (
+      <div className="w-full h-full bg-muted flex items-center justify-center">
+        <span className="text-muted-foreground">No image</span>
+      </div>
+    )}
+  </div>
+))
+CardImage.displayName = "CardImage"
+
+export { 
+  Card, 
+  CardHeader, 
+  CardFooter, 
+  CardTitle, 
+  CardDescription, 
+  CardContent,
+  CardImage
+}

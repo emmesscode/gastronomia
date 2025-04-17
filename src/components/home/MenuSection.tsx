@@ -1,13 +1,27 @@
 
 import { useState } from "react";
-import { Link } from "react-router-dom";
-import { ChevronRight, Utensils, Wine, CakeSlice } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
+import { ChevronRight, Utensils, Wine, CakeSlice, ArrowRight, ShoppingBag } from "lucide-react";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardImage } from "@/components/ui/card";
 import { foodItems, dessertItems, drinkItems } from "@/data/menuData";
+import { toast } from "sonner";
 
 const MenuSection = () => {
   const [activeTab, setActiveTab] = useState("food");
+  const navigate = useNavigate();
+  
+  const handleAddToCart = (id: string, name: string, e: React.MouseEvent) => {
+    e.stopPropagation();
+    toast.success(`Added ${name} to cart`, {
+      description: "Go to order page to complete your purchase",
+      action: {
+        label: "View Order",
+        onClick: () => navigate("/order")
+      }
+    });
+  };
   
   return (
     <section className="py-16 md:py-24 bg-white relative overflow-hidden">
@@ -48,33 +62,71 @@ const MenuSection = () => {
               {foodItems.slice(0, 2).map((category) => (
                 <div key={category.name} className="space-y-4">
                   <h3 className="text-2xl font-semibold border-b pb-2">{category.name}</h3>
-                  <div className="grid gap-4">
+                  <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
                     {category.items.slice(0, 3).map((item) => (
-                      <div key={item.id} className="flex justify-between items-start p-4 rounded-lg hover:bg-gray-50 transition-colors">
-                        <div className="flex">
-                          <div className="w-16 h-16 rounded-lg overflow-hidden mr-4 flex-shrink-0">
-                            <img 
-                              src={item.image || "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?q=80&w=200"} 
-                              alt={item.name}
-                              className="w-full h-full object-cover"
-                            />
-                          </div>
+                      <Card
+                        key={item.id}
+                        className="flex overflow-hidden hover:shadow-md transition-all cursor-pointer"
+                        onClick={() => navigate(`/food/${item.id}`)}
+                      >
+                        <div className="w-1/3 h-auto relative">
+                          <img 
+                            src={item.image || "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?q=80&w=200"} 
+                            alt={item.name}
+                            className="w-full h-full object-cover"
+                            style={{viewTransitionName: `food-image-${item.id}`}}
+                          />
+                        </div>
+                        <CardContent className="w-2/3 p-3 flex flex-col justify-between">
                           <div>
-                            <h4 className="font-medium">{item.name}</h4>
-                            <p className="text-gray-600 text-sm mt-1">{item.description}</p>
+                            <h4 
+                              className="font-medium text-sm mb-1 group-hover:text-primary"
+                              style={{viewTransitionName: `food-title-${item.id}`}}
+                            >
+                              {item.name}
+                            </h4>
+                            <p className="text-gray-600 text-xs line-clamp-2">{item.description}</p>
                             {item.allergenes && item.allergenes.length > 0 && (
-                              <div className="flex gap-1 mt-2">
+                              <div className="flex flex-wrap gap-1 mt-1">
                                 {item.allergenes.map((allergen) => (
-                                  <span key={allergen} className="px-1.5 py-0.5 text-xs rounded bg-red-100 text-red-800">
+                                  <span key={allergen} className="px-1 py-0.5 text-[10px] rounded bg-red-100 text-red-800">
                                     {allergen}
                                   </span>
                                 ))}
                               </div>
                             )}
                           </div>
-                        </div>
-                        <span className="font-bold">${item.price}</span>
-                      </div>
+                          <div className="flex justify-between items-center mt-2">
+                            <span 
+                              className="font-bold text-sm"
+                              style={{viewTransitionName: `food-price-${item.id}`}}
+                            >
+                              ${item.price}
+                            </span>
+                            <div className="flex space-x-1">
+                              <Button 
+                                variant="ghost" 
+                                size="icon" 
+                                className="h-7 w-7"
+                                onClick={(e) => handleAddToCart(item.id, item.name, e)}
+                              >
+                                <ShoppingBag className="h-3 w-3" />
+                              </Button>
+                              <Button 
+                                variant="ghost" 
+                                size="icon" 
+                                className="h-7 w-7"
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  navigate(`/food/${item.id}`);
+                                }}
+                              >
+                                <ArrowRight className="h-3 w-3" />
+                              </Button>
+                            </div>
+                          </div>
+                        </CardContent>
+                      </Card>
                     ))}
                   </div>
                 </div>
@@ -87,24 +139,62 @@ const MenuSection = () => {
               {drinkItems.slice(0, 2).map((category) => (
                 <div key={category.name} className="space-y-4">
                   <h3 className="text-2xl font-semibold border-b pb-2">{category.name}</h3>
-                  <div className="grid gap-4">
+                  <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
                     {category.items.slice(0, 3).map((item) => (
-                      <div key={item.id} className="flex justify-between items-start p-4 rounded-lg hover:bg-gray-50 transition-colors">
-                        <div className="flex">
-                          <div className="w-16 h-16 rounded-lg overflow-hidden mr-4 flex-shrink-0">
-                            <img 
-                              src={item.image || "https://images.unsplash.com/photo-1551024709-8f23befc6f87?q=80&w=200"} 
-                              alt={item.name}
-                              className="w-full h-full object-cover"
-                            />
-                          </div>
-                          <div>
-                            <h4 className="font-medium">{item.name}</h4>
-                            <p className="text-gray-600 text-sm mt-1">{item.description}</p>
-                          </div>
+                      <Card
+                        key={item.id}
+                        className="flex overflow-hidden hover:shadow-md transition-all cursor-pointer"
+                        onClick={() => navigate(`/food/${item.id}`)}
+                      >
+                        <div className="w-1/3 h-auto relative">
+                          <img 
+                            src={item.image || "https://images.unsplash.com/photo-1551024709-8f23befc6f87?q=80&w=200"} 
+                            alt={item.name}
+                            className="w-full h-full object-cover"
+                            style={{viewTransitionName: `food-image-${item.id}`}}
+                          />
                         </div>
-                        <span className="font-bold">${item.price}</span>
-                      </div>
+                        <CardContent className="w-2/3 p-3 flex flex-col justify-between">
+                          <div>
+                            <h4 
+                              className="font-medium text-sm mb-1"
+                              style={{viewTransitionName: `food-title-${item.id}`}}
+                            >
+                              {item.name}
+                            </h4>
+                            <p className="text-gray-600 text-xs line-clamp-2">{item.description}</p>
+                          </div>
+                          <div className="flex justify-between items-center mt-2">
+                            <span 
+                              className="font-bold text-sm"
+                              style={{viewTransitionName: `food-price-${item.id}`}}
+                            >
+                              ${item.price}
+                            </span>
+                            <div className="flex space-x-1">
+                              <Button 
+                                variant="ghost" 
+                                size="icon" 
+                                className="h-7 w-7"
+                                onClick={(e) => handleAddToCart(item.id, item.name, e)}
+                              >
+                                <ShoppingBag className="h-3 w-3" />
+                              </Button>
+                              <Button 
+                                variant="ghost" 
+                                size="icon" 
+                                className="h-7 w-7"
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  navigate(`/food/${item.id}`);
+                                }}
+                              >
+                                <ArrowRight className="h-3 w-3" />
+                              </Button>
+                            </div>
+                          </div>
+                        </CardContent>
+                      </Card>
                     ))}
                   </div>
                 </div>
@@ -117,33 +207,71 @@ const MenuSection = () => {
               {dessertItems.map((category) => (
                 <div key={category.name} className="space-y-4">
                   <h3 className="text-2xl font-semibold border-b pb-2">{category.name}</h3>
-                  <div className="grid gap-4">
+                  <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
                     {category.items.map((item) => (
-                      <div key={item.id} className="flex justify-between items-start p-4 rounded-lg hover:bg-gray-50 transition-colors">
-                        <div className="flex">
-                          <div className="w-16 h-16 rounded-lg overflow-hidden mr-4 flex-shrink-0">
-                            <img 
-                              src={item.image || "https://images.unsplash.com/photo-1563805042-7684c019e1cb?q=80&w=200"} 
-                              alt={item.name}
-                              className="w-full h-full object-cover"
-                            />
-                          </div>
+                      <Card
+                        key={item.id}
+                        className="flex overflow-hidden hover:shadow-md transition-all cursor-pointer"
+                        onClick={() => navigate(`/food/${item.id}`)}
+                      >
+                        <div className="w-1/3 h-auto relative">
+                          <img 
+                            src={item.image || "https://images.unsplash.com/photo-1563805042-7684c019e1cb?q=80&w=200"} 
+                            alt={item.name}
+                            className="w-full h-full object-cover"
+                            style={{viewTransitionName: `food-image-${item.id}`}}
+                          />
+                        </div>
+                        <CardContent className="w-2/3 p-3 flex flex-col justify-between">
                           <div>
-                            <h4 className="font-medium">{item.name}</h4>
-                            <p className="text-gray-600 text-sm mt-1">{item.description}</p>
+                            <h4 
+                              className="font-medium text-sm mb-1"
+                              style={{viewTransitionName: `food-title-${item.id}`}}
+                            >
+                              {item.name}
+                            </h4>
+                            <p className="text-gray-600 text-xs line-clamp-2">{item.description}</p>
                             {item.allergenes && item.allergenes.length > 0 && (
-                              <div className="flex gap-1 mt-2">
+                              <div className="flex flex-wrap gap-1 mt-1">
                                 {item.allergenes.map((allergen) => (
-                                  <span key={allergen} className="px-1.5 py-0.5 text-xs rounded bg-red-100 text-red-800">
+                                  <span key={allergen} className="px-1 py-0.5 text-[10px] rounded bg-red-100 text-red-800">
                                     {allergen}
                                   </span>
                                 ))}
                               </div>
                             )}
                           </div>
-                        </div>
-                        <span className="font-bold">${item.price}</span>
-                      </div>
+                          <div className="flex justify-between items-center mt-2">
+                            <span 
+                              className="font-bold text-sm"
+                              style={{viewTransitionName: `food-price-${item.id}`}}
+                            >
+                              ${item.price}
+                            </span>
+                            <div className="flex space-x-1">
+                              <Button 
+                                variant="ghost" 
+                                size="icon" 
+                                className="h-7 w-7"
+                                onClick={(e) => handleAddToCart(item.id, item.name, e)}
+                              >
+                                <ShoppingBag className="h-3 w-3" />
+                              </Button>
+                              <Button 
+                                variant="ghost" 
+                                size="icon" 
+                                className="h-7 w-7"
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  navigate(`/food/${item.id}`);
+                                }}
+                              >
+                                <ArrowRight className="h-3 w-3" />
+                              </Button>
+                            </div>
+                          </div>
+                        </CardContent>
+                      </Card>
                     ))}
                   </div>
                 </div>
