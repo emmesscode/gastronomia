@@ -54,29 +54,30 @@ const HeroSection = () => {
       <div className="absolute inset-0 bg-black bg-opacity-40 z-20"></div>
       
       {/* Content */}
-      <div className="relative z-30 flex flex-col items-center justify-center text-white px-4 text-center
-        bg-gray-900 rounded-md bg-clip-padding backdrop-filter backdrop-blur-md bg-opacity-0 border border-gray-100">
-        <h1 className="text-4xl md:text-6xl font-bold mb-6 animate-fade-in">
-          <span className="block">Gastronomia</span>
-          <span className="block text-2xl md:text-3xl mt-2 font-light">Fine Dining Experience</span>
-        </h1>
-        
-        <p className="max-w-2xl text-lg md:text-xl mb-8 animate-fade-in">
-          Indulge in a culinary journey with our masterfully crafted dishes prepared with the finest ingredients.
-        </p>
-        
-        <div className="space-x-4 animate-fade-in">
-          <Button asChild size="lg" className="bg-primary hover:bg-primary/90 text-white font-medium">
-            <Link to="/reservation">
-              Reserve a Table <ChevronRight className="ml-1 h-4 w-4" />
-            </Link>
-          </Button>
+      <div className="relative z-30 h-full flex flex-col items-center justify-center text-white px-4 text-center">
+        <div className="bg-gray-900 rounded-md bg-clip-padding backdrop-filter backdrop-blur-md bg-opacity-0 border border-gray-100">
+          <h1 className="text-4xl md:text-6xl font-bold mb-6 animate-fade-in">
+            <span className="block">Gastronomia</span>
+            <span className="block text-2xl md:text-3xl mt-2 font-light">Fine Dining Experience</span>
+          </h1>
           
-          <Button asChild variant="outline" size="lg" className="text-black hover:bg-primary/90 hover:text-white">
-            <Link to="/menu">
-              View Menu
-            </Link>
-          </Button>
+          <p className="max-w-2xl text-lg md:text-xl mb-8 animate-fade-in">
+            Indulge in a culinary journey with our masterfully crafted dishes prepared with the finest ingredients.
+          </p>
+          
+          <div className="space-x-4 animate-fade-in">
+            <Button asChild size="lg" className="bg-primary hover:bg-primary/90 text-white font-medium">
+              <Link to="/reservation">
+                Reserve a Table <ChevronRight className="ml-1 h-4 w-4" />
+              </Link>
+            </Button>
+            
+            <Button asChild variant="outline" size="lg" className="text-black hover:bg-primary/90 hover:text-white">
+              <Link to="/menu">
+                View Menu
+              </Link>
+            </Button>
+          </div>
         </div>
       </div>
       
