@@ -122,7 +122,7 @@ const Menu = () => {
                                   className="flex items-center gap-1 text-white"
                                 >
                                   <ShoppingBag className="h-3 w-3" />
-                                  <span>Add to cart</span>
+                                  <span className="text-white">Add to cart</span>
                                 </Button>
                                 <Button 
                                   variant="outline"
