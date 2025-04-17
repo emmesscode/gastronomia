@@ -14,7 +14,7 @@ export default {
           sans: ['"Dosis"', 'sans-serif']
         },
         fontWeight: {
-          'light': '400',
+          'light': '600',
           'black': '600'
         },
 		container: {
