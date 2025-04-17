@@ -106,7 +106,7 @@ const FeaturedFoodSection = () => {
                   <ShoppingBag className="h-4 w-4 mr-2" /> Add to Order
                 </Button>
                 <Button
-                  variant="ghost"
+                  variant="gradient"
                   size="sm"
                   className="ml-2"
                   onClick={(e) => {
