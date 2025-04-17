@@ -47,34 +47,36 @@ const MenuSection = () => {
                 </div>
                 <p className="text-xs text-gray-500 line-clamp-1 mb-2">{item.description}</p>
                 <div className="w-full">
-                  <Button 
-                    variant="default" 
-                    size="sm" 
-                    className="text-xs h-7"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      addToCart({
-                        id: item.id, 
-                        name: item.name, 
-                        price: item.price,
-                        image: item.image
-                      });
-                      toast.success(`Added ${item.name} to cart`);
-                    }}
-                  >
-                    Add to Order
-                  </Button>
-                   <Button 
-                      variant="outline" 
-                      size="sm" 
-                      className="text-xs h7"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                          navigate(`/food/${item.id}`);
-                        }}
-                    >
-                      <Info className="h-3 w-3" />
-                    </Button>
+                   <div className="flex gap-1">
+                            <Button 
+                              size="sm" 
+                              variant="outline"
+                              className="w-full mt-1 text-xs h-7 px-2 flex-1"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleAddToCart({ 
+                                  id: item.id, 
+                                  name: item.name, 
+                                  price: item.price,
+                                  image: item.image
+                                });
+                              }}
+                            >
+                              <ShoppingCart className="h-3 w-3 mr-1" />
+                              <span>Add</span>
+                            </Button>
+                            <Button 
+                              size="sm" 
+                              variant="secondary"
+                              className="mt-1 text-xs h-7 w-7 px-0"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                navigate(`/food/${item.id}`);
+                              }}
+                            >
+                              <Info className="h-3 w-3" />
+                            </Button>
+                          </div>
                 </div>
               </div>
             </div>

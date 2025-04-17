@@ -21,7 +21,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Card, CardContent } from "@/components/ui/card";
-import { Minus, Plus, ShoppingBag, ShoppingCart, ArrowRight } from "lucide-react";
+import { Minus, Plus, ShoppingBag, ShoppingCart, ArrowRight, Info } from "lucide-react";
 
 // Define the schema for delivery information
 const formSchema = z.object({
@@ -193,7 +193,7 @@ const Order = () => {
                                 navigate(`/food/${item.id}`);
                               }}
                             >
-                              <ArrowRight className="h-3 w-3" />
+                              <Info className="h-3 w-3" />
                             </Button>
                           </div>
                         </CardContent>
