@@ -118,7 +118,6 @@ const Menu = () => {
                               <div className="flex justify-end gap-2 mt-3">
                                 <Button 
                                   size="sm" 
-                                  variant="outline"
                                   onClick={(e) => handleAddToCart(item, e)}
                                   className="flex items-center gap-1"
                                 >
@@ -126,6 +125,7 @@ const Menu = () => {
                                   <span>Add to cart</span>
                                 </Button>
                                 <Button 
+                                  variant="outline"
                                   size="sm" 
                                   onClick={(e) => {
                                     e.stopPropagation();
