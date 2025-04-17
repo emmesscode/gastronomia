@@ -91,7 +91,7 @@ const MenuSection = () => {
           
           </div>
       </div>
-      <div className="w-full flex content-center py-4">
+      <div className="w-full flex content-center pt-6">
         <Button
           onClick={(e) => {
           e.stopPropagation();
