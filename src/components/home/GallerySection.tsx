@@ -76,7 +76,7 @@ const GallerySection = () => {
   };
 
   return (
-    <section id="gallery" className="py-16 md:py-24 bg-gray-100" ref={galleryRef}>
+    <section id="gallery" className="bg-gray-100" ref={galleryRef}>
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">Culinary Gallery</h2>
