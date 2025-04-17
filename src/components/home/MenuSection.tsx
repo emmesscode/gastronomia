@@ -52,15 +52,16 @@ const MenuSection = () => {
                               size="sm" 
                               variant="default"
                               className="w-full mt-1 text-xs h-7 px-2 flex-1"
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                handleAddToCart({ 
-                                  id: item.id, 
-                                  name: item.name, 
-                                  price: item.price,
-                                  image: item.image
-                                });
-                              }}
+                               onClick={(e) => {
+                                  e.stopPropagation();
+                                  addToCart({
+                                    id: item.id,
+                                    name: item.name,
+                                    price: item.price,
+                                    image: item.image
+                                  });
+                                  toast.success(`Added ${item.name} to cart`);
+                                }}
                             >
                               <ShoppingCart className="h-3 w-3 mr-1" />
                               <span>Add</span>
