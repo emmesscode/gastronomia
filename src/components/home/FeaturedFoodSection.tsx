@@ -63,8 +63,8 @@ const FeaturedFoodSection = () => {
                 </div>
                 <CardDescription>{item.description}</CardDescription>
               </CardHeader>
-              <CardContent className="mb-auto">
-                <div className="space-y-4">
+              <CardContent>
+                <div className="space-y-4 mb-auto grow">
                   {item.ingredients && (
                     <div>
                       <h4 className="font-medium text-sm uppercase text-gray-500 mb-1">Ingredients</h4>
