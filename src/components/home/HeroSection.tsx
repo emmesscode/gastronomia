@@ -71,7 +71,7 @@ const HeroSection = () => {
             </Link>
           </Button>
           
-          <Button asChild variant="outline" size="lg" className="border-white hover:bg-white text-black hover:text-black">
+          <Button asChild variant="outline" size="lg" className="border-white hover:bg-black text-black hover:text-white">
             <Link to="/menu">
               View Menu
             </Link>
