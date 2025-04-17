@@ -1,7 +1,7 @@
 
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { ChevronRight, Utensils, Wine, CakeSlice, ArrowRight, ShoppingBag } from "lucide-react";
+import { ChevronRight, Utensils, Wine, CakeSlice, ArrowRight, ShoppingBag, Info } from "lucide-react";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardImage } from "@/components/ui/card";
@@ -108,9 +108,9 @@ const MenuSection = () => {
                             </span>
                             <div className="flex space-x-1">
                               <Button 
-                                variant="ghost" 
+                                variant="solid" 
                                 size="icon" 
-                                className="h-7 w-7"
+                                className="h-7 w-7 bg-primary text-white"
                                 onClick={(e) => handleAddToCart(item.id, item.name, item.price, item.image, e)}
                               >
                                 <ShoppingBag className="h-3 w-3" />
@@ -124,7 +124,7 @@ const MenuSection = () => {
                                   navigate(`/food/${item.id}`);
                                 }}
                               >
-                                <ArrowRight className="h-3 w-3" />
+                                <Info className="h-3 w-3" />
                               </Button>
                             </div>
                           </div>
