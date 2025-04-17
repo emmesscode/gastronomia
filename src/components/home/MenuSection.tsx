@@ -116,9 +116,9 @@ const MenuSection = () => {
                                 <ShoppingBag className="h-3 w-3" />
                               </Button>
                               <Button 
-                                variant="ghost" 
+                                variant="outline" 
                                 size="icon" 
-                                className="h-7 w-7"
+                                className="h-7 w-7 border-primary"
                                 onClick={(e) => {
                                   e.stopPropagation();
                                   navigate(`/food/${item.id}`);
