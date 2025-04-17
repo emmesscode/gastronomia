@@ -48,42 +48,41 @@ const MenuSection = () => {
                 <p className="text-xs text-gray-500 line-clamp-1 mb-2">{item.description}</p>
                 <div className="w-full">
                    <div className="flex gap-1">
-                            <Button 
-                              size="sm" 
-                              variant="default"
-                              className="w-full mt-1 text-xs h-7 px-2 flex-1"
-                               onClick={(e) => {
-                                  e.stopPropagation();
-                                  addToCart({
-                                    id: item.id,
-                                    name: item.name,
-                                    price: item.price,
-                                    image: item.image
-                                  });
-                                  toast.success(`Added ${item.name} to cart`, {
-                                    description: "Go to order page to complete your purchase",
-                                    action: {
-                                      label: "View Order",
-                                      onClick: () => navigate("/order")
-                                    }
-                                  });
-                                }}
-                            >
-                              <ShoppingCart className="h-3 w-3 mr-1" />
-                              <span>Add</span>
-                            </Button>
-                            <Button 
-                              size="sm" 
-                              variant="secondary"
-                              className="mt-1 text-xs h-7 w-7 px-0"
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                navigate(`/food/${item.id}`);
-                              }}
-                            >
-                              <Info className="h-3 w-3" />
-                            </Button>
-                          </div>
+                     <Button 
+                       size="sm" 
+                       variant="default"
+                       className="w-full mt-1 text-xs h-7 px-2 flex-1"
+                       onClick={(e) => {
+                         e.stopPropagation();
+                         addToCart({
+                           id: item.id,
+                           name: item.name,
+                           price: item.price,
+                           image: item.image
+                         });
+                         toast.success(`Added ${item.name} to cart`, {
+                           description: "Go to order page to complete your purchase",
+                           action: {
+                             label: "View Order",
+                             onClick: () => navigate("/order")
+                          }
+                        });
+                      }}>
+                        <ShoppingCart className="h-3 w-3 mr-1" />
+                          <span>Add</span>
+                      </Button>
+                        <Button 
+                          size="sm" 
+                          variant="secondary"
+                          className="mt-1 text-xs h-7 w-7 px-0"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            navigate(`/food/${item.id}`);
+                          }}
+                          >
+                            <Info className="h-3 w-3" />
+                        </Button>
+                     </div>
                 </div>
               </div>
             </div>
@@ -93,12 +92,13 @@ const MenuSection = () => {
       </div>
       <div className="w-full flex content-center pt-6">
         <Button
+          variant="ghost"
           onClick={(e) => {
           e.stopPropagation();
           navigate('/menu');
           }}
           className="mx-auto my-4 px-4 py-2 text-sm font-medium transition-colors text-white">
-            See More
+            Explore our Menu
         </Button>
       </div>
     </section>
