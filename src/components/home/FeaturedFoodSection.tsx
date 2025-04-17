@@ -108,7 +108,7 @@ const FeaturedFoodSection = () => {
                 <Button
                   variant="solid"
                   size="sm"
-                  className="ml-2"
+                  className="ml-2 bg-primary text-white"
                   onClick={(e) => {
                     e.stopPropagation();
                     navigate(`/food/${item.id}`);
