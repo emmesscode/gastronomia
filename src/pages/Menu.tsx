@@ -119,10 +119,10 @@ const Menu = () => {
                                 <Button 
                                   size="sm" 
                                   onClick={(e) => handleAddToCart(item, e)}
-                                  className="flex items-center gap-1 text-white"
+                                  className="flex items-center gap-1"
                                 >
+                                  <span>Add to cart</span>
                                   <ShoppingBag className="h-3 w-3" />
-                                  <span className="text-white">Add to cart</span>
                                 </Button>
                                 <Button 
                                   variant="outline"
@@ -133,8 +133,8 @@ const Menu = () => {
                                   }}
                                   className="flex items-center gap-1"
                                 >
-                                  <span>Details</span>
                                   <Info className="h-3 w-3" />
+                                  <span>Details</span>
                                 </Button>
                               </div>
                             </div>
