@@ -89,9 +89,9 @@ const MenuSection = () => {
             </div>
           ))}
         </div>
-         <Link to="/menu" className="px-4 py-2 text-sm font-medium transition-colors text-white">
+         <Button to="/menu" className="px-4 py-2 text-sm font-medium transition-colors text-white">
                See More
-          </Link>
+          </Button>
       </div>
     </section>
   );
