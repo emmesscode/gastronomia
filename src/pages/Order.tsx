@@ -150,7 +150,7 @@ const Order = () => {
                             )}
                           </AspectRatio>
                         </div>
-                        <CardContent className="p-3 mt-3">
+                        <CardContent className="p-3 mt-6">
                           <div className="flex justify-between items-start mb-1">
                             <h3 
                               className="font-medium text-sm truncate"
