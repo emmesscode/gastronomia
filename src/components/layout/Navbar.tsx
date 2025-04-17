@@ -43,7 +43,7 @@ const Navbar = () => {
       )}
     >
       <div className="container mx-auto px-4 py-3 flex items-center justify-between">
-        <Link to="/" className="font-bold text-2xl text-primary">
+        <Link to="/" className={cn("font-bold text-2xl", isScrolled ? "text-primary" : "text-white")}>
           Gastronomia
         </Link>
 
