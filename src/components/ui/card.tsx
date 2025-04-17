@@ -29,24 +29,29 @@ const CardHeader = React.forwardRef<
 ))
 CardHeader.displayName = "CardHeader"
 
-const CardTitle = React.forwardRef<
-  HTMLParagraphElement,
-  React.HTMLAttributes<HTMLHeadingElement> & { href?: string }
->(({ className, href, ...props }, ref) => {
-  const Component = href ? 'a' : 'h3';
-  return (
-    <Component
-      ref={ref as any}
-      className={cn(
-        "text-2xl font-semibold leading-none tracking-tight",
-        href && "hover:underline hover:text-primary transition-colors cursor-pointer",
-        className
-      )}
-      {...(href ? { href } : {})}
-      {...props}
-    />
-  );
-})
+// Fix the typing for CardTitle to handle both anchor and heading cases
+type CardTitleProps = React.HTMLAttributes<HTMLHeadingElement> & {
+  href?: string;
+  as?: React.ElementType;
+}
+
+const CardTitle = React.forwardRef<HTMLElement, CardTitleProps>(
+  ({ className, href, as, ...props }, ref) => {
+    const Component = href ? 'a' : (as || 'h3');
+    return (
+      <Component
+        ref={ref}
+        className={cn(
+          "text-2xl font-semibold leading-none tracking-tight",
+          href && "hover:underline hover:text-primary transition-colors cursor-pointer",
+          className
+        )}
+        {...(href ? { href } : {})}
+        {...props}
+      />
+    );
+  }
+)
 CardTitle.displayName = "CardTitle"
 
 const CardDescription = React.forwardRef<
