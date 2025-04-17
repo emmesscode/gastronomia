@@ -13,10 +13,6 @@ export default {
         fontFamily: {
           sans: ['"Dosis"', 'sans-serif']
         },
-        fontWeight: {
-          'light': '400',
-          'black': '600'
-        }
 		container: {
 			center: true,
 			padding: '2rem',
