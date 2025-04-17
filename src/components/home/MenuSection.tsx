@@ -88,7 +88,9 @@ const MenuSection = () => {
               </div>
             </div>
           ))}
-          <div className="w-full flex justify-center align-center">
+          
+          </div>
+      </div>
            <Button
              onClick={(e) => {
              e.stopPropagation();
@@ -97,9 +99,6 @@ const MenuSection = () => {
              className="px-4 py-2 text-sm font-medium transition-colors text-white">
                See More
             </Button>
-          </div>
-        </div>
-      </div>
     </section>
   );
 };
