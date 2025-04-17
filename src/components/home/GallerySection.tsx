@@ -7,6 +7,11 @@ const images = [
     size: "tall"
   },
   {
+    src: "https://images.unsplash.com/photo-1551218808-94e220e084d2?q=80&w=800",
+    alt: "Fine dining dish",
+    size: "medium"
+  },
+  {
     src: "https://images.unsplash.com/photo-1504674900247-0877df9cc836?q=80&w=800",
     alt: "Plate of gourmet food",
     size: "medium"
@@ -15,6 +20,10 @@ const images = [
     src: "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?q=80&w=800",
     alt: "Fresh vegetable salad dish",
     size: "medium"
+  },{
+    src: "https://images.unsplash.com/photo-1473093295043-cdd812d0e601?q=80&w=800",
+    alt: "Fine dining presentation",
+    size: "tall"
   },
   {
     src: "https://images.unsplash.com/photo-1544025162-d76694265947?q=80&w=800",
