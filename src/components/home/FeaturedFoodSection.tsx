@@ -47,7 +47,7 @@ const FeaturedFoodSection = () => {
                         View Details
                       </Button>
                       <Button 
-                        variant="outline" 
+                        variant="default" 
                         size="sm" 
                         className="text-xs"
                         onClick={(e) => {
