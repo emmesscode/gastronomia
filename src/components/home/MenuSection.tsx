@@ -29,15 +29,15 @@ const MenuSection = () => {
         
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full max-w-4xl mx-auto">
           <TabsList className="grid w-full grid-cols-3 mb-8">
-            <TabsTrigger value="food" className="flex items-center justify-center gap-2 py-3">
+            <TabsTrigger value="food" className="flex items-center justify-center gap-2">
               <Utensils className="h-4 w-4" />
               <span>Food</span>
             </TabsTrigger>
-            <TabsTrigger value="drinks" className="flex items-center justify-center gap-2 py-3">
+            <TabsTrigger value="drinks" className="flex items-center justify-center gap-2">
               <Wine className="h-4 w-4" />
               <span>Drinks</span>
             </TabsTrigger>
-            <TabsTrigger value="desserts" className="flex items-center justify-center gap-2 py-3">
+            <TabsTrigger value="desserts" className="flex items-center justify-center gap-2">
               <CakeSlice className="h-4 w-4" />
               <span>Desserts</span>
             </TabsTrigger>
