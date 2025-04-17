@@ -46,34 +46,36 @@ const MenuSection = () => {
                   <span className="font-bold text-sm text-primary">${item.price}</span>
                 </div>
                 <p className="text-xs text-gray-500 line-clamp-1 mb-2">{item.description}</p>
-                <Button 
-                  variant="outline" 
-                  size="sm" 
-                  className="w-full text-xs h-7"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    addToCart({
-                      id: item.id, 
-                      name: item.name, 
-                      price: item.price,
-                      image: item.image
-                    });
-                    toast.success(`Added ${item.name} to cart`);
-                  }}
-                >
-                  Add to Order
-                </Button>
-                 <Button 
-                        variant="secondary" 
-                        size="sm" 
-                        className="text-xs"
-                        onClick={(e) => {
-                          e.stopPropagation();
+                <div className="w-full">
+                  <Button 
+                    variant="outline" 
+                    size="sm" 
+                    className="text-xs h-7"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      addToCart({
+                        id: item.id, 
+                        name: item.name, 
+                        price: item.price,
+                        image: item.image
+                      });
+                      toast.success(`Added ${item.name} to cart`);
+                    }}
+                  >
+                    Add to Order
+                  </Button>
+                   <Button 
+                      variant="secondary" 
+                      size="sm" 
+                      className="text-xs h7"
+                      onClick={(e) => {
+                        e.stopPropagation();
                           navigate(`/food/${item.id}`);
                         }}
-                      >
-                         <Info className="h-3 w-3" /> Details
-                      </Button>
+                    >
+                      <Info className="h-3 w-3" />
+                    </Button>
+                </div>
               </div>
             </div>
           ))}
