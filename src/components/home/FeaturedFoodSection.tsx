@@ -64,7 +64,7 @@ const FeaturedFoodSection = () => {
                 <CardDescription>{item.description}</CardDescription>
               </CardHeader>
               <CardContent className="self-end">
-                <div className="space-y-4">
+                <div className="space-y-4 self-end">
                   {item.ingredients && (
                     <div>
                       <h4 className="font-medium text-sm uppercase text-gray-500 mb-1">Ingredients</h4>
