@@ -38,7 +38,7 @@ const FeaturedFoodSection = () => {
           {featuredItems.map((item) => (
             <Card 
               key={item.id} 
-              className="overflow-hidden hover:shadow-lg transition-shadow duration-300 cursor-pointer group"
+              className="overflow-hidden hover:shadow-lg transition-shadow duration-300 cursor-pointer group relative"
               onClick={() => navigate(`/food/${item.id}`)}
             >
               <CardImage 
