@@ -98,7 +98,7 @@ const FeaturedFoodSection = () => {
               </CardContent>
               <CardFooter className="flex justify-between pt-2">
                 <Button
-                  variant="outline"
+                  variant="default"
                   size="sm"
                   className="w-full"
                   onClick={(e) => handleAddToCart(item.id, item.name, item.price, item.image, e)}
@@ -106,9 +106,9 @@ const FeaturedFoodSection = () => {
                   <ShoppingBag className="h-4 w-4 mr-2" /> Add to Order
                 </Button>
                 <Button
-                  variant="solid"
+                  variant="outline"
                   size="sm"
-                  className="ml-2 bg-primary text-white"
+                  className="ml-2"
                   onClick={(e) => {
                     e.stopPropagation();
                     navigate(`/food/${item.id}`);
