@@ -10,7 +10,7 @@ const Menu = () => {
 
   return (
     <>
-      <div className="bg-primary">
+      <div className="container bg-primary">
         <Navbar />
       </div>
       <main className="pt-16 min-h-screen">
