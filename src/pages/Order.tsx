@@ -19,7 +19,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Card, CardContent } from "@/components/ui/card";
-import { Minus, Plus, ShoppingBag } from "lucide-react";
+import { Minus, Plus, ShoppingBag, ShoppingCart } from "lucide-react";
 
 // Define the schema for delivery information
 const formSchema = z.object({
@@ -195,7 +195,7 @@ const Order = () => {
                               image: item.image
                             })}
                           >
-                            Add to Order
+                            <ShoppingCart />
                           </Button>
                         </CardContent>
                       </Card>
