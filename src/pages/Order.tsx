@@ -169,7 +169,7 @@ const Order = () => {
                           <div className="flex gap-1">
                             <Button 
                               size="sm" 
-                              variant="outline"
+                              variant="default"
                               className="w-full mt-1 text-xs h-7 px-2 flex-1"
                               onClick={(e) => {
                                 e.stopPropagation();
