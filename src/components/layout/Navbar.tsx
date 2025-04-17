@@ -25,7 +25,7 @@ const Navbar = () => {
     <header 
       className={cn(
         "fixed top-0 w-full z-50 transition-all duration-300",
-        isScrolled ? "bg-primary/90 dark:bg-gray-900/90 backdrop-blur-md shadow-md" : "bg-transparent"
+        isScrolled ? "bg-white/90 dark:bg-gray-900/90 backdrop-blur-md shadow-md" : "bg-transparent"
       )}
     >
       <div className="container mx-auto px-4 py-3 flex items-center justify-between">
@@ -39,7 +39,7 @@ const Navbar = () => {
             <NavigationMenuItem>
               <Link to="/" className={cn(
                 "px-4 py-2 text-sm font-medium transition-colors",
-                isScrolled ? "text-gray-800 dark:text-gray-200" : "text-white"
+                isScrolled ? "text-gray-800 dark:text-gray-200" : "text-primary"
               )}>
                 Home
               </Link>
@@ -47,7 +47,7 @@ const Navbar = () => {
             <NavigationMenuItem>
               <Link to="/menu" className={cn(
                 "px-4 py-2 text-sm font-medium transition-colors",
-                isScrolled ? "text-gray-800 dark:text-gray-200" : "text-white"
+                isScrolled ? "text-gray-800 dark:text-gray-200" : "text-primary"
               )}>
                 Menu
               </Link>
@@ -55,7 +55,7 @@ const Navbar = () => {
             <NavigationMenuItem>
               <Link to="/order" className={cn(
                 "px-4 py-2 text-sm font-medium transition-colors",
-                isScrolled ? "text-gray-800 dark:text-gray-200" : "text-white"
+                isScrolled ? "text-gray-800 dark:text-gray-200" : "text-primary"
               )}>
                 Order Online
               </Link>
@@ -63,7 +63,7 @@ const Navbar = () => {
             <NavigationMenuItem>
               <Link to="/reservation" className={cn(
                 "px-4 py-2 text-sm font-medium transition-colors",
-                isScrolled ? "text-gray-800 dark:text-gray-200" : "text-white"
+                isScrolled ? "text-gray-800 dark:text-gray-200" : "text-primary"
               )}>
                 Reservations
               </Link>
