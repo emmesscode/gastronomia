@@ -2,7 +2,7 @@
 import { useNavigate } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardImage, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, ShoppingBag } from "lucide-react";
+import { ArrowRight, Info, ShoppingBag } from "lucide-react";
 import { getFeaturedItems } from "@/data/menuData";
 import { toast } from "sonner";
 import { useCart } from "@/contexts/CartContext";
