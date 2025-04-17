@@ -120,6 +120,10 @@
   }
 }
 
+.accent-text {
+  color: #fffdd0;
+}
+
 /* View Transitions */
 @keyframes fade-in {
   from { opacity: 0; }
