@@ -47,11 +47,11 @@ const images = [
   }, {
     src: "https://images.unsplash.com/photo-1504674900247-0877df9cc836?q=80&w=800",
     alt: "Plate of gourmet food",
-    size: "medium"
+    size: "wide"
   },  {
     src: "https://images.unsplash.com/photo-1592417817098-8fd3d9eb14a5?q=80&w=800",
     alt: "Colorful dish with protein and vegetables",
-    size: "wide"
+    size: "medium"
   },
   {
     src: "https://images.unsplash.com/photo-1551218808-94e220e084d2?q=80&w=800",
