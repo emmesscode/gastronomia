@@ -1,123 +1,81 @@
-
-import { useNavigate } from "react-router-dom";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardImage, CardFooter } from "@/components/ui/card";
+import { getAllFeaturedItems } from "@/data/menuData";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Info, ShoppingBag } from "lucide-react";
-import { getFeaturedItems } from "@/data/menuData";
-import { toast } from "sonner";
 import { useCart } from "@/contexts/CartContext";
+import { toast } from "sonner";
+import { useNavigate } from "react-router-dom";
 
 const FeaturedFoodSection = () => {
-  const featuredItems = getFeaturedItems();
-  const navigate = useNavigate();
+  const featuredItems = getAllFeaturedItems();
   const { addToCart } = useCart();
-  
-  const handleAddToCart = (id: string, name: string, price: number, image: string | undefined, e: React.MouseEvent) => {
-    e.stopPropagation(); // Prevent navigation when clicking the cart button
-    addToCart({ id, name, price, image });
-    toast.success(`Added ${name} to cart`, {
-      description: "Go to order page to complete your purchase",
-      action: {
-        label: "View Order",
-        onClick: () => navigate("/order")
-      }
-    });
-  };
+  const navigate = useNavigate();
 
   return (
-    <section className="pt-16 md:pt-24 bg-white">
+    <section className="py-12 md:py-16 bg-gray-50 dark:bg-gray-950">
       <div className="container mx-auto px-4">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">Chef's Selection</h2>
-          <p className="text-gray-600 max-w-2xl mx-auto">
-            Our chef carefully selects the finest ingredients to create these signature dishes that define our culinary vision.
+        {/* Section Header */}
+        <div className="text-center mb-8 md:mb-12">
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-800 dark:text-white">
+            Featured Dishes
+          </h2>
+          <p className="text-gray-600 dark:text-gray-300">
+            Our most popular and delicious dishes, hand-picked for you.
           </p>
         </div>
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+
+        {/* Main Section Content */}
+        <div className="grid md:grid-cols-3 gap-6 md:gap-8">
           {featuredItems.map((item) => (
-            <Card 
-              key={item.id} 
-              className="overflow-hidden hover:shadow-lg transition-shadow duration-300 cursor-pointer group"
-              onClick={() => navigate(`/food/${item.id}`)}
-            >
-              <CardImage 
-                src={item.image} 
-                alt={item.name}
-                itemId={item.id}
-              />
-              <CardHeader>
-                <div className="flex justify-between items-start">
-                  <CardTitle 
-                    className="text-xl font-semibold group-hover:text-primary transition-colors"
-                    style={{viewTransitionName: `food-title-${item.id}`}}
-                  >
-                    {item.name}
-                  </CardTitle>
-                  <span 
-                    className="text-lg font-bold"
-                    style={{viewTransitionName: `food-price-${item.id}`}}
-                  >
-                    ${item.price}
-                  </span>
+            <div key={item.id} className="group bg-white dark:bg-gray-800 rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow">
+              <div className="relative h-48 overflow-hidden">
+                <img 
+                  src={item.image} 
+                  alt={item.name} 
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" 
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end">
+                  <div className="p-4 w-full">
+                    <div className="flex justify-between items-center">
+                      <Button 
+                        variant="secondary" 
+                        size="sm" 
+                        className="text-xs"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          navigate(`/food/${item.id}`);
+                        }}
+                      >
+                        View Details
+                      </Button>
+                      <Button 
+                        variant="outline" 
+                        size="sm" 
+                        className="text-xs"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          addToCart({
+                            id: item.id,
+                            name: item.name,
+                            price: item.price,
+                            image: item.image
+                          });
+                          toast.success(`Added ${item.name} to cart`);
+                        }}
+                      >
+                        Add to Order
+                      </Button>
+                    </div>
+                  </div>
                 </div>
-                <CardDescription>{item.description}</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  {item.ingredients && (
-                    <div>
-                      <h4 className="font-medium text-sm uppercase text-gray-500 mb-1">Ingredients</h4>
-                      <p className="text-sm text-gray-700">{item.ingredients.join(", ")}</p>
-                    </div>
-                  )}
-                  
-                  {item.preparation && (
-                    <div>
-                      <h4 className="font-medium text-sm uppercase text-gray-500 mb-1">Preparation</h4>
-                      <p className="text-sm text-gray-700">{item.preparation}</p>
-                    </div>
-                  )}
-                  
-                  {item.allergenes && item.allergenes.length > 0 && (
-                    <div>
-                      <h4 className="font-medium text-sm uppercase text-gray-500 mb-1">Allergens</h4>
-                      <div className="flex flex-wrap gap-1">
-                        {item.allergenes.map((allergen) => (
-                          <span 
-                            key={allergen} 
-                            className="inline-block px-2 py-1 text-xs rounded-full bg-red-100 text-red-800"
-                          >
-                            {allergen}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-                  )}
+              </div>
+              
+              <div className="p-4">
+                <div className="flex justify-between mb-2">
+                  <h3 className="font-semibold text-gray-800 dark:text-white">{item.name}</h3>
+                  <span className="font-bold text-primary">${item.price}</span>
                 </div>
-              </CardContent>
-              <CardFooter className="flex justify-between pt-2">
-                <Button
-                  variant="default"
-                  size="sm"
-                  className="w-full bg-primary"
-                  onClick={(e) => handleAddToCart(item.id, item.name, item.price, item.image, e)}
-                >
-                  <ShoppingBag className="h-4 w-4 mr-2" /> Add to Order
-                </Button>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="ml-2"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    navigate(`/food/${item.id}`);
-                  }}
-                >
-                  <Info className="h-4 w-4" />
-                </Button>
-              </CardFooter>
-            </Card>
+                <p className="text-sm text-gray-600 dark:text-gray-300 line-clamp-2 mb-3">{item.description}</p>
+              </div>
+            </div>
           ))}
         </div>
       </div>
