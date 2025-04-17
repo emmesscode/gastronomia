@@ -96,7 +96,7 @@ const FeaturedFoodSection = () => {
                   )}
                 </div>
               </CardContent>
-              <CardFooter className="flex justify-between pt-2 absolute bottom-0 left-0 right-0">
+              <CardFooter className="flex justify-between pt-2 fixed bottom-0 left-0 right-0">
                 <Button
                   variant="outline"
                   size="sm"
