@@ -37,7 +37,7 @@ const AboutSection = () => {
           {/* Content */}
           <div className="order-1 md:order-2">
             <div className="space-y-6">
-              <h2 className="text-3xl md:text-4xl font-bold">About Gastronomia</h2>
+              <h2 className="text-3xl md:text-4xl font-bold accent-text">About Gastronomia</h2>
               
               <div className="space-y-4">
                 <p>
