@@ -77,7 +77,6 @@ const MyHistory = () => {
     <>
       <Navbar />
       <main className="min-h-screen">
-        {/* Hero Section */}
         <div className="relative py-16 md:py-20 bg-gray-900 text-white top-0 absolute w-full">
           <div 
             className="absolute inset-0 bg-fixed opacity-20" 
