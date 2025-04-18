@@ -160,13 +160,13 @@ const MyHistory = () => {
                                     <TableRow key={itemIndex}>
                                       <TableCell>{item.name}</TableCell>
                                       <TableCell className="text-right">{item.quantity}</TableCell>
-                                      <TableCell className="text-right">${item.price.toFixed(2)}</TableCell>
-                                      <TableCell className="text-right">${(item.price * item.quantity).toFixed(2)}</TableCell>
+                                      <TableCell className="text-right">${item.price ? item.price.toFixed(2) : '0.00'}</TableCell>
+                                      <TableCell className="text-right">${(item.price && item.quantity) ? (item.price * item.quantity).toFixed(2) : '0.00'}</TableCell>
                                     </TableRow>
                                   ))}
                                   <TableRow>
                                     <TableCell colSpan={3} className="text-right font-bold">Total</TableCell>
-                                    <TableCell className="text-right font-bold">${order.totalPrice.toFixed(2)}</TableCell>
+                                    <TableCell className="text-right font-bold">${order.totalPrice ? order.totalPrice.toFixed(2) : '0.00'}</TableCell>
                                   </TableRow>
                                 </TableBody>
                               </Table>

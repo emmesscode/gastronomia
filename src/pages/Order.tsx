@@ -62,7 +62,7 @@ const Order = () => {
     const orderData = {
       ...values,
       items: cart,
-      totalPrice: getTotalPrice(),
+      totalPrice: getTotalPrice() || 0, // Add fallback to prevent undefined
       date: new Date().toISOString()
     };
     
