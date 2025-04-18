@@ -222,9 +222,7 @@ const MyHistory = () => {
                                 <div>
                                   <h4 className="font-medium mb-2">Pre-ordered Items</h4>
                                   <ul className="list-disc pl-5 text-sm">
-                                    {
-                                      console.log(reservation)
-                                      reservation.preorderItems.map((item, itemIndex) => (
+                                    {reservation.preorderItems.map((item, itemIndex) => (
                                       <li key={itemIndex}>{item}</li>
                                     ))}
                                   </ul>
