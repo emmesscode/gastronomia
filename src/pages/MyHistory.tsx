@@ -241,7 +241,7 @@ const MyHistory = () => {
         </div>
       </main>
       <Footer />
-    <div/>
+    </div>
   );
 };
 
