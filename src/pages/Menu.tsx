@@ -2,14 +2,15 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import { Utensils, Wine, CakeSlice, ArrowRight, ShoppingBag, Info } from "lucide-react";
+import { Utensils, Wine, CakeSlice, ShoppingBag, Info } from "lucide-react";
 import { foodItems, dessertItems, drinkItems } from "@/data/menuData";
 import { Button } from "@/components/ui/button"; 
-import { Card, CardContent, CardImage } from "@/components/ui/card";
 import { toast } from "sonner";
 import { useCart } from "@/contexts/CartContext";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
+import HeroHeader from "@/components/layout/HeroHeader";
+import { formatCurrency } from "@/lib/utils";
 
 const Menu = () => {
   const [activeTab, setActiveTab] = useState("food");
@@ -32,24 +33,10 @@ const Menu = () => {
     <>
       <Navbar />
       <main className="min-h-screen">
-        {/* Header */}
-        <div className="relative py-16 md:py-24 bg-gray-900 text-white top-0 absolute w-full">
-          <div 
-            className="absolute inset-0 bg-fixed opacity-20" 
-            style={{
-              backgroundImage: "url(https://images.unsplash.com/photo-1414235077428-338989a2e8c0?q=80&w=1500)",
-              backgroundSize: "cover",
-              backgroundPosition: "top",
-            }}
-          ></div>
-          <div className="container mx-auto px-4 relative z-10 text-center">
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">Our Menu</h1>
-            <p className="max-w-2xl mx-auto text-lg">
-              Crafted with passion, our menu showcases the finest seasonal ingredients. 
-              Each dish is a celebration of flavor, technique, and creativity.
-            </p>
-          </div>
-        </div>
+        <HeroHeader
+          title="Our Menu"
+          subtitle="Crafted with passion, our menu showcases the finest seasonal ingredients. Each dish is a celebration of flavor, technique, and creativity."
+        />
 
         {/* Menu Content - Adjusted top margin to account for absolute header */}
         <div className="py-12 md:py-16 bg-white">
@@ -102,7 +89,7 @@ const Menu = () => {
                                   className="font-bold text-lg"
                                   style={{viewTransitionName: `food-price-${item.id}`}}
                                 >
-                                  ${item.price}
+                                  {formatCurrency(item.price)}
                                 </span>
                               </div>
                               <p className="text-gray-600 mt-2">{item.description}</p>
@@ -176,7 +163,7 @@ const Menu = () => {
                                   className="font-bold text-lg"
                                   style={{viewTransitionName: `food-price-${item.id}`}}
                                 >
-                                  ${item.price}
+                                  {formatCurrency(item.price)}
                                 </span>
                               </div>
                               <p className="text-gray-600 mt-2">{item.description}</p>
@@ -241,7 +228,7 @@ const Menu = () => {
                                   className="font-bold text-lg"
                                   style={{viewTransitionName: `food-price-${item.id}`}}
                                 >
-                                  ${item.price}
+                                  {formatCurrency(item.price)}
                                 </span>
                               </div>
                               <p className="text-gray-600 mt-2">{item.description}</p>

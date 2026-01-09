@@ -1,13 +1,14 @@
 
-import { useState, useEffect } from "react";
+import { useMemo, useState, useEffect } from "react";
 import { format } from "date-fns";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
+import HeroHeader from "@/components/layout/HeroHeader";
+import { getAllMenuItems } from "@/data/menuData";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   Table,
   TableBody,
-  TableCaption,
   TableCell,
   TableHead,
   TableHeader,
@@ -16,6 +17,7 @@ import {
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
+import { formatCurrency, safeParseJSON } from "@/lib/utils";
 
 // Define types for our stored data
 interface OrderData {
@@ -50,50 +52,26 @@ const MyHistory = () => {
   const [orders, setOrders] = useState<OrderData[]>([]);
   const [reservations, setReservations] = useState<ReservationData[]>([]);
   const [activeTab, setActiveTab] = useState("orders");
+  const menuItemMap = useMemo(() => {
+    return new Map(getAllMenuItems().map((item) => [item.id, item.name]));
+  }, []);
 
   useEffect(() => {
     // Fetch orders from localStorage
-    const storedOrders = localStorage.getItem("orders");
-    if (storedOrders) {
-      try {
-        setOrders(JSON.parse(storedOrders));
-      } catch (error) {
-        console.error("Failed to parse orders from localStorage:", error);
-      }
-    }
+    setOrders(safeParseJSON(localStorage.getItem("orders"), []));
 
     // Fetch reservations from localStorage
-    const storedReservations = localStorage.getItem("reservations");
-    if (storedReservations) {
-      try {
-        setReservations(JSON.parse(storedReservations));
-      } catch (error) {
-        console.error("Failed to parse reservations from localStorage:", error);
-      }
-    }
+    setReservations(safeParseJSON(localStorage.getItem("reservations"), []));
   }, []);
 
   return (
     <div>
       <Navbar />
       <main className="min-h-screen">
-        {/* Hero Section */}
-        <div className="relative py-16 md:py-20 bg-gray-900 text-white top-0 absolute w-full">
-          <div 
-            className="absolute inset-0 bg-fixed opacity-20" 
-            style={{
-              backgroundImage: "url(https://images.unsplash.com/photo-1414235077428-338989a2e8c0?q=80&w=1500)",
-              backgroundSize: "cover",
-              backgroundPosition: "top",
-            }}
-          ></div>
-          <div className="container mx-auto px-4 relative z-10 text-center">
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">My History</h1>
-            <p className="max-w-2xl mx-auto text-lg">
-              View your past orders and reservations
-            </p>
-          </div>
-        </div>
+        <HeroHeader
+          title="My History"
+          subtitle="View your past orders and reservations"
+        />
 
         {/* Content */}
         <div className="py-12 md:py-16 bg-white">
@@ -160,13 +138,17 @@ const MyHistory = () => {
                                     <TableRow key={itemIndex}>
                                       <TableCell>{item.name}</TableCell>
                                       <TableCell className="text-right">{item.quantity}</TableCell>
-                                      <TableCell className="text-right">${item.price ? item.price.toFixed(2) : '0.00'}</TableCell>
-                                      <TableCell className="text-right">${(item.price && item.quantity) ? (item.price * item.quantity).toFixed(2) : '0.00'}</TableCell>
+                                      <TableCell className="text-right">{formatCurrency(item.price ?? 0)}</TableCell>
+                                      <TableCell className="text-right">
+                                        {formatCurrency((item.price ?? 0) * (item.quantity ?? 0))}
+                                      </TableCell>
                                     </TableRow>
                                   ))}
                                   <TableRow>
                                     <TableCell colSpan={3} className="text-right font-bold">Total</TableCell>
-                                    <TableCell className="text-right font-bold">${order.totalPrice ? order.totalPrice.toFixed(2) : '0.00'}</TableCell>
+                                    <TableCell className="text-right font-bold">
+                                      {formatCurrency(order.totalPrice ?? 0)}
+                                    </TableCell>
                                   </TableRow>
                                 </TableBody>
                               </Table>
@@ -222,8 +204,8 @@ const MyHistory = () => {
                                 <div>
                                   <h4 className="font-medium mb-2">Pre-ordered Items</h4>
                                   <ul className="list-disc pl-5 text-sm">
-                                    {reservation.preorderItems.map((item, itemIndex) => (
-                                      <li key={itemIndex}>{item}</li>
+                                    {reservation.preorderItems.map((itemId, itemIndex) => (
+                                      <li key={itemIndex}>{menuItemMap.get(itemId) ?? itemId}</li>
                                     ))}
                                   </ul>
                                 </div>
