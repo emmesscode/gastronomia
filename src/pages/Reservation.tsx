@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { format } from "date-fns";
 import { Calendar } from "@/components/ui/calendar";
@@ -56,7 +56,7 @@ const Reservation = () => {
   const [specialRequests, setSpecialRequests] = useState("");
   const [preorderTab, setPreorderTab] = useState("no");
   const [preorderItems, setPreorderItems] = useState<string[]>([]);
-  const availableItems = getAllMenuItems();
+  const availableItems = useMemo(() => getAllMenuItems(), []);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
