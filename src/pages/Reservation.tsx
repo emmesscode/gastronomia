@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { format } from "date-fns";
 import { Calendar } from "@/components/ui/calendar";
@@ -56,7 +56,7 @@ const Reservation = () => {
   const [specialRequests, setSpecialRequests] = useState("");
   const [preorderTab, setPreorderTab] = useState("no");
   const [preorderItems, setPreorderItems] = useState<string[]>([]);
-  const availableItems = getAllMenuItems();
+  const availableItems = useMemo(() => getAllMenuItems(), []);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -120,6 +120,7 @@ const Reservation = () => {
         <HeroHeader
           title="Reserve a Table"
           subtitle="Secure your spot for an unforgettable dining experience. Pre-order your favorite dishes to have them ready upon arrival."
+          paddingClasses="py-16 md:py-24"
         />
 
         <div className="py-12 md:py-16 bg-white">
