@@ -2,14 +2,20 @@ type HeroHeaderProps = {
   title: string;
   subtitle: string;
   backgroundImage?: string;
+  paddingClasses?: string;
 };
 
 const DEFAULT_BACKGROUND =
   "url(https://images.unsplash.com/photo-1414235077428-338989a2e8c0?q=80&w=1500)";
 
-const HeroHeader = ({ title, subtitle, backgroundImage = DEFAULT_BACKGROUND }: HeroHeaderProps) => {
+const HeroHeader = ({ 
+  title, 
+  subtitle, 
+  backgroundImage = DEFAULT_BACKGROUND,
+  paddingClasses = "py-16 md:py-20"
+}: HeroHeaderProps) => {
   return (
-    <div className="relative py-16 md:py-20 bg-gray-900 text-white top-0 absolute w-full">
+    <div className={`relative ${paddingClasses} bg-gray-900 text-white top-0 absolute w-full`}>
       <div
         className="absolute inset-0 bg-fixed opacity-20"
         style={{

@@ -120,6 +120,7 @@ const Reservation = () => {
         <HeroHeader
           title="Reserve a Table"
           subtitle="Secure your spot for an unforgettable dining experience. Pre-order your favorite dishes to have them ready upon arrival."
+          paddingClasses="py-16 md:py-24"
         />
 
         <div className="py-12 md:py-16 bg-white">

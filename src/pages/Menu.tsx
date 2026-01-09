@@ -36,6 +36,7 @@ const Menu = () => {
         <HeroHeader
           title="Our Menu"
           subtitle="Crafted with passion, our menu showcases the finest seasonal ingredients. Each dish is a celebration of flavor, technique, and creativity."
+          paddingClasses="py-16 md:py-24"
         />
 
         {/* Menu Content - Adjusted top margin to account for absolute header */}
