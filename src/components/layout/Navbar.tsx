@@ -38,7 +38,7 @@ const Navbar = () => {
   return (
     <header 
       className={cn(
-        "fixed top-0 w-full z-50 transition-all duration-300",
+        "fixed inset-x-0 top-0 w-full z-50 transition-all duration-300",
         isScrolled ? "bg-white/90 dark:bg-gray-900/90 backdrop-blur-md shadow-md" : "bg-transparent"
       )}
     >
