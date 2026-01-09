@@ -1,5 +1,5 @@
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { format } from "date-fns";
 import { Calendar } from "@/components/ui/calendar";
@@ -11,11 +11,12 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import { CalendarIcon, Clock } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { cn, formatCurrency, safeParseJSON } from "@/lib/utils";
 import { getAllMenuItems } from "@/data/menuData";
 import { toast } from "@/components/ui/use-toast";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
+import HeroHeader from "@/components/layout/HeroHeader";
 
 interface ReservationData {
   name: string;
@@ -55,7 +56,7 @@ const Reservation = () => {
   const [specialRequests, setSpecialRequests] = useState("");
   const [preorderTab, setPreorderTab] = useState("no");
   const [preorderItems, setPreorderItems] = useState<string[]>([]);
-  const [availableItems, setAvailableItems] = useState(getAllMenuItems());
+  const availableItems = getAllMenuItems();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -81,7 +82,7 @@ const Reservation = () => {
     };
     
     // Save to localStorage (this code was already in place)
-    const existingReservations = JSON.parse(localStorage.getItem("reservations") || "[]");
+    const existingReservations = safeParseJSON(localStorage.getItem("reservations"), []);
     localStorage.setItem("reservations", JSON.stringify([...existingReservations, reservationData]));
     
     toast({
@@ -116,23 +117,10 @@ const Reservation = () => {
     <>
       <Navbar />
       <main className="min-h-screen">
-        <div className="relative py-16 md:py-24 bg-gray-900 text-white top-0 absolute w-full">
-          <div 
-            className="absolute inset-0 bg-fixed opacity-20" 
-            style={{
-              backgroundImage: "url(https://images.unsplash.com/photo-1414235077428-338989a2e8c0?q=80&w=1500)",
-              backgroundSize: "cover",
-              backgroundPosition: "top",
-            }}
-          ></div>
-          <div className="container mx-auto px-4 relative z-10 text-center">
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">Reserve a Table</h1>
-            <p className="max-w-2xl mx-auto text-lg">
-              Secure your spot for an unforgettable dining experience. 
-              Pre-order your favorite dishes to have them ready upon arrival.
-            </p>
-          </div>
-        </div>
+        <HeroHeader
+          title="Reserve a Table"
+          subtitle="Secure your spot for an unforgettable dining experience. Pre-order your favorite dishes to have them ready upon arrival."
+        />
 
         <div className="py-12 md:py-16 bg-white">
           <div className="container mx-auto px-4">
@@ -282,7 +270,7 @@ const Reservation = () => {
                                     >
                                       {item.name}
                                     </Label>
-                                    <p className="text-xs text-gray-500">${item.price}</p>
+                                    <p className="text-xs text-gray-500">{formatCurrency(item.price)}</p>
                                   </div>
                                 </div>
                               ))}

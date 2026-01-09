@@ -9,6 +9,7 @@ import { toast } from "sonner";
 import { useCart } from "@/contexts/CartContext";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
+import { formatCurrency } from "@/lib/utils";
 
 export interface FoodItem {
   id: string;
@@ -194,7 +195,7 @@ const FoodDetails = () => {
                     className="text-2xl font-bold"
                     style={{viewTransitionName: `food-price-${item.id}`}}
                   >
-                    ${item.price.toFixed(2)}
+                    {formatCurrency(item.price)}
                   </span>
                   {item.preparation && (
                     <span className="ml-4 flex items-center text-sm text-gray-500">

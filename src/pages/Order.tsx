@@ -9,6 +9,7 @@ import { getAllMenuItems } from "@/data/menuData";
 import { useCart } from "@/contexts/CartContext";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
+import HeroHeader from "@/components/layout/HeroHeader";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
@@ -21,7 +22,8 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Card, CardContent } from "@/components/ui/card";
-import { Minus, Plus, ShoppingBag, ShoppingCart, ArrowRight, Info } from "lucide-react";
+import { Minus, Plus, ShoppingBag, ShoppingCart, Info } from "lucide-react";
+import { formatCurrency, safeParseJSON } from "@/lib/utils";
 
 // Define the schema for delivery information
 const formSchema = z.object({
@@ -66,7 +68,7 @@ const Order = () => {
       date: new Date().toISOString()
     };
     
-    const existingOrders = JSON.parse(localStorage.getItem("orders") || "[]");
+    const existingOrders = safeParseJSON(localStorage.getItem("orders"), []);
     localStorage.setItem("orders", JSON.stringify([...existingOrders, orderData]));
     
     // Show success message and reset cart
@@ -89,24 +91,10 @@ const Order = () => {
     <>
       <Navbar />
       <main className="min-h-screen">
-        {/* Hero Section */}
-        <div className="relative py-16 md:py-20 bg-gray-900 text-white top-0 absolute w-full">
-          <div 
-            className="absolute inset-0 bg-fixed opacity-20" 
-            style={{
-              backgroundImage: "url(https://images.unsplash.com/photo-1414235077428-338989a2e8c0?q=80&w=1500)",
-              backgroundSize: "cover",
-              backgroundPosition: "top",
-            }}
-          ></div>
-          <div className="container mx-auto px-4 relative z-10 text-center">
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">Order Online</h1>
-            <p className="max-w-2xl mx-auto text-lg">
-              Enjoy our delicious meals from the comfort of your home.
-              Fresh, high-quality ingredients delivered right to your doorstep.
-            </p>
-          </div>
-        </div>
+        <HeroHeader
+          title="Order Online"
+          subtitle="Enjoy our delicious meals from the comfort of your home. Fresh, high-quality ingredients delivered right to your doorstep."
+        />
 
         {/* Order Content - Adjusted top margin to account for absolute header */}
         <div className="py-12 md:py-16 bg-white">
@@ -162,7 +150,7 @@ const Order = () => {
                               className="font-bold text-sm"
                               style={{viewTransitionName: `food-price-${item.id}`}}
                             >
-                              ${item.price}
+                              {formatCurrency(item.price)}
                             </span>
                           </div>
                           <p className="text-gray-600 text-xs mb-2 line-clamp-1">{item.description}</p>
@@ -243,7 +231,7 @@ const Order = () => {
                                 className="text-xs text-gray-600"
                                 style={{viewTransitionName: `food-price-${item.id}`}}
                               >
-                                ${item.price} each
+                                {formatCurrency(item.price)} each
                               </p>
                             </div>
                             <div className="flex items-center gap-1 ml-2">
@@ -276,7 +264,7 @@ const Order = () => {
                       <div className="border-t pt-4 mb-6">
                         <div className="flex justify-between font-bold text-lg">
                           <span>Total:</span>
-                          <span>${getTotalPrice().toFixed(2)}</span>
+                          <span>{formatCurrency(getTotalPrice())}</span>
                         </div>
                       </div>
                     </>
