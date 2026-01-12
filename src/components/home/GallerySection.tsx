@@ -1,26 +1,30 @@
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 import { homeContent } from "@/data/homeContent";
 
 const GallerySection = () => {
-  const galleryRef = useRef<HTMLDivElement>(null);
   const { gallery } = homeContent;
 
   useEffect(() => {
-    const handleScroll = () => {
-      const elements = document.querySelectorAll(".gallery-item");
-      elements.forEach((el) => {
-        const rect = el.getBoundingClientRect();
-        const isVisible = rect.top < window.innerHeight && rect.bottom >= 0;
-        if (isVisible) {
-          el.classList.add("is-visible");
-        }
-      });
-    };
+    const elements = document.querySelectorAll(".gallery-item");
+    if (!elements.length) {
+      return undefined;
+    }
 
-    window.addEventListener("scroll", handleScroll);
-    setTimeout(handleScroll, 100);
+    const observer = new IntersectionObserver(
+      (entries, currentObserver) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("is-visible");
+            currentObserver.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.2, rootMargin: "0px 0px -10% 0px" }
+    );
 
-    return () => window.removeEventListener("scroll", handleScroll);
+    elements.forEach((el) => observer.observe(el));
+
+    return () => observer.disconnect();
   }, []);
 
   const getSizeClass = (size: string) => {
@@ -37,7 +41,7 @@ const GallerySection = () => {
   };
 
   return (
-    <section id="gallery" className="py-16 md:py-24 bg-gray-100 w-full" ref={galleryRef}>
+    <section id="gallery" className="py-16 md:py-24 bg-gray-100 w-full">
       <div className="px-0 w-full">
         <div className="text-center mb-12 px-4">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">{gallery.title}</h2>

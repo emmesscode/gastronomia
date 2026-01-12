@@ -50,6 +50,11 @@ const Order = () => {
   // Get cart state and methods from context
   const { cart, addToCart, removeFromCart, clearCart, getTotalPrice } = useCart();
   const [orderSubmitted, setOrderSubmitted] = useState(false);
+  const subtotal = getTotalPrice();
+  const taxRate = 0.08;
+  const taxes = subtotal * taxRate;
+  const deliveryFee = subtotal > 0 ? 4.5 : 0;
+  const orderTotal = subtotal + taxes + deliveryFee;
 
   const recommendations = useMemo(() => {
     const cartIds = new Set(cart.map((item) => item.id));
@@ -338,8 +343,8 @@ const Order = () => {
                       </div>
                       <div className="border-t pt-4 mb-6">
                         <div className="flex justify-between font-bold text-lg">
-                          <span>Total:</span>
-                          <span>{formatCurrency(getTotalPrice())}</span>
+                          <span>Subtotal:</span>
+                          <span>{formatCurrency(subtotal)}</span>
                         </div>
                       </div>
                     </>
@@ -349,7 +354,7 @@ const Order = () => {
                   <div className="mt-6">
                     <h3 className="font-bold text-lg mb-4">Delivery Information</h3>
                     <Form {...form}>
-                      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+                      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4" id="delivery-form">
                         <FormField
                           control={form.control}
                           name="name"
@@ -415,6 +420,27 @@ const Order = () => {
                             </FormItem>
                           )}
                         />
+                        <div className="rounded-lg border border-gray-200 bg-white p-4 text-sm">
+                          <div className="flex items-center justify-between">
+                            <span className="text-gray-600">Subtotal</span>
+                            <span className="font-medium">{formatCurrency(subtotal)}</span>
+                          </div>
+                          <div className="flex items-center justify-between">
+                            <span className="text-gray-600">Estimated taxes</span>
+                            <span className="font-medium">{formatCurrency(taxes)}</span>
+                          </div>
+                          <div className="flex items-center justify-between">
+                            <span className="text-gray-600">Delivery fee</span>
+                            <span className="font-medium">{formatCurrency(deliveryFee)}</span>
+                          </div>
+                          <div className="mt-3 flex items-center justify-between border-t pt-3 text-base font-semibold">
+                            <span>Order total</span>
+                            <span>{formatCurrency(orderTotal)}</span>
+                          </div>
+                          <p className="mt-2 text-xs text-gray-500">
+                            Estimated delivery time: 35–45 minutes.
+                          </p>
+                        </div>
                         <Button type="submit" className="w-full" disabled={cart.length === 0}>
                           Place Order
                         </Button>
@@ -426,6 +452,24 @@ const Order = () => {
             )}
           </div>
         </div>
+        {!orderSubmitted && cart.length > 0 && (
+          <div className="fixed inset-x-0 bottom-0 z-40 border-t border-gray-200 bg-white/95 px-4 py-3 shadow-lg backdrop-blur md:hidden">
+            <div className="flex items-center justify-between gap-3">
+              <div>
+                <p className="text-xs uppercase tracking-wide text-gray-500">Total</p>
+                <p className="text-lg font-semibold">{formatCurrency(orderTotal)}</p>
+              </div>
+              <Button
+                onClick={() => {
+                  const formElement = document.getElementById("delivery-form");
+                  formElement?.scrollIntoView({ behavior: "smooth", block: "start" });
+                }}
+              >
+                Checkout
+              </Button>
+            </div>
+          </div>
+        )}
       </main>
       <Footer />
     </>

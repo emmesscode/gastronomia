@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { ChevronRight } from "lucide-react";
+import { ChevronDown, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { homeContent } from "@/data/homeContent";
@@ -45,7 +45,7 @@ const HeroSection = () => {
       ))}
 
       {/* Overlay */}
-      <div className="absolute inset-0 bg-black bg-opacity-40 z-20"></div>
+      <div className="absolute inset-0 bg-gradient-to-b from-black/65 via-black/45 to-black/70 z-20"></div>
 
       {/* Content */}
       <div className="relative z-30 h-full flex flex-col items-center justify-center text-white px-4 text-center">
@@ -90,6 +90,16 @@ const HeroSection = () => {
             aria-label={`Go to slide ${index + 1}`}
           />
         ))}
+      </div>
+
+      <div className="absolute bottom-20 left-0 right-0 z-30 flex justify-center">
+        <a
+          href="#gallery"
+          className="inline-flex items-center gap-2 rounded-full border border-white/40 bg-white/10 px-4 py-2 text-sm text-white backdrop-blur-sm transition hover:bg-white/20"
+        >
+          Explore the gallery
+          <ChevronDown className="h-4 w-4" />
+        </a>
       </div>
     </section>
   );
