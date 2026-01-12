@@ -1,19 +1,17 @@
 
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { Menu, X, ShoppingCart, History, Shield, Plus, Minus, LogIn, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { 
   NavigationMenu, 
   NavigationMenuList, 
   NavigationMenuItem, 
-  NavigationMenuLink 
 } from "@/components/ui/navigation-menu";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import { useCart } from "@/contexts/CartContext";
 import { useAuth } from "@/contexts/AuthContext";
-import { useIsMobile } from "@/hooks/use-mobile";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { useNavigate } from "react-router-dom";
 
@@ -23,8 +21,8 @@ const Navbar = () => {
   const { cart, getItemCount, addToCart, removeFromCart, getTotalPrice } = useCart();
   const { user, logout } = useAuth();
   const cartItemCount = getItemCount();
-  const isMobile = useIsMobile();
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -35,7 +33,14 @@ const Navbar = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  useEffect(() => {
+    setIsMenuOpen(false);
+  }, [location.pathname]);
+
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
+  const isActive = (path: string) => location.pathname === path;
+  const getActiveTextColor = () => (isScrolled ? "text-primary" : "text-white");
+  const getUnderlineColor = () => (isScrolled ? "bg-primary" : "bg-white");
 
   return (
     <header 
@@ -54,51 +59,93 @@ const Navbar = () => {
           <NavigationMenuList>
             <NavigationMenuItem>
               <Link to="/" className={cn(
-                "px-4 py-2 text-sm font-medium transition-colors",
-                isScrolled ? "text-gray-800 dark:text-gray-200" : "text-white"
+                "px-4 py-2 text-sm font-medium transition-colors relative",
+                isActive("/")
+                  ? getActiveTextColor()
+                  : isScrolled
+                    ? "text-gray-800 dark:text-gray-200"
+                    : "text-white"
               )}>
                 Home
+                {isActive("/") && (
+                  <span className={cn("absolute inset-x-4 -bottom-1 h-0.5 rounded-full", getUnderlineColor())} />
+                )}
               </Link>
             </NavigationMenuItem>
             <NavigationMenuItem>
               <Link to="/menu" className={cn(
-                "px-4 py-2 text-sm font-medium transition-colors",
-                isScrolled ? "text-gray-800 dark:text-gray-200" : "text-white"
+                "px-4 py-2 text-sm font-medium transition-colors relative",
+                isActive("/menu")
+                  ? getActiveTextColor()
+                  : isScrolled
+                    ? "text-gray-800 dark:text-gray-200"
+                    : "text-white"
               )}>
                 Menu
+                {isActive("/menu") && (
+                  <span className={cn("absolute inset-x-4 -bottom-1 h-0.5 rounded-full", getUnderlineColor())} />
+                )}
               </Link>
             </NavigationMenuItem>
             <NavigationMenuItem>
               <Link to="/order" className={cn(
-                "px-4 py-2 text-sm font-medium transition-colors",
-                isScrolled ? "text-gray-800 dark:text-gray-200" : "text-white"
+                "px-4 py-2 text-sm font-medium transition-colors relative",
+                isActive("/order")
+                  ? getActiveTextColor()
+                  : isScrolled
+                    ? "text-gray-800 dark:text-gray-200"
+                    : "text-white"
               )}>
                 Order Online
+                {isActive("/order") && (
+                  <span className={cn("absolute inset-x-4 -bottom-1 h-0.5 rounded-full", getUnderlineColor())} />
+                )}
               </Link>
             </NavigationMenuItem>
             <NavigationMenuItem>
               <Link to="/reservation" className={cn(
-                "px-4 py-2 text-sm font-medium transition-colors",
-                isScrolled ? "text-gray-800 dark:text-gray-200" : "text-white"
+                "px-4 py-2 text-sm font-medium transition-colors relative",
+                isActive("/reservation")
+                  ? getActiveTextColor()
+                  : isScrolled
+                    ? "text-gray-800 dark:text-gray-200"
+                    : "text-white"
               )}>
                 Reservations
+                {isActive("/reservation") && (
+                  <span className={cn("absolute inset-x-4 -bottom-1 h-0.5 rounded-full", getUnderlineColor())} />
+                )}
               </Link>
             </NavigationMenuItem>
             <NavigationMenuItem>
               <Link to="/chef-table" className={cn(
-                "px-4 py-2 text-sm font-medium transition-colors",
-                isScrolled ? "text-gray-800 dark:text-gray-200" : "text-white"
+                "px-4 py-2 text-sm font-medium transition-colors relative",
+                isActive("/chef-table")
+                  ? getActiveTextColor()
+                  : isScrolled
+                    ? "text-gray-800 dark:text-gray-200"
+                    : "text-white"
               )}>
                 Chef's Table
+                {isActive("/chef-table") && (
+                  <span className={cn("absolute inset-x-4 -bottom-1 h-0.5 rounded-full", getUnderlineColor())} />
+                )}
               </Link>
             </NavigationMenuItem>
             <NavigationMenuItem>
               <Link to="/my-history" className={cn(
-                "px-4 py-2 text-sm font-medium transition-colors flex items-center",
-                isScrolled ? "text-gray-800 dark:text-gray-200" : "text-white"
+                "px-4 py-2 text-sm font-medium transition-colors flex items-center relative",
+                isActive("/my-history")
+                  ? getActiveTextColor()
+                  : isScrolled
+                    ? "text-gray-800 dark:text-gray-200"
+                    : "text-white"
               )}>
                 <History className="h-4 w-4 mr-1" />
                 My History
+                {isActive("/my-history") && (
+                  <span className={cn("absolute inset-x-4 -bottom-1 h-0.5 rounded-full", getUnderlineColor())} />
+                )}
               </Link>
             </NavigationMenuItem>
             {user?.role === "admin" && (
@@ -106,12 +153,19 @@ const Navbar = () => {
                 <Link
                   to="/admin"
                   className={cn(
-                    "px-4 py-2 text-sm font-medium transition-colors flex items-center",
-                    isScrolled ? "text-gray-800 dark:text-gray-200" : "text-white"
+                    "px-4 py-2 text-sm font-medium transition-colors flex items-center relative",
+                    isActive("/admin")
+                      ? getActiveTextColor()
+                      : isScrolled
+                        ? "text-gray-800 dark:text-gray-200"
+                        : "text-white"
                   )}
                 >
                   <Shield className="h-4 w-4 mr-1" />
                   Admin
+                  {isActive("/admin") && (
+                    <span className={cn("absolute inset-x-4 -bottom-1 h-0.5 rounded-full", getUnderlineColor())} />
+                  )}
                 </Link>
               </NavigationMenuItem>
             )}
@@ -148,12 +202,19 @@ const Navbar = () => {
               <Link 
                 to="/order" 
                 className={cn(
-                  "px-4 py-2 text-sm font-medium transition-colors flex items-center",
-                  isScrolled ? "text-gray-800 dark:text-gray-200" : "text-white"
+                  "px-4 py-2 text-sm font-medium transition-colors flex items-center relative",
+                  isActive("/order")
+                    ? getActiveTextColor()
+                    : isScrolled
+                      ? "text-gray-800 dark:text-gray-200"
+                      : "text-white"
                 )}
               >
                 <ShoppingCart className="h-4 w-4 mr-1" />
                 Cart
+                {isActive("/order") && (
+                  <span className={cn("absolute inset-x-4 -bottom-1 h-0.5 rounded-full", getUnderlineColor())} />
+                )}
                 {cartItemCount > 0 && (
                   <Badge 
                     variant="destructive" 
@@ -301,54 +362,62 @@ const Navbar = () => {
 
         {/* Mobile Navigation Menu */}
         {isMenuOpen && (
-          <div className="absolute top-full left-0 w-full bg-white dark:bg-gray-900 shadow-lg md:hidden animate-fade-in">
-            <nav className="container mx-auto py-4 flex flex-col space-y-2">
-              <Link to="/" className="px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-800" onClick={toggleMenu}>
-                Home
-              </Link>
-              <Link to="/menu" className="px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-800" onClick={toggleMenu}>
-                Menu
-              </Link>
-              <Link to="/order" className="px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-800" onClick={toggleMenu}>
-                Order Online
-              </Link>
-              <Link to="/reservation" className="px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-800" onClick={toggleMenu}>
-                Reservations
-              </Link>
-              <Link to="/chef-table" className="px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-800" onClick={toggleMenu}>
-                Chef's Table
-              </Link>
-              <Link to="/my-history" className="px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-800 flex items-center" onClick={toggleMenu}>
-                <History className="h-4 w-4 mr-1" />
-                My History
-              </Link>
-              {user?.role === "admin" && (
-                <Link to="/admin" className="px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-800 flex items-center" onClick={toggleMenu}>
-                  <Shield className="h-4 w-4 mr-1" />
-                  Admin
+          <>
+            <button
+              type="button"
+              className="fixed inset-0 bg-black/40 backdrop-blur-sm md:hidden"
+              onClick={toggleMenu}
+              aria-label="Close menu overlay"
+            />
+            <div className="absolute top-full left-0 w-full bg-white dark:bg-gray-900 shadow-lg md:hidden animate-fade-in">
+              <nav className="container mx-auto py-4 flex flex-col space-y-2">
+                <Link to="/" className="px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-800" onClick={toggleMenu}>
+                  Home
                 </Link>
-              )}
-              {user ? (
-                <button
-                  type="button"
-                  className="px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-800 flex items-center"
-                  onClick={() => {
-                    logout();
-                    toggleMenu();
-                    navigate("/");
-                  }}
-                >
-                  <LogOut className="h-4 w-4 mr-1" />
-                  Sign out
-                </button>
-              ) : (
-                <Link to="/login" className="px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-800 flex items-center" onClick={toggleMenu}>
-                  <LogIn className="h-4 w-4 mr-1" />
-                  Sign in
+                <Link to="/menu" className="px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-800" onClick={toggleMenu}>
+                  Menu
                 </Link>
-              )}
-            </nav>
-          </div>
+                <Link to="/order" className="px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-800" onClick={toggleMenu}>
+                  Order Online
+                </Link>
+                <Link to="/reservation" className="px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-800" onClick={toggleMenu}>
+                  Reservations
+                </Link>
+                <Link to="/chef-table" className="px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-800" onClick={toggleMenu}>
+                  Chef's Table
+                </Link>
+                <Link to="/my-history" className="px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-800 flex items-center" onClick={toggleMenu}>
+                  <History className="h-4 w-4 mr-1" />
+                  My History
+                </Link>
+                {user?.role === "admin" && (
+                  <Link to="/admin" className="px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-800 flex items-center" onClick={toggleMenu}>
+                    <Shield className="h-4 w-4 mr-1" />
+                    Admin
+                  </Link>
+                )}
+                {user ? (
+                  <button
+                    type="button"
+                    className="px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-800 flex items-center"
+                    onClick={() => {
+                      logout();
+                      toggleMenu();
+                      navigate("/");
+                    }}
+                  >
+                    <LogOut className="h-4 w-4 mr-1" />
+                    Sign out
+                  </button>
+                ) : (
+                  <Link to="/login" className="px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-800 flex items-center" onClick={toggleMenu}>
+                    <LogIn className="h-4 w-4 mr-1" />
+                    Sign in
+                  </Link>
+                )}
+              </nav>
+            </div>
+          </>
         )}
       </div>
     </header>
