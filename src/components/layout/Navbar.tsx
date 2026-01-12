@@ -39,6 +39,8 @@ const Navbar = () => {
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
   const isActive = (path: string) => location.pathname === path;
+  const getActiveTextColor = () => (isScrolled ? "text-primary" : "text-white");
+  const getUnderlineColor = () => (isScrolled ? "bg-primary" : "bg-white");
 
   return (
     <header 
@@ -59,79 +61,91 @@ const Navbar = () => {
               <Link to="/" className={cn(
                 "px-4 py-2 text-sm font-medium transition-colors relative",
                 isActive("/")
-                  ? "text-primary"
+                  ? getActiveTextColor()
                   : isScrolled
                     ? "text-gray-800 dark:text-gray-200"
                     : "text-white"
               )}>
                 Home
-                {isActive("/") && <span className="absolute inset-x-4 -bottom-1 h-0.5 bg-primary rounded-full" />}
+                {isActive("/") && (
+                  <span className={cn("absolute inset-x-4 -bottom-1 h-0.5 rounded-full", getUnderlineColor())} />
+                )}
               </Link>
             </NavigationMenuItem>
             <NavigationMenuItem>
               <Link to="/menu" className={cn(
                 "px-4 py-2 text-sm font-medium transition-colors relative",
                 isActive("/menu")
-                  ? "text-primary"
+                  ? getActiveTextColor()
                   : isScrolled
                     ? "text-gray-800 dark:text-gray-200"
                     : "text-white"
               )}>
                 Menu
-                {isActive("/menu") && <span className="absolute inset-x-4 -bottom-1 h-0.5 bg-primary rounded-full" />}
+                {isActive("/menu") && (
+                  <span className={cn("absolute inset-x-4 -bottom-1 h-0.5 rounded-full", getUnderlineColor())} />
+                )}
               </Link>
             </NavigationMenuItem>
             <NavigationMenuItem>
               <Link to="/order" className={cn(
                 "px-4 py-2 text-sm font-medium transition-colors relative",
                 isActive("/order")
-                  ? "text-primary"
+                  ? getActiveTextColor()
                   : isScrolled
                     ? "text-gray-800 dark:text-gray-200"
                     : "text-white"
               )}>
                 Order Online
-                {isActive("/order") && <span className="absolute inset-x-4 -bottom-1 h-0.5 bg-primary rounded-full" />}
+                {isActive("/order") && (
+                  <span className={cn("absolute inset-x-4 -bottom-1 h-0.5 rounded-full", getUnderlineColor())} />
+                )}
               </Link>
             </NavigationMenuItem>
             <NavigationMenuItem>
               <Link to="/reservation" className={cn(
                 "px-4 py-2 text-sm font-medium transition-colors relative",
                 isActive("/reservation")
-                  ? "text-primary"
+                  ? getActiveTextColor()
                   : isScrolled
                     ? "text-gray-800 dark:text-gray-200"
                     : "text-white"
               )}>
                 Reservations
-                {isActive("/reservation") && <span className="absolute inset-x-4 -bottom-1 h-0.5 bg-primary rounded-full" />}
+                {isActive("/reservation") && (
+                  <span className={cn("absolute inset-x-4 -bottom-1 h-0.5 rounded-full", getUnderlineColor())} />
+                )}
               </Link>
             </NavigationMenuItem>
             <NavigationMenuItem>
               <Link to="/chef-table" className={cn(
                 "px-4 py-2 text-sm font-medium transition-colors relative",
                 isActive("/chef-table")
-                  ? "text-primary"
+                  ? getActiveTextColor()
                   : isScrolled
                     ? "text-gray-800 dark:text-gray-200"
                     : "text-white"
               )}>
                 Chef's Table
-                {isActive("/chef-table") && <span className="absolute inset-x-4 -bottom-1 h-0.5 bg-primary rounded-full" />}
+                {isActive("/chef-table") && (
+                  <span className={cn("absolute inset-x-4 -bottom-1 h-0.5 rounded-full", getUnderlineColor())} />
+                )}
               </Link>
             </NavigationMenuItem>
             <NavigationMenuItem>
               <Link to="/my-history" className={cn(
                 "px-4 py-2 text-sm font-medium transition-colors flex items-center relative",
                 isActive("/my-history")
-                  ? "text-primary"
+                  ? getActiveTextColor()
                   : isScrolled
                     ? "text-gray-800 dark:text-gray-200"
                     : "text-white"
               )}>
                 <History className="h-4 w-4 mr-1" />
                 My History
-                {isActive("/my-history") && <span className="absolute inset-x-4 -bottom-1 h-0.5 bg-primary rounded-full" />}
+                {isActive("/my-history") && (
+                  <span className={cn("absolute inset-x-4 -bottom-1 h-0.5 rounded-full", getUnderlineColor())} />
+                )}
               </Link>
             </NavigationMenuItem>
             {user?.role === "admin" && (
@@ -141,7 +155,7 @@ const Navbar = () => {
                   className={cn(
                     "px-4 py-2 text-sm font-medium transition-colors flex items-center relative",
                     isActive("/admin")
-                      ? "text-primary"
+                      ? getActiveTextColor()
                       : isScrolled
                         ? "text-gray-800 dark:text-gray-200"
                         : "text-white"
@@ -149,7 +163,9 @@ const Navbar = () => {
                 >
                   <Shield className="h-4 w-4 mr-1" />
                   Admin
-                  {isActive("/admin") && <span className="absolute inset-x-4 -bottom-1 h-0.5 bg-primary rounded-full" />}
+                  {isActive("/admin") && (
+                    <span className={cn("absolute inset-x-4 -bottom-1 h-0.5 rounded-full", getUnderlineColor())} />
+                  )}
                 </Link>
               </NavigationMenuItem>
             )}
@@ -188,7 +204,7 @@ const Navbar = () => {
                 className={cn(
                   "px-4 py-2 text-sm font-medium transition-colors flex items-center relative",
                   isActive("/order")
-                    ? "text-primary"
+                    ? getActiveTextColor()
                     : isScrolled
                       ? "text-gray-800 dark:text-gray-200"
                       : "text-white"
@@ -196,7 +212,9 @@ const Navbar = () => {
               >
                 <ShoppingCart className="h-4 w-4 mr-1" />
                 Cart
-                {isActive("/order") && <span className="absolute inset-x-4 -bottom-1 h-0.5 bg-primary rounded-full" />}
+                {isActive("/order") && (
+                  <span className={cn("absolute inset-x-4 -bottom-1 h-0.5 rounded-full", getUnderlineColor())} />
+                )}
                 {cartItemCount > 0 && (
                   <Badge 
                     variant="destructive" 
