@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { format } from "date-fns";
+import { addHours, format } from "date-fns";
 import { Calendar } from "@/components/ui/calendar";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
@@ -9,7 +9,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
-import { CalendarIcon, Clock } from "lucide-react";
+import { CalendarIcon, CalendarPlus, CheckCircle2, Clock, Share2, Sparkles, Users2 } from "lucide-react";
 import { cn, formatCurrency, safeParseJSON } from "@/lib/utils";
 import { getAllMenuItems } from "@/data/menuData";
 import { toast } from "@/components/ui/use-toast";
@@ -26,6 +26,7 @@ interface ReservationData {
   guests: number;
   specialRequests?: string;
   preorderItems?: string[];
+  tableSelection?: string;
 }
 
 const timeSlots = [
@@ -44,6 +45,51 @@ const timeSlots = [
   "8:30 PM",
 ];
 
+const tableOptions = [
+  {
+    id: "window-two",
+    name: "Window for Two",
+    description: "Intimate setting with skyline views.",
+    capacity: "2 guests",
+  },
+  {
+    id: "chef-counter",
+    name: "Chef’s Counter",
+    description: "Front-row seats to the culinary action.",
+    capacity: "2-3 guests",
+  },
+  {
+    id: "booth-four",
+    name: "Signature Booth",
+    description: "Plush seating for a relaxed evening.",
+    capacity: "4 guests",
+  },
+  {
+    id: "private-six",
+    name: "Private Alcove",
+    description: "Semi-private corner with ambient lighting.",
+    capacity: "5-6 guests",
+  },
+];
+
+const availabilityLevels = {
+  available: {
+    label: "Available",
+    badge: "bg-emerald-50 text-emerald-600 border-emerald-200",
+    button: "border-emerald-200 text-emerald-700 hover:bg-emerald-50",
+  },
+  limited: {
+    label: "Limited",
+    badge: "bg-amber-50 text-amber-600 border-amber-200",
+    button: "border-amber-200 text-amber-700 hover:bg-amber-50",
+  },
+  full: {
+    label: "Fully booked",
+    badge: "bg-gray-100 text-gray-500 border-gray-200",
+    button: "border-gray-200 text-gray-400 cursor-not-allowed",
+  },
+};
+
 const Reservation = () => {
   const navigate = useNavigate();
   const [date, setDate] = useState<Date | undefined>(undefined);
@@ -55,14 +101,56 @@ const Reservation = () => {
   const [specialRequests, setSpecialRequests] = useState("");
   const [preorderTab, setPreorderTab] = useState("no");
   const [preorderItems, setPreorderItems] = useState<string[]>([]);
+  const [tableSelection, setTableSelection] = useState("");
   const [formErrors, setFormErrors] = useState<Record<string, string>>({});
   const [step, setStep] = useState(1);
   const availableItems = getAllMenuItems();
+
+  const availabilityBySlot = useMemo(() => {
+    const baseSeed = date ? date.getDate() + date.getMonth() * 31 : 0;
+    return timeSlots.reduce<Record<string, keyof typeof availabilityLevels>>((acc, slot, index) => {
+      const rawScore = (baseSeed + index + guests * 3) % 9;
+      if (!date) {
+        acc[slot] = "available";
+      } else if (rawScore < 4) {
+        acc[slot] = "available";
+      } else if (rawScore < 7) {
+        acc[slot] = "limited";
+      } else {
+        acc[slot] = "full";
+      }
+      return acc;
+    }, {});
+  }, [date, guests]);
 
   const selectedPreorders = useMemo(() => {
     const lookup = new Map(availableItems.map((item) => [item.id, item]));
     return preorderItems.map((id) => lookup.get(id)).filter(Boolean);
   }, [availableItems, preorderItems]);
+
+  const chefPicks = useMemo(() => availableItems.slice(0, 4), [availableItems]);
+
+  const reservationDateTime = useMemo(() => {
+    if (!date || !time) return null;
+    const [clock, meridiem] = time.split(" ");
+    const [hourString, minuteString] = clock.split(":");
+    let hours = Number(hourString);
+    const minutes = Number(minuteString);
+    if (meridiem === "PM" && hours < 12) hours += 12;
+    if (meridiem === "AM" && hours === 12) hours = 0;
+    const nextDate = new Date(date);
+    nextDate.setHours(hours, minutes, 0, 0);
+    return nextDate;
+  }, [date, time]);
+
+  const calendarHref = useMemo(() => {
+    if (!reservationDateTime) return "#";
+    const endTime = addHours(reservationDateTime, 2);
+    const start = format(reservationDateTime, "yyyyMMdd'T'HHmmss");
+    const end = format(endTime, "yyyyMMdd'T'HHmmss");
+    const details = encodeURIComponent("Your Gastronomia table is confirmed. We look forward to hosting you.");
+    return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=Gastronomia%20Reservation&dates=${start}/${end}&details=${details}`;
+  }, [reservationDateTime]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -85,6 +173,7 @@ const Reservation = () => {
       guests,
       specialRequests: specialRequests || undefined,
       preorderItems: preorderTab === "yes" ? preorderItems : undefined,
+      tableSelection: tableSelection || undefined,
     };
 
     // Save to localStorage (this code was already in place)
@@ -105,6 +194,7 @@ const Reservation = () => {
     setSpecialRequests("");
     setPreorderTab("no");
     setPreorderItems([]);
+    setTableSelection("");
     setStep(1);
 
     setTimeout(() => {
@@ -158,6 +248,21 @@ const Reservation = () => {
 
   const handleBack = () => {
     setStep((prev) => Math.max(1, prev - 1));
+  };
+
+  const handleShare = async () => {
+    const summary = `Gastronomia reservation for ${name || "guest"} on ${
+      date ? format(date, "MMMM do, yyyy") : "TBD"
+    } at ${time || "TBD"} for ${guests} guests.`;
+    if (navigator.clipboard?.writeText) {
+      await navigator.clipboard.writeText(summary);
+      toast({ title: "Reservation details copied", description: "Share your reservation with a friend." });
+      return;
+    }
+    toast({
+      title: "Share",
+      description: "Copy your reservation details manually from the summary panel.",
+    });
   };
 
   return (
@@ -297,22 +402,44 @@ const Reservation = () => {
 
                       <div>
                         <Label>Time Slot*</Label>
-                        <div className="grid grid-cols-3 gap-2 mt-1">
-                          {timeSlots.map((slot) => (
-                            <Button
-                              key={slot}
-                              type="button"
-                              variant={time === slot ? "default" : "outline"}
-                              size="sm"
-                              className="flex items-center justify-center"
-                              onClick={() => {
-                                setTime(slot);
-                                setFormErrors((prev) => ({ ...prev, time: "" }));
-                              }}
+                        <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 mt-2">
+                          {timeSlots.map((slot) => {
+                            const availability = availabilityBySlot[slot];
+                            const isFull = availability === "full";
+                            return (
+                              <Button
+                                key={slot}
+                                type="button"
+                                variant={time === slot ? "default" : "outline"}
+                                size="sm"
+                                disabled={isFull}
+                                className={cn(
+                                  "flex items-center justify-center border text-xs font-semibold transition",
+                                  time === slot ? "border-primary" : availabilityLevels[availability].button
+                                )}
+                                onClick={() => {
+                                  setTime(slot);
+                                  setFormErrors((prev) => ({ ...prev, time: "" }));
+                                }}
+                              >
+                                <Clock className="h-3 w-3 mr-1" />
+                                {slot}
+                              </Button>
+                            );
+                          })}
+                        </div>
+                        <div className="flex flex-wrap gap-2 mt-3 text-xs">
+                          {Object.entries(availabilityLevels).map(([key, value]) => (
+                            <span
+                              key={key}
+                              className={cn(
+                                "inline-flex items-center gap-2 border rounded-full px-3 py-1 font-medium",
+                                value.badge
+                              )}
                             >
-                              <Clock className="h-3 w-3 mr-1" />
-                              {slot}
-                            </Button>
+                              <span className="h-2 w-2 rounded-full bg-current" />
+                              {value.label}
+                            </span>
                           ))}
                         </div>
                         {formErrors.time && <p className="text-xs text-red-500">{formErrors.time}</p>}
@@ -334,6 +461,33 @@ const Reservation = () => {
                         />
                         {formErrors.guests && <p className="text-xs text-red-500">{formErrors.guests}</p>}
                       </div>
+
+                      <Card className="border border-dashed">
+                        <CardHeader>
+                          <CardTitle className="text-xl">Choose your table</CardTitle>
+                        </CardHeader>
+                        <CardContent className="space-y-3">
+                          {tableOptions.map((table) => (
+                            <button
+                              type="button"
+                              key={table.id}
+                              onClick={() => setTableSelection(table.id)}
+                              className={cn(
+                                "w-full rounded-xl border px-4 py-3 text-left transition hover:border-primary",
+                                tableSelection === table.id ? "border-primary bg-primary/5" : "border-gray-200"
+                              )}
+                            >
+                              <div className="flex items-center justify-between">
+                                <div>
+                                  <p className="font-semibold text-gray-900">{table.name}</p>
+                                  <p className="text-xs text-gray-500">{table.description}</p>
+                                </div>
+                                <span className="text-xs font-semibold text-gray-500">{table.capacity}</span>
+                              </div>
+                            </button>
+                          ))}
+                        </CardContent>
+                      </Card>
 
                       <div>
                         <Label htmlFor="requests">Special Requests (Optional)</Label>
@@ -381,6 +535,26 @@ const Reservation = () => {
                           </Tabs>
                         </CardContent>
                       </Card>
+
+                      <Card className="bg-gradient-to-br from-gray-900 via-gray-800 to-gray-700 text-white">
+                        <CardHeader>
+                          <CardTitle className="flex items-center gap-2 text-lg">
+                            <Sparkles className="h-5 w-5 text-amber-300" />
+                            Chef’s Tasting Highlights
+                          </CardTitle>
+                        </CardHeader>
+                        <CardContent className="text-sm space-y-3">
+                          {chefPicks.map((item) => (
+                            <div key={item.id} className="flex items-center justify-between">
+                              <span>{item.name}</span>
+                              <span className="font-semibold text-amber-200">{formatCurrency(item.price)}</span>
+                            </div>
+                          ))}
+                          <p className="text-xs text-gray-200">
+                            Add any of these to your pre-order for white-glove service.
+                          </p>
+                        </CardContent>
+                      </Card>
                     </div>
                   </div>
 
@@ -389,6 +563,15 @@ const Reservation = () => {
                       <CardTitle>Reservation Summary</CardTitle>
                     </CardHeader>
                     <CardContent className="text-sm text-gray-600 space-y-4">
+                      <div className="flex items-center gap-2 rounded-lg border border-white/40 bg-white p-3">
+                        <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/10 text-primary">
+                          <Users2 className="h-5 w-5" />
+                        </div>
+                        <div>
+                          <p className="text-xs uppercase tracking-wide text-gray-400">Party size</p>
+                          <p className="font-semibold text-gray-900">{guests} guests</p>
+                        </div>
+                      </div>
                       <div className="space-y-2">
                         <p>
                           <span className="font-medium text-gray-900">Guest:</span> {name || "Not provided"}
@@ -409,11 +592,22 @@ const Reservation = () => {
                         <p>
                           <span className="font-medium text-gray-900">Guests:</span> {guests}
                         </p>
+                        <p>
+                          <span className="font-medium text-gray-900">Table:</span>{" "}
+                          {tableOptions.find((table) => table.id === tableSelection)?.name || "Not selected"}
+                        </p>
+                        <p>
+                          <span className="font-medium text-gray-900">Availability:</span>{" "}
+                          {time ? availabilityLevels[availabilityBySlot[time]].label : "Select a time"}
+                        </p>
                       </div>
                       <div className="border-t pt-4 space-y-2">
                         <p>Choose a time slot that works best for your party.</p>
                         <p>Pre-ordered dishes will be prioritized when you arrive.</p>
                         <p>We accommodate special occasions and dietary needs.</p>
+                        <div className="rounded-lg border border-amber-200 bg-amber-50 p-3 text-xs text-amber-700">
+                          Suggested deposit: <span className="font-semibold">{formatCurrency(25)}</span> per guest.
+                        </div>
                       </div>
                     </CardContent>
                   </Card>
@@ -422,6 +616,30 @@ const Reservation = () => {
 
               {step === 3 && (
                 <div className="space-y-6">
+                  <Card className="border-0 bg-emerald-50">
+                    <CardContent className="flex flex-col items-start gap-3 p-6 md:flex-row md:items-center md:justify-between">
+                      <div className="flex items-center gap-3">
+                        <CheckCircle2 className="h-8 w-8 text-emerald-600" />
+                        <div>
+                          <p className="text-sm uppercase tracking-[0.3em] text-emerald-600">Almost there</p>
+                          <p className="text-2xl font-semibold text-emerald-900">Confirm and share your booking</p>
+                        </div>
+                      </div>
+                      <div className="flex flex-wrap gap-3">
+                        <Button type="button" variant="outline" size="sm" onClick={handleShare}>
+                          <Share2 className="mr-2 h-4 w-4" />
+                          Share
+                        </Button>
+                        <Button type="button" variant="outline" size="sm" asChild disabled={!reservationDateTime}>
+                          <a href={calendarHref} target="_blank" rel="noreferrer">
+                            <CalendarPlus className="mr-2 h-4 w-4" />
+                            Add to Calendar
+                          </a>
+                        </Button>
+                      </div>
+                    </CardContent>
+                  </Card>
+
                   <Card>
                     <CardHeader>
                       <CardTitle>Review Your Reservation</CardTitle>
@@ -454,6 +672,10 @@ const Reservation = () => {
                             </p>
                             <p>
                               <span className="font-medium text-gray-900">Guests:</span> {guests}
+                            </p>
+                            <p>
+                              <span className="font-medium text-gray-900">Table:</span>{" "}
+                              {tableOptions.find((table) => table.id === tableSelection)?.name || "Not selected"}
                             </p>
                           </div>
                         </div>
@@ -499,6 +721,10 @@ const Reservation = () => {
                       <p>
                         <span className="font-medium text-gray-900">Pre-orders:</span>{" "}
                         {preorderTab === "yes" ? selectedPreorders.length : 0}
+                      </p>
+                      <p>
+                        <span className="font-medium text-gray-900">Table:</span>{" "}
+                        {tableOptions.find((table) => table.id === tableSelection)?.name || "Not selected"}
                       </p>
                     </CardContent>
                   </Card>
