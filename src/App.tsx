@@ -31,8 +31,12 @@ const Wrapper = ({ children }) => {
 };
 
 const RequireAuth = ({ children, role }: { children: JSX.Element; role?: "admin" | "user" }) => {
-  const { user } = useAuth();
+  const { user, isHydrated } = useAuth();
   const location = useLocation();
+
+  if (!isHydrated) {
+    return null;
+  }
 
   if (!user) {
     return <Navigate to="/login" state={{ from: location.pathname }} replace />;

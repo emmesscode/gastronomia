@@ -1,4 +1,4 @@
-import { createContext, useContext, useMemo, useState } from "react";
+import { createContext, useContext, useEffect, useMemo, useState } from "react";
 
 export type UserRole = "admin" | "user";
 
@@ -15,6 +15,7 @@ interface LoginPayload {
 
 interface AuthContextValue {
   user: AuthUser | null;
+  isHydrated: boolean;
   login: (payload: LoginPayload) => { success: boolean; message: string };
   logout: () => void;
 }
@@ -35,6 +36,11 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
     return null;
   });
+  const [isHydrated, setIsHydrated] = useState(false);
+
+  useEffect(() => {
+    setIsHydrated(true);
+  }, []);
 
   const login = ({ email, password }: LoginPayload) => {
     if (!email || !password) {
@@ -63,7 +69,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     setUser(null);
   };
 
-  const value = useMemo(() => ({ user, login, logout }), [user]);
+  const value = useMemo(() => ({ user, isHydrated, login, logout }), [user, isHydrated]);
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
