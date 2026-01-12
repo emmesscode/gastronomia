@@ -42,7 +42,7 @@ const MenuSection = () => {
                   className="w-full h-full object-cover"
                 />
                 {featuredIds.has(item.id) && (
-                  <span className="absolute left-3 top-3 rounded-full bg-primary/90 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-white shadow">
+                  <span className="absolute left-3 top-3 rounded-full bg-white/90 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-primary shadow ring-1 ring-primary/30">
                     Chef's Pick
                   </span>
                 )}
