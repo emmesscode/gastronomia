@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useMemo, useState } from "react";
+import { createContext, useContext, useMemo, useState } from "react";
 
 export type UserRole = "admin" | "user";
 
@@ -24,14 +24,17 @@ const AuthContext = createContext<AuthContextValue | undefined>(undefined);
 const STORAGE_KEY = "authUser";
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-  const [user, setUser] = useState<AuthUser | null>(null);
-
-  useEffect(() => {
+  const [user, setUser] = useState<AuthUser | null>(() => {
     const stored = localStorage.getItem(STORAGE_KEY);
     if (stored) {
-      setUser(JSON.parse(stored));
+      try {
+        return JSON.parse(stored);
+      } catch {
+        return null;
+      }
     }
-  }, []);
+    return null;
+  });
 
   const login = ({ email, password }: LoginPayload) => {
     if (!email || !password) {
