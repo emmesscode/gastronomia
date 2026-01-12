@@ -79,7 +79,7 @@ const MyHistory = () => {
       const orderDate = new Date(order.date);
       const startOk = orderStartDate ? orderDate >= new Date(orderStartDate) : true;
       const endOk = orderEndDate ? orderDate <= new Date(`${orderEndDate}T23:59:59`) : true;
-      const typeOk = orderType === "all" ? true : order.fulfillment === orderType;
+      const typeOk = orderType === "all" ? true : (order.fulfillment ?? "Delivery") === orderType;
       return startOk && endOk && typeOk;
     });
   }, [orders, orderStartDate, orderEndDate, orderType]);
