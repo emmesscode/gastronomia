@@ -6,9 +6,11 @@ import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { ShoppingCart, Info } from "lucide-react";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
+import { formatCurrency } from "@/lib/utils";
 
 const MenuSection = () => {
   const specialMenuItems = getAllMenuItems().slice(0, 8);
+  const featuredIds = new Set(specialMenuItems.slice(0, 3).map((item) => item.id));
   const { addToCart } = useCart();
   const navigate = useNavigate();
 
@@ -39,11 +41,16 @@ const MenuSection = () => {
                   alt={item.name} 
                   className="w-full h-full object-cover"
                 />
+                {featuredIds.has(item.id) && (
+                  <span className="absolute left-3 top-3 rounded-full bg-primary/90 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-white shadow">
+                    Chef's Pick
+                  </span>
+                )}
               </div>
               <div className="p-3">
                 <div className="flex justify-between mb-1">
                   <h3 className="font-medium text-sm">{item.name}</h3>
-                  <span className="font-bold text-sm text-primary">${item.price}</span>
+                  <span className="font-bold text-sm text-primary">{formatCurrency(item.price)}</span>
                 </div>
                 <p className="text-xs text-gray-500 line-clamp-1 mb-2">{item.description}</p>
                 <div className="w-full">

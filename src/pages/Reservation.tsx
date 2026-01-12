@@ -55,6 +55,7 @@ const Reservation = () => {
   const [specialRequests, setSpecialRequests] = useState("");
   const [preorderTab, setPreorderTab] = useState("no");
   const [preorderItems, setPreorderItems] = useState<string[]>([]);
+  const [formErrors, setFormErrors] = useState<Record<string, string>>({});
   const [step, setStep] = useState(1);
   const availableItems = getAllMenuItems();
 
@@ -120,28 +121,38 @@ const Reservation = () => {
   };
 
   const handleNext = () => {
+    const nextErrors: Record<string, string> = {};
     if (step === 1) {
       if (!name || !email || !phone) {
+        if (!name) nextErrors.name = "Full name is required.";
+        if (!email) nextErrors.email = "Email is required.";
+        if (!phone) nextErrors.phone = "Phone number is required.";
         toast({
           title: "Missing Information",
           description: "Add your contact details to continue.",
           variant: "destructive",
         });
+        setFormErrors(nextErrors);
         return;
       }
     }
 
     if (step === 2) {
       if (!date || !time || guests < 1) {
+        if (!date) nextErrors.date = "Select a date.";
+        if (!time) nextErrors.time = "Select a time slot.";
+        if (guests < 1) nextErrors.guests = "Guest count must be at least 1.";
         toast({
           title: "Missing Information",
           description: "Select a date, time, and guest count to continue.",
           variant: "destructive",
         });
+        setFormErrors(nextErrors);
         return;
       }
     }
 
+    setFormErrors({});
     setStep((prev) => Math.min(3, prev + 1));
   };
 
@@ -194,9 +205,13 @@ const Reservation = () => {
                         <Input
                           id="name"
                           value={name}
-                          onChange={(e) => setName(e.target.value)}
+                          onChange={(e) => {
+                            setName(e.target.value);
+                            setFormErrors((prev) => ({ ...prev, name: "" }));
+                          }}
                           required
                         />
+                        {formErrors.name && <p className="text-xs text-red-500">{formErrors.name}</p>}
                       </div>
 
                       <div>
@@ -205,9 +220,13 @@ const Reservation = () => {
                           id="email"
                           type="email"
                           value={email}
-                          onChange={(e) => setEmail(e.target.value)}
+                          onChange={(e) => {
+                            setEmail(e.target.value);
+                            setFormErrors((prev) => ({ ...prev, email: "" }));
+                          }}
                           required
                         />
+                        {formErrors.email && <p className="text-xs text-red-500">{formErrors.email}</p>}
                       </div>
 
                       <div>
@@ -215,9 +234,13 @@ const Reservation = () => {
                         <Input
                           id="phone"
                           value={phone}
-                          onChange={(e) => setPhone(e.target.value)}
+                          onChange={(e) => {
+                            setPhone(e.target.value);
+                            setFormErrors((prev) => ({ ...prev, phone: "" }));
+                          }}
                           required
                         />
+                        {formErrors.phone && <p className="text-xs text-red-500">{formErrors.phone}</p>}
                       </div>
                     </div>
                   </div>
@@ -260,12 +283,16 @@ const Reservation = () => {
                             <Calendar
                               mode="single"
                               selected={date}
-                              onSelect={setDate}
+                              onSelect={(nextDate) => {
+                                setDate(nextDate);
+                                setFormErrors((prev) => ({ ...prev, date: "" }));
+                              }}
                               initialFocus
                               disabled={(date) => date < new Date()}
                             />
                           </PopoverContent>
                         </Popover>
+                        {formErrors.date && <p className="text-xs text-red-500">{formErrors.date}</p>}
                       </div>
 
                       <div>
@@ -278,13 +305,17 @@ const Reservation = () => {
                               variant={time === slot ? "default" : "outline"}
                               size="sm"
                               className="flex items-center justify-center"
-                              onClick={() => setTime(slot)}
+                              onClick={() => {
+                                setTime(slot);
+                                setFormErrors((prev) => ({ ...prev, time: "" }));
+                              }}
                             >
                               <Clock className="h-3 w-3 mr-1" />
                               {slot}
                             </Button>
                           ))}
                         </div>
+                        {formErrors.time && <p className="text-xs text-red-500">{formErrors.time}</p>}
                       </div>
 
                       <div>
@@ -295,9 +326,13 @@ const Reservation = () => {
                           min="1"
                           max="20"
                           value={guests}
-                          onChange={(e) => setGuests(parseInt(e.target.value))}
+                          onChange={(e) => {
+                            setGuests(parseInt(e.target.value));
+                            setFormErrors((prev) => ({ ...prev, guests: "" }));
+                          }}
                           required
                         />
+                        {formErrors.guests && <p className="text-xs text-red-500">{formErrors.guests}</p>}
                       </div>
 
                       <div>
@@ -349,14 +384,37 @@ const Reservation = () => {
                     </div>
                   </div>
 
-                  <Card className="bg-gray-50 h-fit">
+                  <Card className="bg-gray-50 h-fit sticky top-24">
                     <CardHeader>
-                      <CardTitle>Reservation Notes</CardTitle>
+                      <CardTitle>Reservation Summary</CardTitle>
                     </CardHeader>
                     <CardContent className="text-sm text-gray-600 space-y-4">
-                      <p>Choose a time slot that works best for your party.</p>
-                      <p>Pre-ordered dishes will be prioritized when you arrive.</p>
-                      <p>We accommodate special occasions and dietary needs.</p>
+                      <div className="space-y-2">
+                        <p>
+                          <span className="font-medium text-gray-900">Guest:</span> {name || "Not provided"}
+                        </p>
+                        <p>
+                          <span className="font-medium text-gray-900">Email:</span> {email || "Not provided"}
+                        </p>
+                        <p>
+                          <span className="font-medium text-gray-900">Phone:</span> {phone || "Not provided"}
+                        </p>
+                        <p>
+                          <span className="font-medium text-gray-900">Date:</span>{" "}
+                          {date ? format(date, "MMMM do, yyyy") : "Not selected"}
+                        </p>
+                        <p>
+                          <span className="font-medium text-gray-900">Time:</span> {time || "Not selected"}
+                        </p>
+                        <p>
+                          <span className="font-medium text-gray-900">Guests:</span> {guests}
+                        </p>
+                      </div>
+                      <div className="border-t pt-4 space-y-2">
+                        <p>Choose a time slot that works best for your party.</p>
+                        <p>Pre-ordered dishes will be prioritized when you arrive.</p>
+                        <p>We accommodate special occasions and dietary needs.</p>
+                      </div>
                     </CardContent>
                   </Card>
                 </div>
@@ -421,6 +479,27 @@ const Reservation = () => {
                           <p className="text-sm text-gray-600">No pre-orders selected.</p>
                         )}
                       </div>
+                    </CardContent>
+                  </Card>
+                  <Card className="bg-gray-50 sticky top-24">
+                    <CardHeader>
+                      <CardTitle>At a Glance</CardTitle>
+                    </CardHeader>
+                    <CardContent className="text-sm text-gray-600 space-y-2">
+                      <p>
+                        <span className="font-medium text-gray-900">Date:</span>{" "}
+                        {date ? format(date, "MMMM do, yyyy") : "Not selected"}
+                      </p>
+                      <p>
+                        <span className="font-medium text-gray-900">Time:</span> {time || "Not selected"}
+                      </p>
+                      <p>
+                        <span className="font-medium text-gray-900">Guests:</span> {guests}
+                      </p>
+                      <p>
+                        <span className="font-medium text-gray-900">Pre-orders:</span>{" "}
+                        {preorderTab === "yes" ? selectedPreorders.length : 0}
+                      </p>
                     </CardContent>
                   </Card>
 
