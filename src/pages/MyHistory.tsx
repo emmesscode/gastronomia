@@ -18,6 +18,9 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { formatCurrency, safeParseJSON } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import { useCart } from "@/contexts/CartContext";
+import { toast } from "sonner";
 
 // Define types for our stored data
 interface OrderData {
@@ -26,6 +29,7 @@ interface OrderData {
   phone: string;
   address: string;
   message?: string;
+  fulfillment?: "Delivery" | "Pickup";
   items: Array<{
     id: string;
     name: string;
@@ -52,6 +56,12 @@ const MyHistory = () => {
   const [orders, setOrders] = useState<OrderData[]>([]);
   const [reservations, setReservations] = useState<ReservationData[]>([]);
   const [activeTab, setActiveTab] = useState("orders");
+  const [orderStartDate, setOrderStartDate] = useState("");
+  const [orderEndDate, setOrderEndDate] = useState("");
+  const [orderType, setOrderType] = useState("all");
+  const [reservationStartDate, setReservationStartDate] = useState("");
+  const [reservationEndDate, setReservationEndDate] = useState("");
+  const { addToCart, clearCart } = useCart();
   const menuItemMap = useMemo(() => {
     return new Map(getAllMenuItems().map((item) => [item.id, item.name]));
   }, []);
@@ -63,6 +73,35 @@ const MyHistory = () => {
     // Fetch reservations from localStorage
     setReservations(safeParseJSON(localStorage.getItem("reservations"), []));
   }, []);
+
+  const filteredOrders = useMemo(() => {
+    return orders.filter((order) => {
+      const orderDate = new Date(order.date);
+      const startOk = orderStartDate ? orderDate >= new Date(orderStartDate) : true;
+      const endOk = orderEndDate ? orderDate <= new Date(`${orderEndDate}T23:59:59`) : true;
+      const typeOk = orderType === "all" ? true : order.fulfillment === orderType;
+      return startOk && endOk && typeOk;
+    });
+  }, [orders, orderStartDate, orderEndDate, orderType]);
+
+  const filteredReservations = useMemo(() => {
+    return reservations.filter((reservation) => {
+      const reservationDate = new Date(reservation.date);
+      const startOk = reservationStartDate ? reservationDate >= new Date(reservationStartDate) : true;
+      const endOk = reservationEndDate ? reservationDate <= new Date(`${reservationEndDate}T23:59:59`) : true;
+      return startOk && endOk;
+    });
+  }, [reservations, reservationStartDate, reservationEndDate]);
+
+  const handleReorder = (order: OrderData) => {
+    clearCart();
+    order.items.forEach((item) => {
+      for (let i = 0; i < item.quantity; i += 1) {
+        addToCart({ id: item.id, name: item.name, price: item.price, image: item.image });
+      }
+    });
+    toast.success("Order added to your cart.");
+  };
 
   return (
     <div>
@@ -84,7 +123,42 @@ const MyHistory = () => {
               
               <TabsContent value="orders">
                 <h2 className="text-2xl font-bold mb-6 text-center">Order History</h2>
-                {orders.length === 0 ? (
+                <div className="bg-gray-50 border rounded-lg p-4 mb-6">
+                  <div className="grid md:grid-cols-3 gap-4 text-sm">
+                    <div className="space-y-1">
+                      <label className="font-medium text-gray-700">Order start date</label>
+                      <input
+                        type="date"
+                        className="w-full rounded-md border px-3 py-2"
+                        value={orderStartDate}
+                        onChange={(event) => setOrderStartDate(event.target.value)}
+                      />
+                    </div>
+                    <div className="space-y-1">
+                      <label className="font-medium text-gray-700">Order end date</label>
+                      <input
+                        type="date"
+                        className="w-full rounded-md border px-3 py-2"
+                        value={orderEndDate}
+                        onChange={(event) => setOrderEndDate(event.target.value)}
+                      />
+                    </div>
+                    <div className="space-y-1">
+                      <label className="font-medium text-gray-700">Order type</label>
+                      <select
+                        className="w-full rounded-md border px-3 py-2"
+                        value={orderType}
+                        onChange={(event) => setOrderType(event.target.value)}
+                      >
+                        <option value="all">All</option>
+                        <option value="Delivery">Delivery</option>
+                        <option value="Pickup">Pickup</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+
+                {filteredOrders.length === 0 ? (
                   <Card>
                     <CardContent className="pt-6 text-center">
                       <p className="text-muted-foreground">You haven't placed any orders yet.</p>
@@ -92,7 +166,7 @@ const MyHistory = () => {
                   </Card>
                 ) : (
                   <div className="space-y-6">
-                    {orders.map((order, index) => (
+                    {filteredOrders.map((order, index) => (
                       <Card key={index}>
                         <CardHeader>
                           <div className="flex justify-between items-start">
@@ -101,8 +175,16 @@ const MyHistory = () => {
                               <p className="text-sm text-muted-foreground">
                                 {order.date ? new Date(order.date).toLocaleString() : "Date not available"}
                               </p>
+                              <p className="text-xs text-muted-foreground">
+                                {order.fulfillment ?? "Delivery"}
+                              </p>
                             </div>
-                            <Badge>{order.items.reduce((total, item) => total + item.quantity, 0)} items</Badge>
+                            <div className="flex flex-col items-end gap-2">
+                              <Badge>{order.items.reduce((total, item) => total + item.quantity, 0)} items</Badge>
+                              <Button size="sm" variant="outline" onClick={() => handleReorder(order)}>
+                                Reorder
+                              </Button>
+                            </div>
                           </div>
                         </CardHeader>
                         <CardContent>
@@ -163,7 +245,30 @@ const MyHistory = () => {
               
               <TabsContent value="reservations">
                 <h2 className="text-2xl font-bold mb-6 text-center">Reservation History</h2>
-                {reservations.length === 0 ? (
+                <div className="bg-gray-50 border rounded-lg p-4 mb-6">
+                  <div className="grid md:grid-cols-2 gap-4 text-sm">
+                    <div className="space-y-1">
+                      <label className="font-medium text-gray-700">Reservation start date</label>
+                      <input
+                        type="date"
+                        className="w-full rounded-md border px-3 py-2"
+                        value={reservationStartDate}
+                        onChange={(event) => setReservationStartDate(event.target.value)}
+                      />
+                    </div>
+                    <div className="space-y-1">
+                      <label className="font-medium text-gray-700">Reservation end date</label>
+                      <input
+                        type="date"
+                        className="w-full rounded-md border px-3 py-2"
+                        value={reservationEndDate}
+                        onChange={(event) => setReservationEndDate(event.target.value)}
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                {filteredReservations.length === 0 ? (
                   <Card>
                     <CardContent className="pt-6 text-center">
                       <p className="text-muted-foreground">You haven't made any reservations yet.</p>
@@ -171,7 +276,7 @@ const MyHistory = () => {
                   </Card>
                 ) : (
                   <div className="space-y-6">
-                    {reservations.map((reservation, index) => (
+                    {filteredReservations.map((reservation, index) => (
                       <Card key={index}>
                         <CardHeader>
                           <div className="flex justify-between items-start">

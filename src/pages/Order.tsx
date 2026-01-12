@@ -1,5 +1,4 @@
-
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -22,7 +21,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Card, CardContent } from "@/components/ui/card";
-import { Minus, Plus, ShoppingBag, ShoppingCart, Info } from "lucide-react";
+import { Minus, Plus, ShoppingBag, ShoppingCart, Sparkles, Info } from "lucide-react";
 import { formatCurrency, safeParseJSON } from "@/lib/utils";
 
 // Define the schema for delivery information
@@ -34,15 +33,44 @@ const formSchema = z.object({
   specialRequests: z.string().optional(),
 });
 
+const getItemType = (itemId: string): string => {
+  if (itemId.startsWith("f")) return "Food";
+  if (itemId.startsWith("d")) return "Dessert";
+  if (itemId.startsWith("w")) return "Wine";
+  if (itemId.startsWith("c")) return "Cocktail";
+  if (itemId.startsWith("n")) return "Non-Alcoholic";
+  return "Menu Item";
+};
+
 const Order = () => {
   // Get all menu items to display in the order page
   const menuItems = getAllMenuItems();
   const navigate = useNavigate();
-  
+
   // Get cart state and methods from context
   const { cart, addToCart, removeFromCart, clearCart, getTotalPrice } = useCart();
   const [orderSubmitted, setOrderSubmitted] = useState(false);
-  
+
+  const recommendations = useMemo(() => {
+    const cartIds = new Set(cart.map((item) => item.id));
+    const cartTypes = new Set(cart.map((item) => getItemType(item.id)));
+    const hasFood = cartTypes.has("Food");
+    const hasDessert = cartTypes.has("Dessert");
+    const hasDrink = cartTypes.has("Wine") || cartTypes.has("Cocktail") || cartTypes.has("Non-Alcoholic");
+
+    let desiredTypes: string[] = [];
+    if (hasFood && !hasDessert) desiredTypes.push("Dessert");
+    if (hasFood && !hasDrink) desiredTypes.push("Wine", "Cocktail", "Non-Alcoholic");
+    if (!hasFood && !hasDessert && !hasDrink) {
+      desiredTypes = ["Food", "Dessert", "Wine", "Cocktail", "Non-Alcoholic"];
+    }
+
+    return menuItems
+      .filter((item) => !cartIds.has(item.id))
+      .filter((item) => desiredTypes.includes(getItemType(item.id)))
+      .slice(0, 4);
+  }, [cart, menuItems]);
+
   // Form for delivery information
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -51,7 +79,7 @@ const Order = () => {
       email: "",
       phone: "",
       address: "",
-      specialRequests: ""
+      specialRequests: "",
     },
   });
 
@@ -59,23 +87,24 @@ const Order = () => {
   const onSubmit = (values: z.infer<typeof formSchema>) => {
     // In a real app, we would send this to a backend
     console.log("Order submitted:", { customer: values, items: cart, total: getTotalPrice() });
-    
+
     // Save the order to localStorage
     const orderData = {
       ...values,
       items: cart,
       totalPrice: getTotalPrice() || 0, // Add fallback to prevent undefined
-      date: new Date().toISOString()
+      date: new Date().toISOString(),
+      fulfillment: "Delivery",
     };
-    
+
     const existingOrders = safeParseJSON(localStorage.getItem("orders"), []);
     localStorage.setItem("orders", JSON.stringify([...existingOrders, orderData]));
-    
+
     // Show success message and reset cart
     toast.success("Your order has been placed! We'll contact you shortly.", {
       duration: 5000,
     });
-    
+
     setOrderSubmitted(true);
     clearCart();
     form.reset();
@@ -103,90 +132,134 @@ const Order = () => {
               <div className="text-center py-10">
                 <h2 className="text-3xl font-bold mb-4">Thank You for Your Order!</h2>
                 <p className="mb-6">Your order has been received and is being processed.</p>
-                <Button 
-                  onClick={() => setOrderSubmitted(false)}
-                  className="mt-4"
-                >
+                <Button onClick={() => setOrderSubmitted(false)} className="mt-4">
                   Place Another Order
                 </Button>
               </div>
             ) : (
               <div className="grid md:grid-cols-3 gap-8">
                 {/* Menu Items Column */}
-                <div className="md:col-span-2">
-                  <h2 className="text-2xl font-bold mb-6">Menu</h2>
-                  <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                    {menuItems.map((item) => (
-                      <Card 
-                        key={item.id} 
-                        className="overflow-hidden hover:shadow-md transition-shadow cursor-pointer"
-                        onClick={() => navigate(`/food/${item.id}`)}
-                      >
-                        <div className="w-full h-32 relative">
-                          <AspectRatio ratio={4/3} className="bg-muted">
-                            {item.image ? (
-                              <img 
-                                src={item.image} 
-                                alt={item.name}
-                                className="object-cover w-full h-full"
-                                style={{viewTransitionName: `food-image-${item.id}`}}
-                              />
-                            ) : (
-                              <div className="flex items-center justify-center h-full bg-muted text-muted-foreground">
-                                No image
-                              </div>
-                            )}
-                          </AspectRatio>
+                <div className="md:col-span-2 space-y-8">
+                  {recommendations.length > 0 && (
+                    <Card className="border-amber-200 bg-amber-50">
+                      <CardContent className="p-6">
+                        <div className="flex items-center gap-2 mb-4">
+                          <Sparkles className="h-5 w-5 text-amber-600" />
+                          <h2 className="text-xl font-bold text-amber-900">Recommended Add-ons</h2>
                         </div>
-                        <CardContent className="p-3 mt-6">
-                          <div className="flex justify-between items-start mb-1">
-                            <h3 
-                              className="font-medium text-sm truncate"
-                              style={{viewTransitionName: `food-title-${item.id}`}}
-                            >
-                              {item.name}
-                            </h3>
-                            <span 
-                              className="font-bold text-sm"
-                              style={{viewTransitionName: `food-price-${item.id}`}}
-                            >
-                              {formatCurrency(item.price)}
-                            </span>
+                        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                          {recommendations.map((item) => (
+                            <div key={item.id} className="bg-white rounded-lg border border-amber-100 p-3 flex h-full flex-col">
+                              <div className="flex items-start justify-between gap-2">
+                                <div>
+                                  <p className="font-semibold text-sm text-amber-900">{item.name}</p>
+                                  <p className="text-xs text-amber-700">{formatCurrency(item.price)}</p>
+                                </div>
+                                <Button
+                                  size="icon"
+                                  variant="ghost"
+                                  className="h-8 w-8"
+                                  onClick={() => navigate(`/food/${item.id}`)}
+                                >
+                                  <Info className="h-4 w-4" />
+                                </Button>
+                              </div>
+                              <Button
+                                size="sm"
+                                className="w-full mt-auto"
+                                onClick={() =>
+                                  handleAddToCart({
+                                    id: item.id,
+                                    name: item.name,
+                                    price: item.price,
+                                    image: item.image,
+                                  })
+                                }
+                              >
+                                Add to Order
+                              </Button>
+                            </div>
+                          ))}
+                        </div>
+                      </CardContent>
+                    </Card>
+                  )}
+
+                  <div>
+                    <h2 className="text-2xl font-bold mb-6">Menu</h2>
+                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                      {menuItems.map((item) => (
+                        <Card
+                          key={item.id}
+                          className="overflow-hidden hover:shadow-md transition-shadow cursor-pointer"
+                          onClick={() => navigate(`/food/${item.id}`)}
+                        >
+                          <div className="w-full h-32 relative">
+                            <AspectRatio ratio={4 / 3} className="bg-muted">
+                              {item.image ? (
+                                <img
+                                  src={item.image}
+                                  alt={item.name}
+                                  className="object-cover w-full h-full"
+                                  style={{ viewTransitionName: `food-image-${item.id}` }}
+                                />
+                              ) : (
+                                <div className="flex items-center justify-center h-full bg-muted text-muted-foreground">
+                                  No image
+                                </div>
+                              )}
+                            </AspectRatio>
                           </div>
-                          <p className="text-gray-600 text-xs mb-2 line-clamp-1">{item.description}</p>
-                          <div className="flex gap-1">
-                            <Button 
-                              size="sm" 
-                              variant="default"
-                              className="w-full mt-1 text-xs h-7 px-2 flex-1"
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                handleAddToCart({ 
-                                  id: item.id, 
-                                  name: item.name, 
-                                  price: item.price,
-                                  image: item.image
-                                });
-                              }}
-                            >
-                              <ShoppingCart className="h-3 w-3 mr-1" />
-                              <span>Add</span>
-                            </Button>
-                            <Button 
-                              size="sm" 
-                              variant="secondary"
-                              className="mt-1 text-xs h-7 w-7 px-0"
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                navigate(`/food/${item.id}`);
-                              }}
-                            >
-                              <Info className="h-3 w-3" />
-                            </Button>
-                          </div>
-                        </CardContent>
-                      </Card>
-                    ))}
+                          <CardContent className="p-3 mt-6">
+                            <div className="flex justify-between items-start mb-1">
+                              <h3
+                                className="font-medium text-sm truncate"
+                                style={{ viewTransitionName: `food-title-${item.id}` }}
+                              >
+                                {item.name}
+                              </h3>
+                              <span
+                                className="font-bold text-sm"
+                                style={{ viewTransitionName: `food-price-${item.id}` }}
+                              >
+                                {formatCurrency(item.price)}
+                              </span>
+                            </div>
+                            <p className="text-gray-600 text-xs mb-2 line-clamp-1">{item.description}</p>
+                            <div className="flex gap-1">
+                              <Button
+                                size="sm"
+                                variant="default"
+                                className="w-full mt-1 text-xs h-7 px-2 flex-1"
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  handleAddToCart({
+                                    id: item.id,
+                                    name: item.name,
+                                    price: item.price,
+                                    image: item.image,
+                                  });
+                                }}
+                              >
+                                <ShoppingCart className="h-3 w-3 mr-1" />
+                                <span>Add</span>
+                              </Button>
+                              <Button
+                                size="sm"
+                                variant="secondary"
+                                className="mt-1 text-xs h-7 w-7 px-0"
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  navigate(`/food/${item.id}`);
+                                }}
+                              >
+                                <Info className="h-3 w-3" />
+                              </Button>
+                            </div>
+                          </CardContent>
+                        </Card>
+                      ))}
+                    </div>
                   </div>
                 </div>
 
@@ -196,7 +269,7 @@ const Order = () => {
                     <ShoppingBag className="h-5 w-5" />
                     <h2 className="text-2xl font-bold">Your Order</h2>
                   </div>
-                  
+
                   {cart.length === 0 ? (
                     <p className="text-gray-500 mb-4">Your cart is empty</p>
                   ) : (
@@ -205,55 +278,57 @@ const Order = () => {
                         {cart.map((item) => (
                           <div key={item.id} className="py-3 flex items-center">
                             {item.image && (
-                              <div 
+                              <div
                                 className="w-12 h-12 mr-3 rounded overflow-hidden flex-shrink-0 cursor-pointer"
                                 onClick={() => navigate(`/food/${item.id}`)}
                               >
-                                <img 
-                                  src={item.image} 
-                                  alt={item.name} 
+                                <img
+                                  src={item.image}
+                                  alt={item.name}
                                   className="w-full h-full object-cover"
-                                  style={{viewTransitionName: `food-image-${item.id}`}}
+                                  style={{ viewTransitionName: `food-image-${item.id}` }}
                                 />
                               </div>
                             )}
-                            <div 
+                            <div
                               className="flex-grow min-w-0 cursor-pointer"
                               onClick={() => navigate(`/food/${item.id}`)}
                             >
-                              <p 
+                              <p
                                 className="font-medium text-sm truncate"
-                                style={{viewTransitionName: `food-title-${item.id}`}}
+                                style={{ viewTransitionName: `food-title-${item.id}` }}
                               >
                                 {item.name}
                               </p>
-                              <p 
+                              <p
                                 className="text-xs text-gray-600"
-                                style={{viewTransitionName: `food-price-${item.id}`}}
+                                style={{ viewTransitionName: `food-price-${item.id}` }}
                               >
                                 {formatCurrency(item.price)} each
                               </p>
                             </div>
                             <div className="flex items-center gap-1 ml-2">
-                              <Button 
-                                variant="outline" 
-                                size="icon" 
+                              <Button
+                                variant="outline"
+                                size="icon"
                                 className="h-6 w-6"
                                 onClick={() => removeFromCart(item.id)}
                               >
                                 <Minus className="h-3 w-3" />
                               </Button>
                               <span className="w-6 text-center text-sm">{item.quantity}</span>
-                              <Button 
-                                variant="outline" 
-                                size="icon" 
+                              <Button
+                                variant="outline"
+                                size="icon"
                                 className="h-6 w-6"
-                                onClick={() => addToCart({ 
-                                  id: item.id, 
-                                  name: item.name, 
-                                  price: item.price,
-                                  image: item.image
-                                })}
+                                onClick={() =>
+                                  addToCart({
+                                    id: item.id,
+                                    name: item.name,
+                                    price: item.price,
+                                    image: item.image,
+                                  })
+                                }
                               >
                                 <Plus className="h-3 w-3" />
                               </Button>
@@ -327,7 +402,7 @@ const Order = () => {
                             </FormItem>
                           )}
                         />
-                         <FormField
+                        <FormField
                           control={form.control}
                           name="specialRequests"
                           render={({ field }) => (
@@ -340,11 +415,7 @@ const Order = () => {
                             </FormItem>
                           )}
                         />
-                        <Button 
-                          type="submit" 
-                          className="w-full"
-                          disabled={cart.length === 0}
-                        >
+                        <Button type="submit" className="w-full" disabled={cart.length === 0}>
                           Place Order
                         </Button>
                       </form>
