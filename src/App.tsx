@@ -14,6 +14,7 @@ import FoodDetails from "./pages/FoodDetails";
 import MyHistory from "./pages/MyHistory";
 import AdminDashboard from "./pages/AdminDashboard";
 import Login from "./pages/Login";
+import ChefTable from "./pages/ChefTable";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -60,6 +61,7 @@ const App = () => (
                 <Route path="/order" element={<Order />} />
                 <Route path="/food/:id" element={<FoodDetails />} />
                 <Route path="/my-history" element={<MyHistory />} />
+                <Route path="/chef-table" element={<ChefTable />} />
                 <Route path="/login" element={<Login />} />
                 <Route
                   path="/admin"

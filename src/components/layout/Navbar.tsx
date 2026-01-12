@@ -85,6 +85,14 @@ const Navbar = () => {
               </Link>
             </NavigationMenuItem>
             <NavigationMenuItem>
+              <Link to="/chef-table" className={cn(
+                "px-4 py-2 text-sm font-medium transition-colors",
+                isScrolled ? "text-gray-800 dark:text-gray-200" : "text-white"
+              )}>
+                Chef's Table
+              </Link>
+            </NavigationMenuItem>
+            <NavigationMenuItem>
               <Link to="/my-history" className={cn(
                 "px-4 py-2 text-sm font-medium transition-colors flex items-center",
                 isScrolled ? "text-gray-800 dark:text-gray-200" : "text-white"
@@ -306,6 +314,9 @@ const Navbar = () => {
               </Link>
               <Link to="/reservation" className="px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-800" onClick={toggleMenu}>
                 Reservations
+              </Link>
+              <Link to="/chef-table" className="px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-800" onClick={toggleMenu}>
+                Chef's Table
               </Link>
               <Link to="/my-history" className="px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-800 flex items-center" onClick={toggleMenu}>
                 <History className="h-4 w-4 mr-1" />
