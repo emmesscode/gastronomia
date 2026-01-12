@@ -117,6 +117,11 @@ const AdminDashboard = () => {
     ...activityByDay.map((day) => Math.max(day.orders, day.reservations))
   );
 
+  const getBarHeight = (value: number) => {
+    const scaled = (value / maxActivity) * 96;
+    return `${Math.max(8, scaled)}px`;
+  };
+
   return (
     <>
       <Navbar />
@@ -176,14 +181,14 @@ const AdminDashboard = () => {
                   <div className="grid grid-cols-7 gap-4 items-end h-44">
                     {activityByDay.map((day) => (
                       <div key={day.key} className="flex flex-col items-center gap-2">
-                        <div className="flex flex-col items-center gap-2 w-full">
+                        <div className="flex flex-col items-center gap-2 w-full h-28 justify-end">
                           <div
                             className="w-full rounded-md bg-primary/80"
-                            style={{ height: `${(day.orders / maxActivity) * 100}%` }}
+                            style={{ height: getBarHeight(day.orders) }}
                           />
                           <div
                             className="w-full rounded-md bg-amber-400"
-                            style={{ height: `${(day.reservations / maxActivity) * 100}%` }}
+                            style={{ height: getBarHeight(day.reservations) }}
                           />
                         </div>
                         <div className="text-xs font-medium text-muted-foreground">{day.label}</div>

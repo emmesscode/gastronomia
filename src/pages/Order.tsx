@@ -94,6 +94,7 @@ const Order = () => {
       items: cart,
       totalPrice: getTotalPrice() || 0, // Add fallback to prevent undefined
       date: new Date().toISOString(),
+      fulfillment: "Delivery",
     };
 
     const existingOrders = safeParseJSON(localStorage.getItem("orders"), []);
